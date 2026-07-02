@@ -38,6 +38,13 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: () => {
+    return (
+      <div className="bg-gray-800 p-4 h-full">
+        <p className="text-3xl font-bold text-white mb-2">Page not found</p>
+      </div>
+    )
+  },
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -47,7 +54,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <div className="min-h-screen bg-background text-foreground">
+          {children}
+        </div>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
