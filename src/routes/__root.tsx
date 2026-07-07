@@ -3,6 +3,7 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
+import type { AuthContextValue } from '#/contexts/authContext'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
@@ -14,6 +15,7 @@ import type { QueryClient } from '@tanstack/react-query'
 
 interface MyRouterContext {
   queryClient: QueryClient
+  auth: AuthContextValue
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

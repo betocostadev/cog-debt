@@ -1,4 +1,4 @@
-import { loginUser } from '#/api'
+import { getCurrentAuthUser, loginUser } from '#/api'
 import store from '#/utils/store'
 
 export const loginAndSaveToken = async ({
@@ -16,6 +16,15 @@ export const loginAndSaveToken = async ({
     }
 
     return userData
+  } catch (error) {
+    console.log(`Auth service error: ${error}`)
+  }
+}
+
+export const getAuthUser = async () => {
+  try {
+    const authUser = await getCurrentAuthUser()
+    return authUser
   } catch (error) {
     console.log(`Auth service error: ${error}`)
   }

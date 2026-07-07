@@ -1,3 +1,5 @@
+'use client'
+
 type AuthStore = {
   jwt: string | null
   readonly loggedIn: string | null
@@ -9,7 +11,11 @@ const Store: AuthStore = {
   },
 }
 
-const storedJwt = localStorage.getItem('jwt')
+let storedJwt = undefined
+
+if (typeof window !== 'undefined') {
+  storedJwt = localStorage.getItem('jwt')
+}
 
 if (storedJwt) {
   Store.jwt = storedJwt

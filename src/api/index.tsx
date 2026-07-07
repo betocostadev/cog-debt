@@ -40,3 +40,9 @@ export const loginUser = async ({
 
   return data
 }
+
+export const getCurrentAuthUser = async () => {
+  const { data } = await apiClient.get(`/auth/me`)
+  console.log('[API - getCurrentAuthUser - data: ', data)
+  return data
+}
