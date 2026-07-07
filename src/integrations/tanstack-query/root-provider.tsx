@@ -1,20 +1,18 @@
 import type { AuthContextValue } from '#/contexts/authContext'
+import { getAuthContextValue } from '#/contexts/authContext'
 import { QueryClient } from '@tanstack/react-query'
 
-export function getContext(auth?: Partial<AuthContextValue>) {
-  const queryClient = new QueryClient()
+let queryClient: QueryClient | undefined
 
-  const defaultAuth: AuthContextValue = {
-    authUser: null,
-    setAuthUser: () => undefined,
+export function getContext(auth?: Partial<AuthContextValue>) {
+  if (!queryClient) {
+    queryClient = new QueryClient()
   }
 
   return {
     queryClient,
-    auth: {
-      ...defaultAuth,
-      ...auth,
-    },
+    auth: getAuthContextValue(auth),
   }
 }
+
 export default function TanstackQueryProvider() {}
