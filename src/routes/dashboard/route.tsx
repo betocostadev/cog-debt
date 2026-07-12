@@ -3,6 +3,13 @@ import { SideMenu } from '#/components/organisms/MainLayout/SideMenu'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard')({
+  head: () => ({
+    meta: [
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'Dashboard' },
+    ],
+  }),
   component: DashboardLayout,
   beforeLoad: ({ context, location }) => {
     if (!context.auth.authUser) {

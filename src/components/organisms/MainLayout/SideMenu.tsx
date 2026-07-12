@@ -27,7 +27,7 @@ export function SideMenu() {
       `}
     >
       <div
-        className={`flex items-center p-3 ${collapsed ? '' : 'justify-end'}`}
+        className={`flex items-center p-3 transition-all duration-300 ${collapsed ? '' : 'justify-end'}`}
       >
         <button
           onClick={() => setCollapsed((value) => !value)}

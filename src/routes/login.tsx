@@ -2,7 +2,16 @@ import { Card } from '#/components/atoms/Card/Card'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { LoginForm } from '#/components/organisms/LoginForm'
 
-export const Route = createFileRoute('/login')({ component: LoginPage })
+export const Route = createFileRoute('/login')({
+  head: () => ({
+    meta: [
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'Cog Debt - Login' },
+    ],
+  }),
+  component: LoginPage,
+})
 
 function LoginPage() {
   return (
