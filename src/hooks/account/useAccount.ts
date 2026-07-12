@@ -6,6 +6,8 @@ import { accountQueryKeys } from './useAccountQueryKeys'
 import { useAuth } from '#/contexts/authContext'
 import { useCallback, useMemo } from 'react'
 import { useAuthUserQueryFn } from './useAccountQueries'
+import { useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 export interface UseAccountOptions {
   /**
@@ -27,16 +29,24 @@ interface UseAuthUserResult extends BaseResult {
 export const useLogin = () => {
   const queryClient = useQueryClient()
   const { setAuthUser } = useAuth()
+  const navigate = useNavigate()
 
   const mutation = useMutation({
     mutationFn: (credentials: TCredentials) => useLoginMutationFn(credentials),
     onSuccess: async (authUserData) => {
       setAuthUser(authUserData)
+
       queryClient.invalidateQueries({ queryKey: accountQueryKeys.authUser() })
-      console.log(`Login mutation, auth User received: `, authUserData)
+      toast.success(`Welcome back, ${authUserData.firstName}!`)
+      navigate({ to: '/dashboard' })
     },
-    onError: (error) => {
-      console.log('Login failed: ', error)
+    onError: (error: any) => {
+      const errorMessage =
+        error.response?.data?.message ||
+        'Invalid credentials, please try again.'
+
+      console.log('Login mutation failed: ', error)
+      toast.error(errorMessage)
     },
   })
 

@@ -1,5 +1,8 @@
 import axios from 'axios'
 import store from '#/utils/store'
+import { AuthError, TokenExpiredError } from '#/types/errors'
+
+// TODO: Implementar como classe
 
 const BASE_URL = 'https://dummyjson.com/'
 const apiClient = axios.create({
@@ -17,6 +20,19 @@ apiClient.interceptors.request.use((config) => {
   }
   return config
 })
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      throw new TokenExpiredError()
+    }
+
+    const message =
+      error?.response?.data?.message || 'An unexpected error occurred.'
+    throw new AuthError(message)
+  },
+)
 
 export const testDummyJson = async () => {
   const { data } = await apiClient.get('/test')

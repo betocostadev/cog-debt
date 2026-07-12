@@ -1,4 +1,4 @@
-import { Card } from '#/components/shared/Card'
+import { Card } from '#/components/atoms/Card/Card'
 import { checkAPI } from '#/services/apiTest'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
@@ -12,7 +12,6 @@ function RouteComponent() {
     queryKey: ['dummyData'],
     queryFn: () => checkAPI(),
   })
-  console.log(data)
 
   if (isLoading) {
     return (

@@ -12,6 +12,9 @@ import store from '#/utils/store'
 import { useQueryClient } from '@tanstack/react-query'
 import { accountQueryKeys } from '#/hooks/account/useAccountQueryKeys'
 import { useAuthUserQueryFn } from '#/hooks/account/useAccountQueries'
+import { TokenExpiredError } from '#/types/errors'
+import { toast } from 'sonner'
+import { useNavigate } from '@tanstack/react-router'
 
 export type AuthContextValue = {
   authUser: IAuthUser | null
@@ -53,6 +56,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     authState.authUser,
   )
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const setAuthUser = useCallback((next: SetStateAction<IAuthUser | null>) => {
     const resolved = resolveAuthUser(next)
@@ -76,8 +80,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         })
 
         setAuthUser(authUserData)
+        navigate({ to: '/dashboard' })
       } catch (error) {
-        console.log(error)
+        if (error instanceof TokenExpiredError) {
+          toast.error('Session expired. Please log in again.')
+        }
         setAuthUser(null)
       }
     }

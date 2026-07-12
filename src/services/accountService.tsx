@@ -8,24 +8,16 @@ export const loginAndSaveToken = async ({
   username: string
   password: string
 }) => {
-  try {
-    const userData = await loginUser({ username, password })
+  const userData = await loginUser({ username, password })
 
-    if (userData?.accessToken) {
-      store.jwt = userData.accessToken
-    }
-
-    return userData
-  } catch (error) {
-    console.log(`Auth service error: ${error}`)
+  if (userData?.accessToken) {
+    store.jwt = userData.accessToken
   }
+
+  return userData
 }
 
 export const getAuthUser = async () => {
-  try {
-    const authUser = await getCurrentAuthUser()
-    return authUser
-  } catch (error) {
-    console.log(`Auth service error: ${error}`)
-  }
+  const authUser = await getCurrentAuthUser()
+  return authUser
 }

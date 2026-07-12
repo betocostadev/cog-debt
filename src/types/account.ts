@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 export interface IAuthUser {
   id: string
   username: string
@@ -15,3 +17,11 @@ export type TCredentials = {
   password: string
   expiresInMins?: number
 }
+
+export const credentialsSchema = z.object({
+  username: z.string().min(5, 'Username is required'),
+  password: z.string().min(5, 'Password is required'),
+  expiresInMins: z.number().optional(),
+})
+
+export type TCredentialsOutput = z.infer<typeof credentialsSchema>

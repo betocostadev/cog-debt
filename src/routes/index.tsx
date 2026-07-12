@@ -1,11 +1,9 @@
-import { Card } from '#/components/shared/Card'
+import { Card } from '#/components/atoms/Card/Card'
 import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   component: Home,
   beforeLoad: ({ context, location }) => {
-    console.log('Home route guard, context auth:')
-    console.log(context.auth)
     if (!context.auth.authUser) {
       throw redirect({
         to: '/login',
@@ -32,6 +30,13 @@ function Home() {
             <h2 className="mt-4 text-4xl font-semibold tracking-tight">
               Welcome to Cog Debt
             </h2>
+
+            <Link
+              to="/dashboard"
+              className="mt-6 inline-flex text-white underline"
+            >
+              Dashboard
+            </Link>
 
             <Link to="/test" className="mt-6 inline-flex text-white underline">
               Dummy API test
