@@ -1,64 +1,71 @@
 import axios from 'axios'
+import type { AxiosInstance } from 'axios'
 import store from '#/utils/store'
-import { AuthError, TokenExpiredError } from '#/types/errors'
+import {
+  AuthError,
+  NotFoundError,
+  ServerError,
+  TokenExpiredError,
+} from '#/types/errors'
+import { TEN_SECONDS_IN_MILLI } from '#/utils/constants'
 
-// TODO: Implementar como classe
+export class ApiClient {
+  private client: AxiosInstance
 
-const BASE_URL = 'https://dummyjson.com/'
-const apiClient = axios.create({
-  baseURL: BASE_URL,
-  timeout: 10000,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-
-apiClient.interceptors.request.use((config) => {
-  if (store.jwt) {
-    config.headers.Authorization = `Bearer ${store.jwt}`
+  constructor() {
+    this.client = axios.create({
+      baseURL: 'https://dummyjson.com/',
+      timeout: TEN_SECONDS_IN_MILLI,
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    this.setupInterceptors()
   }
-  return config
-})
 
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      throw new TokenExpiredError()
-    }
+  private setupInterceptors() {
+    this.client.interceptors.request.use((config) => {
+      if (store.jwt) {
+        config.headers.Authorization = `Bearer ${store.jwt}`
+      }
+      return config
+    })
 
-    const message =
-      error?.response?.data?.message || 'An unexpected error occurred.'
-    throw new AuthError(message)
-  },
-)
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          throw new TokenExpiredError()
+        } else if (error.response.status === 404) {
+          throw new NotFoundError(
+            `Resource not found. Error: ${error.response?.data?.message}`,
+          )
+        } else if (error.response?.status === 500) {
+          throw new ServerError(
+            `Server error: ${error.response?.data?.message}`,
+          )
+        }
 
-export const testDummyJson = async () => {
-  const { data } = await apiClient.get('/test')
-  return data
+        const message =
+          error?.response?.data?.message || 'An unexpected error occurred.'
+        throw new AuthError(message)
+      },
+    )
+  }
+
+  protected async get<T>(url: string): Promise<T> {
+    const { data } = await this.client.get(url)
+    return data
+  }
+
+  protected async post<TResponse, TBody>(
+    url: string,
+    body: TBody,
+  ): Promise<TResponse> {
+    const { data } = await this.client.post(url, body)
+    return data
+  }
 }
 
-export const loginUser = async ({
-  username,
-  password,
-  expiresInMins = 60,
-}: {
-  username: string
-  password: string
-  expiresInMins?: number
-}) => {
-  const { data } = await apiClient.post('/auth/login', {
-    username,
-    password,
-    expiresInMins,
-  })
-
-  return data
-}
-
-export const getCurrentAuthUser = async () => {
-  const { data } = await apiClient.get(`/auth/me`)
-  console.log('[API - getCurrentAuthUser - data: ', data)
-  return data
-}
+export const apiClient = new ApiClient()

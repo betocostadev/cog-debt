@@ -9,21 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TestRouteImport } from './routes/test'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ApiCheckRouteImport } from './routes/api-check'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardUsersRouteImport } from './routes/dashboard/users'
 import { Route as DashboardDepartmentsRouteImport } from './routes/dashboard/departments'
 
-const TestRoute = TestRouteImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckRoute = ApiCheckRouteImport.update({
+  id: '/api-check',
+  path: '/api-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
@@ -50,16 +50,16 @@ const DashboardDepartmentsRoute = DashboardDepartmentsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
-  '/test': typeof TestRoute
   '/dashboard/departments': typeof DashboardDepartmentsRoute
   '/dashboard/users': typeof DashboardUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
-  '/test': typeof TestRoute
   '/dashboard/departments': typeof DashboardDepartmentsRoute
   '/dashboard/users': typeof DashboardUsersRoute
 }
@@ -67,8 +67,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
-  '/test': typeof TestRoute
   '/dashboard/departments': typeof DashboardDepartmentsRoute
   '/dashboard/users': typeof DashboardUsersRoute
 }
@@ -77,24 +77,24 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/api-check'
     | '/login'
-    | '/test'
     | '/dashboard/departments'
     | '/dashboard/users'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dashboard'
+    | '/api-check'
     | '/login'
-    | '/test'
     | '/dashboard/departments'
     | '/dashboard/users'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/api-check'
     | '/login'
-    | '/test'
     | '/dashboard/departments'
     | '/dashboard/users'
   fileRoutesById: FileRoutesById
@@ -102,24 +102,24 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  ApiCheckRoute: typeof ApiCheckRoute
   LoginRoute: typeof LoginRoute
-  TestRoute: typeof TestRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api-check': {
+      id: '/api-check'
+      path: '/api-check'
+      fullPath: '/api-check'
+      preLoaderRoute: typeof ApiCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -170,8 +170,8 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  ApiCheckRoute: ApiCheckRoute,
   LoginRoute: LoginRoute,
-  TestRoute: TestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

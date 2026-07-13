@@ -11,6 +11,18 @@ export class AuthError extends AppError {
   }
 }
 
+export class NotFoundError extends AppError {
+  constructor(message: string) {
+    super(message)
+  }
+}
+
+export class ServerError extends AppError {
+  constructor(message: string) {
+    super(message)
+  }
+}
+
 export class TokenExpiredError extends AuthError {
   constructor() {
     super('Token Expired.')

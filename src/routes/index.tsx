@@ -38,7 +38,10 @@ function Home() {
               Dashboard
             </Link>
 
-            <Link to="/test" className="mt-6 inline-flex text-white underline">
+            <Link
+              to="/api-check"
+              className="mt-6 inline-flex text-white underline"
+            >
               Dummy API test
             </Link>
           </Card>

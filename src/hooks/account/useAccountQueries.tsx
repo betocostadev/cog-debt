@@ -1,11 +1,8 @@
-import { getAuthUser } from '#/services/accountService'
+import { accountService } from '#/services/accountService'
+import type { IAuthUser } from '#/types/account'
 
-export const useAuthUserQueryFn = async () => {
-  const authUser = await getAuthUser()
-
-  if (!authUser) {
-    throw new Error(`Unable to get current Authenticated user.`)
-  }
+export const useAuthUserQueryFn = async (): Promise<IAuthUser> => {
+  const authUser = await accountService.getAuthUser()
 
   return authUser
 }

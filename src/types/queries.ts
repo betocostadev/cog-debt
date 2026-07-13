@@ -3,3 +3,8 @@ export interface BaseResult {
   error: Error | undefined
   refresh: () => Promise<void>
 }
+
+export type ApiHealthResponse = {
+  status: string
+  method: string
+}

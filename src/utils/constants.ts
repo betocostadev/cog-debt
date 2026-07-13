@@ -1,0 +1,1 @@
+export const TEN_SECONDS_IN_MILLI = 10_000

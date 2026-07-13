@@ -1,16 +1,18 @@
 import { Card } from '#/components/atoms/Card/Card'
-import { checkAPI } from '#/services/apiTest'
+import { healthCheckService } from '#/services/apiHealthCheck'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/test')({
+export const Route = createFileRoute('/api-check')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['dummyData'],
-    queryFn: () => checkAPI(),
+    queryFn: () => healthCheckService.checkApiHealth(),
+    gcTime: 10000,
+    staleTime: 1000 * 60,
   })
 
   if (isLoading) {
@@ -27,7 +29,7 @@ function RouteComponent() {
 
   return (
     <Card>
-      <p className="text-3xl font-bold mb-2">Test Axios fetching Dummy JSON</p>
+      <p className="text-3xl font-bold mb-2">Health check Dummy JSON</p>
       {data && (
         <p className="text-2xl mb-4">
           Dummy JSON API status:{' '}

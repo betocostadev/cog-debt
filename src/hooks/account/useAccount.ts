@@ -8,6 +8,7 @@ import { useCallback, useMemo } from 'react'
 import { useAuthUserQueryFn } from './useAccountQueries'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
+import { NotFoundError, TokenExpiredError } from '#/types/errors'
 
 export interface UseAccountOptions {
   /**
@@ -23,7 +24,7 @@ export interface UseAccountOptions {
 }
 
 interface UseAuthUserResult extends BaseResult {
-  authUser: IAuthUser
+  authUser?: IAuthUser
 }
 
 export const useLogin = () => {
@@ -41,12 +42,13 @@ export const useLogin = () => {
       navigate({ to: '/dashboard' })
     },
     onError: (error: any) => {
-      const errorMessage =
-        error.response?.data?.message ||
-        'Invalid credentials, please try again.'
-
-      console.log('Login mutation failed: ', error)
-      toast.error(errorMessage)
+      if (error instanceof TokenExpiredError) {
+        toast.error('Session expired, please log in again.')
+      } else if (error instanceof NotFoundError) {
+        toast.error('Resource not found.')
+      } else {
+        toast.error(error.message)
+      }
     },
   })
 

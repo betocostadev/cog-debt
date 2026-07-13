@@ -1,23 +1,26 @@
-import { getCurrentAuthUser, loginUser } from '#/api'
+import { ApiClient } from '#/api'
+import type { IAuthUser, TCredentials } from '#/types/account'
 import store from '#/utils/store'
 
-export const loginAndSaveToken = async ({
-  username,
-  password,
-}: {
-  username: string
-  password: string
-}) => {
-  const userData = await loginUser({ username, password })
+class AccountService extends ApiClient {
+  async login(credentials: TCredentials): Promise<IAuthUser> {
+    const userData = await this.post<IAuthUser, TCredentials>(
+      '/auth/login',
+      credentials,
+    )
+    console.log(`Account Service, user data received: `, userData)
+    console.log(typeof userData)
+    if (userData.accessToken) {
+      store.jwt = userData.accessToken
+    }
 
-  if (userData?.accessToken) {
-    store.jwt = userData.accessToken
+    return userData
   }
 
-  return userData
+  async getAuthUser(): Promise<IAuthUser> {
+    const user = await this.get<IAuthUser>('/auth/me')
+    return user
+  }
 }
 
-export const getAuthUser = async () => {
-  const authUser = await getCurrentAuthUser()
-  return authUser
-}
+export const accountService = new AccountService()
