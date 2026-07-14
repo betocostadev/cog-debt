@@ -31,21 +31,21 @@ export function LoginForm() {
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <InputText<TCredentialsOutput>
-        name="username"
+      <InputText
+        id="username"
         label="Username"
         placeholder="Your user name"
-        register={register}
-        error={errors.password?.message}
+        error={errors.username?.message}
         disabled={isPending}
+        {...register('username')}
       />
 
-      <InputPassword<TCredentialsOutput>
-        name="password"
+      <InputPassword
+        id="password"
         label="Password"
-        register={register}
         error={errors.password?.message}
         disabled={isPending}
+        {...register('password')}
       />
       <div className="mt-6 flex flex-wrap gap-3">
         <BaseButton

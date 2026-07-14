@@ -1,20 +1,20 @@
 import type { ComponentPropsWithoutRef } from 'react'
 
 type InputLabelProps = ComponentPropsWithoutRef<'label'> & {
-  name: string
+  htmlFor: string
   label?: string
   labelClassName?: string
 }
 
 export function InputLabel({
-  name,
+  htmlFor,
   label,
   labelClassName,
   ...props
 }: InputLabelProps) {
   return (
     <label
-      htmlFor={name}
+      htmlFor={htmlFor}
       className={`font-thin my-2 ${labelClassName ?? ''}`}
       {...props}
     >
