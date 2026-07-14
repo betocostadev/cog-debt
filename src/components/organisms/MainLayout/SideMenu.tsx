@@ -1,17 +1,19 @@
 import { useState } from 'react'
-import { NavbarItem } from '#/components/molecules/NavBarItem'
-import { Hamburger, Grid2x2Check, UsersRound } from 'lucide-react'
+import { NavbarItem } from '#/components/molecules/NavbarItem'
+
+import LazyIcon from '#/components/atoms/Icons/LazyIcon'
+import { icons } from '#/utils/icons'
 
 const items = [
   {
     label: 'Employees',
     to: '/dashboard/users',
-    icon: UsersRound,
+    icon: icons.UsersRound,
   },
   {
     label: 'Departments',
     to: '/dashboard/departments',
-    icon: Grid2x2Check,
+    icon: icons.Grid2x2Check,
   },
 ]
 
@@ -33,7 +35,7 @@ export function SideMenu() {
           onClick={() => setCollapsed((value) => !value)}
           className="rounded-base p-2 hover:bg-neutral-tertiary"
         >
-          <Hamburger size={18} />
+          <LazyIcon icon={icons.Hamburger} size={18} />
         </button>
       </div>
 

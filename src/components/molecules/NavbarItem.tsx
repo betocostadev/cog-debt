@@ -1,20 +1,15 @@
 import { Link } from '@tanstack/react-router'
-
-import type { LucideIcon } from 'lucide-react'
+import LazyIcon from '../atoms/Icons/LazyIcon'
+import type { IconName } from '#/utils/icons'
 
 type NavbarItemProps = {
   label: string
   to: string
-  icon: LucideIcon
+  icon: IconName
   collapsed: boolean
 }
 
-export function NavbarItem({
-  label,
-  to,
-  icon: Icon,
-  collapsed,
-}: NavbarItemProps) {
+export function NavbarItem({ label, to, icon, collapsed }: NavbarItemProps) {
   return (
     <li>
       <Link
@@ -25,7 +20,7 @@ export function NavbarItem({
           className: 'bg-neutral-tertiary text-fg-brand font-medium',
         }}
       >
-        <Icon size={18} />
+        <LazyIcon icon={icon} size={18} />
         {!collapsed && <span className="ms-3 whitespace-nowrap">{label}</span>}
       </Link>
     </li>
