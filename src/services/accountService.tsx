@@ -8,8 +8,7 @@ class AccountService extends ApiClient {
       '/auth/login',
       credentials,
     )
-    console.log(`Account Service, user data received: `, userData)
-    console.log(typeof userData)
+
     if (userData.accessToken) {
       store.jwt = userData.accessToken
     }

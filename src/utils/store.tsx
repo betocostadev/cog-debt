@@ -2,6 +2,7 @@ type AuthStore = {
   jwt: string | null
   readonly loggedIn: string | null
 }
+
 const Store: AuthStore = {
   jwt: null,
   get loggedIn(): string | null {
@@ -19,7 +20,6 @@ if (storedJwt) {
   Store.jwt = storedJwt
 }
 
-// TODO: Ver mais sobre Proxy
 const proxiedStore = new Proxy(Store, {
   set: (target, prop, value) => {
     if (prop == 'jwt') {

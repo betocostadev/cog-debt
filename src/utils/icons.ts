@@ -1,4 +1,5 @@
 export const icons = {
+  User: 'user',
   UsersRound: 'users-round',
   Grid2x2Check: 'grid-2x2-check',
   Hamburger: 'hamburger',

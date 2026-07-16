@@ -14,7 +14,9 @@ import { Route as ApiCheckRouteImport } from './routes/api-check'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardUsersRouteImport } from './routes/dashboard/users'
+import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
 import { Route as DashboardDepartmentsRouteImport } from './routes/dashboard/departments'
+import { Route as DashboardAboutRouteImport } from './routes/dashboard/about'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -41,9 +43,19 @@ const DashboardUsersRoute = DashboardUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardProfileRoute = DashboardProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardDepartmentsRoute = DashboardDepartmentsRouteImport.update({
   id: '/departments',
   path: '/departments',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAboutRoute = DashboardAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 
@@ -52,7 +64,9 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
+  '/dashboard/about': typeof DashboardAboutRoute
   '/dashboard/departments': typeof DashboardDepartmentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/users': typeof DashboardUsersRoute
 }
 export interface FileRoutesByTo {
@@ -60,7 +74,9 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
+  '/dashboard/about': typeof DashboardAboutRoute
   '/dashboard/departments': typeof DashboardDepartmentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/users': typeof DashboardUsersRoute
 }
 export interface FileRoutesById {
@@ -69,7 +85,9 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
+  '/dashboard/about': typeof DashboardAboutRoute
   '/dashboard/departments': typeof DashboardDepartmentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/users': typeof DashboardUsersRoute
 }
 export interface FileRouteTypes {
@@ -79,7 +97,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api-check'
     | '/login'
+    | '/dashboard/about'
     | '/dashboard/departments'
+    | '/dashboard/profile'
     | '/dashboard/users'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -87,7 +107,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api-check'
     | '/login'
+    | '/dashboard/about'
     | '/dashboard/departments'
+    | '/dashboard/profile'
     | '/dashboard/users'
   id:
     | '__root__'
@@ -95,7 +117,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api-check'
     | '/login'
+    | '/dashboard/about'
     | '/dashboard/departments'
+    | '/dashboard/profile'
     | '/dashboard/users'
   fileRoutesById: FileRoutesById
 }
@@ -143,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardUsersRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/departments': {
       id: '/dashboard/departments'
       path: '/departments'
@@ -150,16 +181,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDepartmentsRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/about': {
+      id: '/dashboard/about'
+      path: '/about'
+      fullPath: '/dashboard/about'
+      preLoaderRoute: typeof DashboardAboutRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
 interface DashboardRouteRouteChildren {
+  DashboardAboutRoute: typeof DashboardAboutRoute
   DashboardDepartmentsRoute: typeof DashboardDepartmentsRoute
+  DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardUsersRoute: typeof DashboardUsersRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardAboutRoute: DashboardAboutRoute,
   DashboardDepartmentsRoute: DashboardDepartmentsRoute,
+  DashboardProfileRoute: DashboardProfileRoute,
   DashboardUsersRoute: DashboardUsersRoute,
 }
 
