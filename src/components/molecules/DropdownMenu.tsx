@@ -44,7 +44,7 @@ export function DropdownMenu({ options }: DropdownMenuProps) {
 
   return (
     <div
-      className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-slate-600 bg-slate-800 shadow-xl z-50"
+      className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-slate-700 bg-slate-900 shadow-xl z-50"
       onClick={handleClick}
     >
       {buttons}

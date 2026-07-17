@@ -9,6 +9,7 @@ import { useAuthUserQueryFn } from './useAccountQueries'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { NotFoundError, TokenExpiredError } from '#/types/errors'
+import { THIRDY_MINUTES } from '#/utils/constants'
 
 export interface UseAccountOptions {
   /**
@@ -76,6 +77,8 @@ export const useGetAuthUser = (
     refetchInterval: refetchInterval,
     refetchOnReconnect: true,
     placeholderData: (previousData) => previousData,
+    staleTime: THIRDY_MINUTES,
+    gcTime: THIRDY_MINUTES * 2,
   })
 
   const refresh = useCallback(async () => {
