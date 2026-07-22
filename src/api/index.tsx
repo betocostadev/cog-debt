@@ -54,16 +54,33 @@ export class ApiClient {
     )
   }
 
-  protected async get<T>(url: string): Promise<T> {
-    const { data } = await this.client.get(url)
+  protected buildUrl(path: string, params?: Record<string, unknown>) {
+    if (!params) return path
+
+    const searchParams = new URLSearchParams()
+
+    Object.entries(params).forEach(([key, value]) => {
+      const valid = value !== undefined && value !== null && value !== ''.length
+      if (valid) {
+        console.log('Object entries received for request, key: ', key)
+        console.log('Object entries received for request, value: ', value)
+        searchParams.set(key, String(value))
+      }
+    })
+
+    return `${path}?${searchParams.toString()}`
+  }
+
+  protected async get<T>(path: string): Promise<T> {
+    const { data } = await this.client.get(path)
     return data
   }
 
   protected async post<TResponse, TBody>(
-    url: string,
+    path: string,
     body: TBody,
   ): Promise<TResponse> {
-    const { data } = await this.client.post(url, body)
+    const { data } = await this.client.post(path, body)
     return data
   }
 }

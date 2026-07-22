@@ -29,20 +29,21 @@ export class UsersService extends ApiClient {
   async getAllUsers(params: UsersQueryParams): Promise<UsersResponse> {
     const { limit = 10, skip = 0, order, sortBy } = params
 
-    const searchParams = new URLSearchParams()
+    return this.get<UsersResponse>(
+      this.buildUrl('users', {
+        limit,
+        skip,
+        order,
+        sortBy,
+        USER_LIST_SELECT,
+      }),
+    )
+  }
 
-    searchParams.set('limit', String(limit))
-    searchParams.set('skip', String(skip))
-    searchParams.set('select', USER_LIST_SELECT)
-
-    if (sortBy) searchParams.set('sortBy', sortBy)
-
-    if (order) searchParams.set('order', order)
-
-    const endpoint = `/users?${searchParams.toString()}`
-
-    const data = await this.get(endpoint)
-    return data as Promise<UsersResponse>
+  async searchUser(params: { limit: number; search: string }) {
+    const { limit = 10, search } = params
+    console.log(limit)
+    console.log(search)
   }
 }
 

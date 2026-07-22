@@ -14,4 +14,5 @@ export interface UsersQueryParams {
   skip?: number
   order?: 'asc' | 'desc'
   sortBy?: 'firstName' | 'company.department' | 'address.city'
+  search?: string
 }
