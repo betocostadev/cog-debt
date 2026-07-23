@@ -1,7 +1,7 @@
 // Real App Users - Writing and read from Dexie
 export type Company = {
   department: string
-  title: string
+  jobTitle: string
 }
 
 export type Address = {
@@ -9,7 +9,7 @@ export type Address = {
   state: string
 }
 
-enum Statuses {
+export enum Statuses {
   ACTIVE = 'Active',
   INACTIVE = 'Inactive',
   ONLEAVE = 'On Leave',
@@ -18,7 +18,8 @@ enum Statuses {
 
 export interface IUser {
   id?: number
-  name: string
+  username: string
+  firstName: string
   lastName: string
   email: string
   phone: string

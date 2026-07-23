@@ -6,7 +6,7 @@ import { icons } from '#/utils/icons'
 
 const items = [
   {
-    label: 'Employees',
+    label: 'Colaboratos',
     to: '/dashboard/users',
     icon: icons.UsersRound,
   },

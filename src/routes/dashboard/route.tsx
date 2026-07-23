@@ -1,5 +1,6 @@
 import { Header } from '#/components/organisms/MainLayout/Header'
 import { SideMenu } from '#/components/organisms/MainLayout/SideMenu'
+import { useFeedDb } from '#/hooks/useFeedDb'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard')({
@@ -24,6 +25,8 @@ export const Route = createFileRoute('/dashboard')({
 })
 
 function DashboardLayout() {
+  useFeedDb()
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />

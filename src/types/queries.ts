@@ -1,4 +1,5 @@
 import type { DummyUserListItem } from './dummyUsers'
+import type { IUser } from './users'
 
 export interface BaseResult {
   isLoading: boolean
@@ -11,7 +12,7 @@ export type ApiHealthResponse = {
   method: string
 }
 
-export interface UsersQueryParams {
+export interface DummyUsersQueryParams {
   limit?: number // 0 for all
   skip?: number
   order?: 'asc' | 'desc'
@@ -24,4 +25,18 @@ export interface DummyUsersResponse {
   total: number
   skip: number
   limit: number
+}
+
+// https://dexie.org/docs/API-Reference#query-items
+export interface UsersQueryParams {
+  where?: string
+  offset?: number
+  equalsIgnoreCase?: string
+  orderBy?: string
+  limit?: number
+}
+
+export interface UsersResponse {
+  users: IUser[]
+  total: number
 }

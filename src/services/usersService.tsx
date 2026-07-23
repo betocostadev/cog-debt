@@ -1,25 +1,22 @@
 import { ApiClient } from '#/api'
-import type { DummyUsersResponse, UsersQueryParams } from '#/types/queries'
+import { db } from '#/db/db'
+import type {
+  DummyUsersQueryParams,
+  DummyUsersResponse,
+  UsersQueryParams,
+} from '#/types/queries'
 
 const USER_LIST_FIELDS = [
   'id',
   'firstName',
   'lastName',
-  'maidenName',
-  'age',
-  'gender',
   'email',
   'phone',
   'username',
   'birthDate',
   'image',
-  'weight',
-  'eyeColor',
   'address',
-  'university',
-  'bank',
   'company',
-  'role',
 ] as const
 
 /* Foto
@@ -31,27 +28,17 @@ Cidade = address.city
 Status = status - Active (todos do Dummy) depois select Active, Inactive
 Ações = Tabela apenas (Editar, apagar - usar DropDown Actions)
 
-CONVERSÃO PARA O DEXIE (Para ter no cadastro depois):
-
-Nome = firstName
-Sobrenome = lastName
-Email = email
-Telefone = phone 
-Departamento = company.department
-Cargo = company.title
-Cidade = address.city
-Estado = address.state
-Data de admissão = new Date()
-Salário = Random Range (2.500 - 20.000) ou fazer por cargo
-Status = ACTIVE (Enum)
-Foto = image
-
 */
 
 const USER_LIST_SELECT = USER_LIST_FIELDS.join(',')
 
 export class UsersService extends ApiClient {
-  async getAllUsers(params: UsersQueryParams): Promise<DummyUsersResponse> {
+  // Uses online DummyJSON data for the first time
+  // Feeds users to IndexedDB using Dexie
+  // https://dummyjson.com/docs/users#users-limit_skip
+  async getDummyUsers(
+    params: DummyUsersQueryParams,
+  ): Promise<DummyUsersResponse> {
     const { limit = 10, skip = 0, order, sortBy } = params
 
     return this.get<DummyUsersResponse>(
@@ -60,9 +47,28 @@ export class UsersService extends ApiClient {
         skip,
         order,
         sortBy,
-        USER_LIST_SELECT,
+        select: USER_LIST_SELECT,
       }),
     )
+  }
+
+  /*
+    Queries below use DB users
+  */
+  async getAllUsers(params: UsersQueryParams) {
+    // use .reverse to control Sort asc or desc
+    const { where, offset = 0, equalsIgnoreCase, orderBy, limit = 10 } = params
+    // const users = await db.users
+    //   .orderBy('firstName')
+    //   .offset(offset)
+    //   .limit(limit)
+    //   .reverse()
+    //   .toArray()
+
+    const total = await db.users.count()
+    const users = await db.users.offset(offset).limit(limit).toArray()
+
+    return { total, users }
   }
 
   async searchUser(params: { limit: number; search: string }) {
@@ -73,8 +79,6 @@ export class UsersService extends ApiClient {
 }
 
 export const usersService = new UsersService()
-
-// https://dummyjson.com/docs/users#users-limit_skip
 
 /* Search by - After Dexie
 - Nome

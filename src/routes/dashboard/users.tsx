@@ -15,13 +15,14 @@ export const Route = createFileRoute('/dashboard/users')({
 })
 
 function RouteComponent() {
-  const [skip, setSkip] = useState(0)
+  const [offset, setOffset] = useState(0)
   const [page, setPage] = useState(1)
   const [pages, setPages] = useState(1)
   const limit = 10
 
   const { data, isLoading, error } = useGetUsers({
-    params: { limit, skip, sortBy: 'firstName', order: 'asc' },
+    // probably .reverse() sets the opposite order
+    params: { limit, offset, orderBy: 'firstName' },
   })
 
   console.log('[All users query]')
@@ -33,13 +34,13 @@ function RouteComponent() {
   const handleNext = () => {
     if (page === pages) return
     setPage(page + 1)
-    setSkip(skip + limit)
+    setOffset(offset + limit)
   }
 
   const handlePrev = () => {
     if (page === 1) return
     setPage(page - 1)
-    setSkip(skip - limit)
+    setOffset(offset - limit)
   }
 
   useEffect(() => {

@@ -28,7 +28,7 @@ function Home() {
         <div className="mx-auto max-w-4xl">
           <Card>
             <h2 className="mt-4 text-4xl font-semibold tracking-tight">
-              Welcome to Cog Debt
+              Welcome to Cognitive Debt
             </h2>
 
             <Link

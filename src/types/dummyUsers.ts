@@ -75,9 +75,11 @@ export interface DummyUser {
 export type DummyUserListItem = Omit<
   DummyUser,
   | 'password'
+  | 'age'
   | 'bloodGroup'
   | 'height'
   | 'hair'
+  | 'eyeColor'
   | 'ip'
   | 'macAddress'
   | 'ein'
