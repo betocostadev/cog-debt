@@ -15,6 +15,8 @@ import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
+import { db } from '#/db/db'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -54,6 +56,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { queryClient } = Route.useRouteContext()
+  // TODO: Remove test, use for init users
+  // Dexie test
+  const dbUsers = useLiveQuery(() => db.users.toArray())
+  console.log('[Dexie query for users]: ', dbUsers)
 
   return (
     <html lang="en">

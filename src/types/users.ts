@@ -1,92 +1,33 @@
-export interface Coordinates {
-  lat: number
-  lng: number
+// Real App Users - Writing and read from Dexie
+export type Company = {
+  department: string
+  title: string
 }
 
-export interface Address {
-  address: string
+export type Address = {
   city: string
   state: string
-  stateCode: string
-  postalCode: string
-  coordinates: Coordinates
-  country: string
 }
 
-export interface Hair {
-  color: string
-  type: string
+enum Statuses {
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
+  ONLEAVE = 'On Leave',
+  VACATION = 'Vacation',
 }
 
-export interface Bank {
-  cardExpire: string
-  cardNumber: string
-  cardType: string
-  currency: string
-  iban: string
-}
-
-export interface Company {
-  department: string
+export interface IUser {
+  id?: number
   name: string
-  title: string
-  address: Address
-}
-
-export interface Crypto {
-  coin: string
-  wallet: string
-  network: string
-}
-
-export interface User {
-  id: number
-  firstName: string
   lastName: string
-  maidenName: string
-  age: number
-  gender: 'male' | 'female'
   email: string
   phone: string
-  username: string
-  password: string
-  birthDate: string
-  image: string
-  bloodGroup: string
-  height: number
-  weight: number
-  eyeColor: string
-  hair: Hair
-  ip: string
-  address: Address
-  macAddress: string
-  university: string
-  bank: Bank
   company: Company
-  ein: string
-  ssn: string
-  userAgent: string
-  crypto: Crypto
-  role: 'admin' | 'moderator' | 'user'
+  address: Address
+  admissionDate: Date
+  salary: number // Random Range (2.500 - 20.000) ou by company.title
+  status: Statuses
+  image: string
 }
 
-export type UserListItem = Omit<
-  User,
-  | 'password'
-  | 'bloodGroup'
-  | 'height'
-  | 'hair'
-  | 'ip'
-  | 'macAddress'
-  | 'ein'
-  | 'ssn'
-  | 'userAgent'
-  | 'crypto'
->
-
-export interface UsersResponse {
-  users: UserListItem[]
-  total: number
-  skip: number
-  limit: number
-}
+// In component return status with Icon

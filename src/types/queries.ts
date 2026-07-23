@@ -1,3 +1,5 @@
+import type { DummyUserListItem } from './dummyUsers'
+
 export interface BaseResult {
   isLoading: boolean
   error: Error | undefined
@@ -15,4 +17,11 @@ export interface UsersQueryParams {
   order?: 'asc' | 'desc'
   sortBy?: 'firstName' | 'company.department' | 'address.city'
   search?: string
+}
+
+export interface DummyUsersResponse {
+  users: DummyUserListItem[]
+  total: number
+  skip: number
+  limit: number
 }

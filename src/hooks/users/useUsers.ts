@@ -1,5 +1,9 @@
-import type { BaseResult, UsersQueryParams } from '#/types/queries'
-import type { UsersResponse } from '#/types/users'
+import type {
+  BaseResult,
+  DummyUsersResponse,
+  UsersQueryParams,
+} from '#/types/queries'
+
 import { useCallback, useMemo } from 'react'
 import { usersQueryKeys } from './useUsersQueryKeys'
 import { useQuery } from '@tanstack/react-query'
@@ -21,7 +25,7 @@ export interface UseUsersOptions {
 }
 
 interface UseUsersResult extends BaseResult {
-  data?: UsersResponse
+  data?: DummyUsersResponse
 }
 
 export const useGetUsers = ({
