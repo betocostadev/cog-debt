@@ -19,8 +19,9 @@ const USER_LIST_FIELDS = [
   'company',
 ] as const
 
-/* Foto
-TABELA - Aqui já vira do Dexie
+/* 
+TABLE DATA - Here fetching from DB already
+Foto = image
 Nome = name
 Cargo = position
 Departamento = department
@@ -57,7 +58,14 @@ export class UsersService extends ApiClient {
   */
   async getAllUsers(params: UsersQueryParams) {
     // use .reverse to control Sort asc or desc
-    const { where, offset = 0, equalsIgnoreCase, orderBy, limit = 10 } = params
+    const {
+      where,
+      offset = 0,
+      equalsIgnoreCase,
+      orderBy = 'id',
+      limit = 10,
+      reverse,
+    } = params
     // const users = await db.users
     //   .orderBy('firstName')
     //   .offset(offset)
@@ -66,7 +74,11 @@ export class UsersService extends ApiClient {
     //   .toArray()
 
     const total = await db.users.count()
-    const users = await db.users.offset(offset).limit(limit).toArray()
+    const users = await db.users
+      .orderBy(orderBy)
+      .offset(offset)
+      .limit(limit)
+      .toArray()
 
     return { total, users }
   }

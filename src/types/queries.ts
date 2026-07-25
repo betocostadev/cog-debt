@@ -34,6 +34,7 @@ export interface UsersQueryParams {
   equalsIgnoreCase?: string
   orderBy?: string
   limit?: number
+  reverse?: boolean
 }
 
 export interface UsersResponse {

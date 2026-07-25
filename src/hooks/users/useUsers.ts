@@ -8,9 +8,9 @@ import type {
 
 import { useCallback, useMemo } from 'react'
 import { usersQueryKeys } from './useUsersQueryKeys'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useDummyUsersQueryFn, useUsersQueryFn } from './useUsersQueries'
-import { TEN_MINUTES } from '#/utils/constants'
+import { TEN_MINUTES, TWO_HOURS } from '#/utils/constants'
 
 interface UseFeedUsersOptions {
   params?: DummyUsersQueryParams
@@ -64,8 +64,8 @@ export const useFetchInitialUsers = ({
     enabled: autoload || hasUsers,
     refetchOnReconnect: false,
     placeholderData: (prevData) => prevData,
-    staleTime: 1000 * 60 * 10,
-    gcTime: TEN_MINUTES,
+    staleTime: TWO_HOURS,
+    gcTime: Infinity,
   })
 
   const refresh = useCallback(async () => {
@@ -86,7 +86,8 @@ export const useFetchInitialUsers = ({
 }
 
 /*
-Below functions use Dexie
+  Below functions use Dexie
+  No API calls, only indexedDB
 */
 
 export const useGetUsers = ({
@@ -102,9 +103,9 @@ export const useGetUsers = ({
     enabled: autoload,
     refetchInterval,
     refetchOnReconnect: true,
-    placeholderData: (prevData) => prevData,
-    staleTime: 1000 * 60 * 10,
-    gcTime: TEN_MINUTES,
+    placeholderData: keepPreviousData,
+    staleTime: TEN_MINUTES,
+    gcTime: TWO_HOURS,
   })
 
   const refresh = useCallback(async () => {

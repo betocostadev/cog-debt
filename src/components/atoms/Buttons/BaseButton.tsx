@@ -1,9 +1,14 @@
+import type { IconName } from '#/utils/icons'
 import type { ComponentPropsWithoutRef } from 'react'
+import LazyIcon from '../Icons/LazyIcon'
 
 type BaseButtonProps = ComponentPropsWithoutRef<'button'> & {
   label: string
   variant?: 'primary' | 'secondary'
   className?: string
+  iconLeft?: IconName
+  iconRight?: IconName
+  iconSize?: number
   loading: boolean
 }
 
@@ -11,6 +16,9 @@ export function BaseButton({
   label,
   variant = 'primary',
   className = '',
+  iconSize,
+  iconLeft,
+  iconRight,
   loading = false,
   ...props
 }: BaseButtonProps) {
@@ -32,7 +40,15 @@ export function BaseButton({
           {label}
         </div>
       ) : (
-        label
+        <div className="flex content-center items-center">
+          {iconLeft && (
+            <LazyIcon icon={iconLeft} size={iconSize} iconClassName="mr-2" />
+          )}
+          {label}
+          {iconRight && (
+            <LazyIcon icon={iconRight} size={iconSize} iconClassName="ml-2" />
+          )}
+        </div>
       )}
     </button>
   )

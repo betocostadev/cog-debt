@@ -34,8 +34,7 @@ function DashboardLayout() {
       <div className="flex">
         <SideMenu />
 
-        {/* <main className="flex-1 p-6"> */}
-        <main className="ml-64 p-6">
+        <main className="mx-auto w-full max-w-7xl py-4 px-12">
           <Outlet />
         </main>
       </div>

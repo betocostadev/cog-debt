@@ -28,7 +28,7 @@ export function InputPassword({
         <input
           name={name}
           id={id}
-          className={`w-full rounded-sm border-2 border-sky-100 p-2 pr-10 ${inputClassName ?? ''}`}
+          className={`w-full rounded-sm border-2 border-sky-100 p-2 pr-10 ${inputClassName ?? ''} ${props.disabled ? 'bg-slate-700' : ''}`}
           type={showPassword ? 'text' : 'password'}
           placeholder={placeholder}
           autoComplete="current-password"

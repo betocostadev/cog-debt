@@ -23,7 +23,7 @@ function getUserAddress() {
       cities: ['Curitiba', 'Londrina', 'Ponta Grossa'],
     },
     porto: {
-      state: 'PR',
+      state: 'PT',
       cities: ['Porto', 'Maia', 'Vila Nova de Gaia'],
     },
     lisbon: {

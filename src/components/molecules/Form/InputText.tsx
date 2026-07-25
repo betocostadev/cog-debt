@@ -22,7 +22,7 @@ export function InputText({
       <input
         name={name}
         id={id}
-        className={`w-full rounded-sm border-2 border-sky-100 p-2 ${inputClassName ?? ''}`}
+        className={`w-full rounded-sm border-2 border-sky-100 p-2 ${inputClassName ?? ''} ${props.disabled ? 'bg-slate-700' : ''}`}
         placeholder={placeholder}
         disabled={props.disabled}
         {...props}

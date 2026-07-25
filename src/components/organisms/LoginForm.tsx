@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { InputText } from '../molecules/Form/InputText'
 import { InputPassword } from '../molecules/Form/InputPassword'
 import { BaseButton } from '../atoms/Buttons/BaseButton'
+import { useRef } from 'react'
+import { throttle } from '#/utils/throttle'
 
 export function LoginForm() {
   const { login, isPending, isError, error } = useLogin()
@@ -20,17 +22,21 @@ export function LoginForm() {
 
   // username: 'emilys',
   // password: 'emilyspass',
-  const onSubmit = async (data: TCredentialsOutput) => {
-    await login({
-      username: data.username,
-      password: data.password,
-    })
-    if (isError) {
-      console.log(error)
-    }
-  }
+  // Added for better controlling the firing function for throttling
+  const throttledSubmitRef = useRef(
+    throttle(async (data: TCredentialsOutput) => {
+      await login({
+        username: data.username,
+        password: data.password,
+      })
+      if (isError) {
+        console.log(error)
+      }
+    }, 1000),
+  )
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit((data) => throttledSubmitRef.current(data))}>
       <InputText
         id="username"
         label="Username"
