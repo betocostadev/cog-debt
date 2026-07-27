@@ -2,7 +2,7 @@ import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
 import { useGetUsers } from '#/hooks/users/useUsers'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { UsersTable } from '#/components/organisms/UsersTable/UsersTable'
+import { UsersTableContainer } from '#/components/organisms/UsersTable/UsersTableContainer'
 
 export const Route = createFileRoute('/dashboard/users/')({
   head: () => ({
@@ -67,13 +67,7 @@ function RouteComponent() {
       </div>
 
       {/* TODO: Consider a compound component table and a hook instead of props */}
-      <UsersTable
-        handlePrev={handlePrev}
-        handleNext={handleNext}
-        isLoading={isLoading}
-        page={page}
-        pages={pages}
-      />
+      <UsersTableContainer />
     </div>
   )
 }

@@ -1,17 +1,8 @@
 import { TableHeaderSkeleton } from '#/components/atoms/Table/TableHeaderSkeleton'
-import TablePagination from '#/components/molecules/TablePagination'
 import { Statuses } from '#/types/users'
 import type { ColumnDef } from '@tanstack/react-table'
 import { UsersTableHeader } from './TableHeader'
 import { UsersDataTable } from './UsersDataTable'
-
-type UsersTableProps = {
-  handlePrev: () => void
-  handleNext: () => void
-  isLoading: boolean
-  page: number
-  pages: number
-}
 
 type UsersDataTable = {
   id: string
@@ -52,13 +43,7 @@ export const columns: ColumnDef<UsersDataTable>[] = [
   },
 ]
 
-export function UsersTable({
-  handlePrev,
-  handleNext,
-  isLoading,
-  page,
-  pages,
-}: UsersTableProps) {
+export function UsersTableContainer() {
   return (
     <>
       <TableHeaderSkeleton />
@@ -67,14 +52,6 @@ export function UsersTable({
       <div className="container mx-auto py-10">
         <UsersDataTable columns={columns} data={users} />
       </div>
-
-      <TablePagination
-        handlePrev={handlePrev}
-        handleNext={handleNext}
-        isLoading={isLoading}
-        page={page}
-        pages={pages}
-      />
     </>
   )
 }

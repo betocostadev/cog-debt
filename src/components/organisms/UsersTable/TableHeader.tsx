@@ -1,5 +1,6 @@
 import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
-import { TableHeader } from '#/components/atoms/Table/TableHeader'
+import { TableHeader } from '#/components/atoms/Table/Table'
+
 import { InputText } from '#/components/molecules/Form/InputText'
 import { icons } from '#/utils/icons'
 import { useNavigate } from '@tanstack/react-router'

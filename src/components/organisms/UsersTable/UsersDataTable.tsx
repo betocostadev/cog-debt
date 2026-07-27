@@ -1,4 +1,4 @@
-import { DataTable } from '#/components/atoms/Table/DataTable'
+import { DataTable } from '#/components/molecules/Table/DataTable'
 import type { ColumnDef } from '@tanstack/react-table'
 
 interface UsersDataTableProps<TData, TValue> {
@@ -10,9 +10,5 @@ export function UsersDataTable<TData, TValue>({
   columns,
   data,
 }: UsersDataTableProps<TData, TValue>) {
-  return (
-    <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
-    </div>
-  )
+  return <DataTable columns={columns} data={data} caption="Employees" />
 }
