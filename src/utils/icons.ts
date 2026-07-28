@@ -6,6 +6,15 @@ export const icons = {
   Hamburger: 'hamburger',
   ChevronLeft: 'chevron-left',
   ChevronRight: 'chevron-right',
+  CircleCheck: 'circle-check',
+  CircleX: 'circle-x',
+  Earth: 'earth',
+  ShieldPlus: 'shield-plus',
+  EllipsisVertical: 'ellipsis-vertical',
+  Eye: 'eye',
+  SquarePen: 'square-pen',
+  UserPen: 'user-pen',
+  Trash2: 'trash-2',
 } as const
 
 export type IconName = (typeof icons)[keyof typeof icons]

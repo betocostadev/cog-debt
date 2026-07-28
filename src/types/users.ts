@@ -26,9 +26,19 @@ export interface IUser {
   company: Company
   address: Address
   admissionDate: Date
-  salary: number // Random Range (2.500 - 20.000) ou by company.title
+  salary: number
   status: Statuses
   image: string
 }
 
-// In component return status with Icon
+export type UserTableRow = {
+  id: number
+  image: string
+  name: string
+  department: string
+  jobTitle: string
+  city: string
+  admissionDate: Date | string
+  salary: number
+  status: Statuses
+}

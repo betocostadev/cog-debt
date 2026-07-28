@@ -9,7 +9,7 @@ type BaseButtonProps = ComponentPropsWithoutRef<'button'> & {
   iconLeft?: IconName
   iconRight?: IconName
   iconSize?: number
-  loading: boolean
+  loading?: boolean
 }
 
 export function BaseButton({

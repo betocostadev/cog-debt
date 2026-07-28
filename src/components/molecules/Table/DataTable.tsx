@@ -3,16 +3,20 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
+  // TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from '#/components/atoms/Table/Table'
-import type { ColumnDef } from '@tanstack/react-table'
+import type {
+  ColumnDef,
+  OnChangeFn,
+  PaginationState,
+} from '@tanstack/react-table'
 import {
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
+  // getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 import DataTablePagination from './DataTablePagination'
@@ -20,31 +24,44 @@ import DataTablePagination from './DataTablePagination'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  isLoading: boolean
+  rowCount: number
+  pagination: PaginationState
+  onPaginationChange: OnChangeFn<PaginationState>
   caption?: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
+  rowCount,
+  pagination,
+  onPaginationChange,
   caption,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
+    rowCount,
+    state: {
+      pagination,
+    },
+    onPaginationChange,
   })
 
   return (
     <div className="overflow-hidden rounded-md border">
       <Table>
-        <TableCaption>{caption}</TableCaption>
+        {caption && <TableCaption>{caption}</TableCaption>}
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} scope="col">
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -58,7 +75,17 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows.length ? (
+          {isLoading ? (
+            Array.from({ length: columns.length }).map((_, rowIndex) => (
+              <TableRow key={rowIndex}>
+                {columns.map((__, colIndex) => (
+                  <TableCell key={colIndex}>
+                    <span className="h-6 w-full animate-pulse rounded-full bg-slate-600" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -79,9 +106,9 @@ export function DataTable<TData, TValue>({
             </TableRow>
           )}
         </TableBody>
-        <DataTablePagination table={table} />
-        <TableFooter>Table Footer</TableFooter>
+        {/* <TableFooter>Table Footer</TableFooter> */}
       </Table>
+      <DataTablePagination table={table} />
     </div>
   )
 }

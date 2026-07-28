@@ -1,5 +1,4 @@
 import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
-import { TableHeader } from '#/components/atoms/Table/Table'
 
 import { InputText } from '#/components/molecules/Form/InputText'
 import { icons } from '#/utils/icons'
@@ -12,8 +11,10 @@ export function UsersTableHeader() {
     navigate({ to: '/dashboard/users/new' })
   }
 
+  // TODO: Move to the Users Table, or connect both - Fix layout
+
   return (
-    <TableHeader>
+    <div className="flex">
       <div className="w-4/5 ml-2 mr-4">
         <InputText
           id="search-field"
@@ -38,6 +39,6 @@ export function UsersTableHeader() {
           onClick={handleRedirectNewUser}
         />
       </div>
-    </TableHeader>
+    </div>
   )
 }

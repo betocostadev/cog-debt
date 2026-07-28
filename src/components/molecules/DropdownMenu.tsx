@@ -2,7 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 
 export type DropdownOption = {
   id: string
-  label: string
+  label: string | React.ReactElement
   action: string | (() => void)
 }
 
@@ -27,9 +27,11 @@ export function DropdownMenu({ options }: DropdownMenuProps) {
   const getBtnOption = (id: string) => options.find((opt) => opt.id === id)
 
   const handleClick: React.MouseEventHandler<HTMLDivElement> = ({ target }) => {
-    if (!(target instanceof HTMLButtonElement)) return
+    // if (!(target instanceof HTMLButtonElement)) return
+    const button = (target as HTMLElement).closest('button')
+    if (!button) return
 
-    const id = target.dataset.option
+    const id = button.dataset.option
     if (!id) return
 
     const option = getBtnOption(id)

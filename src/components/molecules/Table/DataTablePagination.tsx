@@ -13,13 +13,12 @@ export default function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   return (
     <Suspense fallback={<TablePaginationSkeleton />}>
-      {/* <div className="w-full flex items-center justify-center gap-12 py-6"> */}
-      <div className="w-full flex items-center justify-center px-2">
+      <div className="w-full flex items-center justify-center px-2 pt-4 pb-6">
         <div className="w-full flex items-center justify-center space-x-2">
           <BaseButton
-            label="Go to first page"
+            label="First page"
             loading={false}
-            className="hidden lg:flex"
+            className="hidden lg:flex font-light"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           />

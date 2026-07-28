@@ -33,6 +33,13 @@ Ações = Tabela apenas (Editar, apagar - usar DropDown Actions)
 
 const USER_LIST_SELECT = USER_LIST_FIELDS.join(',')
 
+// Utility for testing loading states
+const responseDelayer = new Promise((res, _) => {
+  setTimeout(() => {
+    res(console.log('[Response is throttle in usersService]'))
+  }, 1500)
+})
+
 export class UsersService extends ApiClient {
   // Uses online DummyJSON data for the first time
   // Feeds users to IndexedDB using Dexie
@@ -80,6 +87,7 @@ export class UsersService extends ApiClient {
       .limit(limit)
       .toArray()
 
+    await responseDelayer
     return { total, users }
   }
 
