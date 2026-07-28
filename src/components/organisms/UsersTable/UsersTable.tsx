@@ -1,6 +1,10 @@
 import { TableHeaderSkeleton } from '#/components/atoms/Table/TableHeaderSkeleton'
 import type { Statuses, UserTableRow } from '#/types/users'
-import type { ColumnDef, PaginationState } from '@tanstack/react-table'
+import type {
+  ColumnDef,
+  PaginationState,
+  SortingState,
+} from '@tanstack/react-table'
 import { UsersTableHeader } from './TableHeader'
 import { useGetUsers } from '#/hooks/users/useUsers'
 import { useMemo, useState } from 'react'
@@ -9,6 +13,7 @@ import { UserStatusRow } from '#/components/atoms/UserStatus/UserStatusRow'
 import { UserTableActions } from './UserTableActions'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { DataTable } from '#/components/molecules/Table/DataTable'
+import { SortableColumnHeader } from '#/components/molecules/Table/SortableColumnHeader'
 
 export const columns: ColumnDef<UserTableRow>[] = [
   {
@@ -31,21 +36,29 @@ export const columns: ColumnDef<UserTableRow>[] = [
   },
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: ({ column }) => {
+      return <SortableColumnHeader column={column} title="Name" />
+    },
     enableSorting: true,
   },
   {
     accessorKey: 'jobTitle',
-    header: 'Job Title',
+    header: ({ column }) => {
+      return <SortableColumnHeader column={column} title="Job Title" />
+    },
   },
   {
     accessorKey: 'department',
-    header: 'Department',
+    header: ({ column }) => {
+      return <SortableColumnHeader column={column} title="Department" />
+    },
     enableSorting: true,
   },
   {
     accessorKey: 'city',
-    header: 'City',
+    header: ({ column }) => {
+      return <SortableColumnHeader column={column} title="City" />
+    },
     enableSorting: true,
   },
   {
@@ -83,10 +96,18 @@ export function UsersTable() {
     pageIndex: 0,
     pageSize: 10,
   })
-  const limit = pagination.pageSize
-  const offset = pagination.pageIndex * pagination.pageSize
+
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<Statuses | 'All'>('All')
+  const limit = pagination.pageSize
+  const offset = pagination.pageIndex * pagination.pageSize
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'id', desc: false },
+  ])
+
+  const currentSort = sorting[0]
+  const orderBy = currentSort.id
+  const reverse = currentSort.desc
 
   const { data, isLoading, error } = useGetUsers({
     params: {
@@ -94,8 +115,8 @@ export function UsersTable() {
       offset,
       where: searchQuery,
       status: statusFilter,
-      orderBy: 'firstName',
-      reverse: false,
+      orderBy,
+      reverse,
     },
   })
 
@@ -107,10 +128,6 @@ export function UsersTable() {
   const handleStatusChange = (val: Statuses | 'All') => {
     setStatusFilter(val)
     setPagination((prev) => ({ ...prev, pageIndex: 0 }))
-  }
-
-  if (error) {
-    console.log(error)
   }
 
   const formattedUsers: UserTableRow[] = useMemo(() => {
@@ -136,6 +153,17 @@ export function UsersTable() {
     }
   }, [data, formattedUsers])
 
+  if (error) {
+    console.log(error)
+    return (
+      <ErrorBoundary>
+        <div className="container mx-auto pb-10">
+          <p>Error: {error.message}</p>
+        </div>
+      </ErrorBoundary>
+    )
+  }
+
   return (
     <ErrorBoundary>
       {isLoading ? (
@@ -157,6 +185,8 @@ export function UsersTable() {
           rowCount={tableData.total}
           pagination={pagination}
           onPaginationChange={setPagination}
+          sorting={sorting}
+          onSortingChange={setSorting}
           caption="Cognitive Debt Employees"
         />
       </div>

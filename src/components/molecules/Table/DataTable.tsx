@@ -3,7 +3,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  // TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -12,11 +11,11 @@ import type {
   ColumnDef,
   OnChangeFn,
   PaginationState,
+  SortingState,
 } from '@tanstack/react-table'
 import {
   flexRender,
   getCoreRowModel,
-  // getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 import DataTablePagination from './DataTablePagination'
@@ -28,6 +27,8 @@ interface DataTableProps<TData, TValue> {
   rowCount: number
   pagination: PaginationState
   onPaginationChange: OnChangeFn<PaginationState>
+  sorting: SortingState
+  onSortingChange: OnChangeFn<SortingState>
   caption?: string
 }
 
@@ -38,6 +39,8 @@ export function DataTable<TData, TValue>({
   rowCount,
   pagination,
   onPaginationChange,
+  sorting,
+  onSortingChange,
   caption,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
@@ -45,11 +48,14 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
+    manualSorting: true,
     rowCount,
     state: {
       pagination,
+      sorting,
     },
     onPaginationChange,
+    onSortingChange,
   })
 
   return (

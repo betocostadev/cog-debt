@@ -15,6 +15,9 @@ export const icons = {
   SquarePen: 'square-pen',
   UserPen: 'user-pen',
   Trash2: 'trash-2',
+  ArrowUpDown: 'arrow-up-down',
+  ArrowUp: 'arrow-up',
+  ArrowDown: 'arrow-down',
 } as const
 
 export type IconName = (typeof icons)[keyof typeof icons]

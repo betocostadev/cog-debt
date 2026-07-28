@@ -5,6 +5,7 @@ import type {
   DummyUsersResponse,
   UsersQueryParams,
 } from '#/types/queries'
+import type { IUser } from '#/types/users'
 
 const USER_LIST_FIELDS = [
   'id',
@@ -60,7 +61,20 @@ export class UsersService extends ApiClient {
       limit = 10,
       reverse = false,
     } = params
-    let collection = db.users.orderBy(orderBy)
+
+    let dbOrderBy = orderBy
+
+    if (orderBy === 'name') {
+      dbOrderBy = 'firstName'
+    } else if (orderBy === 'department') {
+      dbOrderBy = 'company.department'
+    } else if (orderBy === 'jobTitle') {
+      dbOrderBy = 'company.jobTitle'
+    } else if (orderBy === 'city') {
+      dbOrderBy = 'address.city'
+    }
+
+    let collection = db.users.orderBy(dbOrderBy)
     if (reverse) {
       collection = collection.reverse()
     }
@@ -84,35 +98,10 @@ export class UsersService extends ApiClient {
     return { total, users }
   }
 
-  async searchUser(params: { limit: number; search: string }) {
-    const { limit = 10, search } = params
-    console.log(limit)
-    console.log(search)
+  async getUser(id: Pick<IUser, 'id'>) {
+    console.log(id)
+    return id
   }
 }
 
 export const usersService = new UsersService()
-
-/* Search by - After Dexie
-- Nome
-- Departamento
-- Cidade
-*/
-
-/* Order by
-- Nome
-users?sortBy=firstName&order=asc'
-- Departamento 
-users?sortBy=company.department&order=asc'
-- Cidade
-users?sortBy=address.city
-*/
-
-/* Filter
-- Todos
-- Ativos
-filter?key=hair.color&value=Brown'
-- Inativos
-
-filter?key=status&value=active'
-*/

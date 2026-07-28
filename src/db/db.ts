@@ -10,7 +10,7 @@ const db = new Dexie('CogDB') as Dexie & {
 
 db.version(1).stores({
   users:
-    '++id, firstName, lastName, company.title, company.department, address.city, address.state, status',
+    '++id, firstName, lastName, company.title, company.department, company.jobTitle, address.city, address.state, status',
   company_departments: '++id, departmentKey, title',
 })
 
