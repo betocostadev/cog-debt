@@ -19,18 +19,6 @@ const USER_LIST_FIELDS = [
   'company',
 ] as const
 
-/* 
-TABLE DATA - Here fetching from DB already
-Foto = image
-Nome = name
-Cargo = position
-Departamento = department
-Cidade = address.city
-Status = status - Active (todos do Dummy) depois select Active, Inactive
-Ações = Tabela apenas (Editar, apagar - usar DropDown Actions)
-
-*/
-
 const USER_LIST_SELECT = USER_LIST_FIELDS.join(',')
 
 // Utility for testing loading states
@@ -64,28 +52,33 @@ export class UsersService extends ApiClient {
     Queries below use DB users
   */
   async getAllUsers(params: UsersQueryParams) {
-    // use .reverse to control Sort asc or desc
     const {
-      where,
+      where = '',
+      status = 'All',
       offset = 0,
-      equalsIgnoreCase,
       orderBy = 'id',
       limit = 10,
-      reverse,
+      reverse = false,
     } = params
-    // const users = await db.users
-    //   .orderBy('firstName')
-    //   .offset(offset)
-    //   .limit(limit)
-    //   .reverse()
-    //   .toArray()
+    let collection = db.users.orderBy(orderBy)
+    if (reverse) {
+      collection = collection.reverse()
+    }
 
-    const total = await db.users.count()
-    const users = await db.users
-      .orderBy(orderBy)
-      .offset(offset)
-      .limit(limit)
-      .toArray()
+    const filteredCollection = collection.filter((user) => {
+      const matchesStatus = status === 'All' || user.status === status
+      const matchesSearch =
+        !where ||
+        user.firstName.toLowerCase().includes(where.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(where.toLowerCase()) ||
+        user.company.department.toLowerCase().includes(where.toLowerCase()) ||
+        user.address.city.toLowerCase().includes(where.toLowerCase())
+
+      return matchesStatus && matchesSearch
+    })
+
+    const total = await filteredCollection.count()
+    const users = await filteredCollection.offset(offset).limit(limit).toArray()
 
     await responseDelayer
     return { total, users }

@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { UsersTableContainer } from '#/components/organisms/UsersTable/UsersTableContainer'
+import { UsersTable } from '#/components/organisms/UsersTable/UsersTable'
 
 export const Route = createFileRoute('/dashboard/users/')({
   head: () => ({
@@ -13,5 +13,5 @@ export const Route = createFileRoute('/dashboard/users/')({
 })
 
 function RouteComponent() {
-  return <UsersTableContainer />
+  return <UsersTable />
 }

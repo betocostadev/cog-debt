@@ -1,5 +1,5 @@
 import type { DummyUserListItem } from './dummyUsers'
-import type { IUser } from './users'
+import type { IUser, Statuses } from './users'
 
 export interface BaseResult {
   isLoading: boolean
@@ -30,6 +30,7 @@ export interface DummyUsersResponse {
 // https://dexie.org/docs/API-Reference#query-items
 export interface UsersQueryParams {
   where?: string
+  status?: Statuses | 'All'
   offset?: number
   equalsIgnoreCase?: string
   orderBy?: string

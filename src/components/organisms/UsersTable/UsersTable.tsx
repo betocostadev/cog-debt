@@ -1,19 +1,20 @@
 import { TableHeaderSkeleton } from '#/components/atoms/Table/TableHeaderSkeleton'
-import type { UserTableRow } from '#/types/users'
+import type { Statuses, UserTableRow } from '#/types/users'
 import type { ColumnDef, PaginationState } from '@tanstack/react-table'
 import { UsersTableHeader } from './TableHeader'
-import { UsersDataTable } from './UsersDataTable'
 import { useGetUsers } from '#/hooks/users/useUsers'
 import { useMemo, useState } from 'react'
 import { UserAvatarImage } from '#/components/atoms/UserAvatarImage/UserAvatarImage'
 import { UserStatusRow } from '#/components/atoms/UserStatus/UserStatusRow'
 import { UserTableActions } from './UserTableActions'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
+import { DataTable } from '#/components/molecules/Table/DataTable'
 
 export const columns: ColumnDef<UserTableRow>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
+    enableSorting: false,
     cell: ({ row }) => {
       const user = row.original
       return <UserStatusRow status={user.status} />
@@ -22,15 +23,16 @@ export const columns: ColumnDef<UserTableRow>[] = [
   {
     accessorKey: 'image',
     header: 'Avatar',
+    enableSorting: false,
     cell: ({ row }) => {
       const user = row.original
       return <UserAvatarImage src={user.image} alt={user.name} />
     },
-    enableSorting: false,
   },
   {
     accessorKey: 'name',
     header: 'Name',
+    enableSorting: true,
   },
   {
     accessorKey: 'jobTitle',
@@ -39,10 +41,12 @@ export const columns: ColumnDef<UserTableRow>[] = [
   {
     accessorKey: 'department',
     header: 'Department',
+    enableSorting: true,
   },
   {
     accessorKey: 'city',
     header: 'City',
+    enableSorting: true,
   },
   {
     accessorKey: 'admissionDate',
@@ -74,19 +78,36 @@ export const columns: ColumnDef<UserTableRow>[] = [
   },
 ]
 
-export function UsersTableContainer() {
+export function UsersTable() {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   })
   const limit = pagination.pageSize
   const offset = pagination.pageIndex * pagination.pageSize
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState<Statuses | 'All'>('All')
 
   const { data, isLoading, error } = useGetUsers({
-    params: { limit, offset, orderBy: 'firstName', reverse: false },
+    params: {
+      limit,
+      offset,
+      where: searchQuery,
+      status: statusFilter,
+      orderBy: 'firstName',
+      reverse: false,
+    },
   })
 
-  console.log('Users Table - isLoading ?', isLoading)
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val)
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+  }
+
+  const handleStatusChange = (val: Statuses | 'All') => {
+    setStatusFilter(val)
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+  }
 
   if (error) {
     console.log(error)
@@ -108,7 +129,7 @@ export function UsersTableContainer() {
   }, [data])
 
   const tableData = useMemo(() => {
-    if (!data) return undefined
+    if (!data) return { total: 0, users: [] }
     return {
       total: data.total,
       users: formattedUsers,
@@ -116,21 +137,29 @@ export function UsersTableContainer() {
   }, [data, formattedUsers])
 
   return (
-    <>
-      <TableHeaderSkeleton />
-      <UsersTableHeader />
+    <ErrorBoundary>
+      {isLoading ? (
+        <TableHeaderSkeleton />
+      ) : (
+        <UsersTableHeader
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+          statusFilter={statusFilter}
+          onStatusChange={handleStatusChange}
+        />
+      )}
 
-      <div className="container mx-auto py-10">
-        <ErrorBoundary>
-          <UsersDataTable
-            columns={columns}
-            data={tableData}
-            isLoading={isLoading}
-            pagination={pagination}
-            onPaginationChange={setPagination}
-          />
-        </ErrorBoundary>
+      <div className="container mx-auto pb-10">
+        <DataTable
+          columns={columns}
+          data={tableData.users}
+          isLoading={isLoading}
+          rowCount={tableData.total}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+          caption="Cognitive Debt Employees"
+        />
       </div>
-    </>
+    </ErrorBoundary>
   )
 }
