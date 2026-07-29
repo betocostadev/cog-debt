@@ -187,7 +187,7 @@ export function UsersTable() {
           onPaginationChange={setPagination}
           sorting={sorting}
           onSortingChange={setSorting}
-          caption="Cognitive Debt Employees"
+          caption="Cognitive Debt Colaborators"
         />
       </div>
     </ErrorBoundary>

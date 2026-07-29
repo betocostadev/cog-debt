@@ -1,3 +1,13 @@
+import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '#/components/atoms/Dialog/Dialog'
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
 import type { DropdownOption } from '#/components/molecules/DropdownMenu'
 import { DropdownMenu } from '#/components/molecules/DropdownMenu'
@@ -13,6 +23,7 @@ export function UserTableActions({
   name: string
 }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const navigate = useNavigate()
 
   const editUser = () => {
@@ -31,10 +42,16 @@ export function UserTableActions({
     setIsDropdownOpen(false)
   }
 
-  const deleteUser = () => {
-    // TODO: Show modal for deletion
+  const handleDeleteDialog = () => {
+    console.log('Delete user called')
     setIsDropdownOpen(false)
-    return
+    setShowDeleteDialog(true)
+  }
+
+  const confirmDelete = () => {
+    // TODO: Implement mutation and db code after creating users
+    console.log(`Deleting user id: ${userId}`)
+    setShowDeleteDialog(false)
   }
 
   const getLabelAndIcon = ({
@@ -84,7 +101,7 @@ export function UserTableActions({
     {
       id: `delete-user-${userId}`,
       label: getLabelAndIcon({ userName: name, action: 'delete' }),
-      action: deleteUser,
+      action: handleDeleteDialog,
     },
   ]
 
@@ -104,7 +121,37 @@ export function UserTableActions({
       >
         <LazyIcon icon={icons.EllipsisVertical} size={22} />
       </button>
+
       {isDropdownOpen ? <DropdownMenu options={dropdownOptions} /> : ''}
+
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <DialogContent className="sm:max-w-sm bg-slate-500">
+          <DialogHeader>
+            <DialogTitle className="text-center text-lg">
+              Delete user
+            </DialogTitle>
+            <DialogDescription className="pt-2">
+              Are you sure you want to delete <strong>{name}</strong>? This
+              action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="bg-slate-400 mt-2 pt-4 pb-2">
+            <DialogClose
+              render={
+                <BaseButton
+                  label="Cancel"
+                  className="bg-secondary/70 hover:bg-secondary/90 text-secondary"
+                />
+              }
+            />
+            <BaseButton
+              label="Delete"
+              className="bg-red-500 text-white hover:bg-red-600"
+              onClick={confirmDelete}
+            />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
