@@ -28,7 +28,7 @@ export function UserTableActions({
 
   const editUser = () => {
     navigate({
-      to: '/dashboard/users/$userId',
+      to: '/dashboard/users/$userId/edit',
       params: { userId: String(userId) },
     })
     setIsDropdownOpen(false)
@@ -36,7 +36,7 @@ export function UserTableActions({
 
   const goToUser = () => {
     navigate({
-      to: '/dashboard/users/$userId/edit',
+      to: '/dashboard/users/$userId',
       params: { userId: String(userId) },
     })
     setIsDropdownOpen(false)

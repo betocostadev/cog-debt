@@ -1,15 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/users/$userId/edit')({
-  component: RouteComponent,
+  component: EditUserPage,
 })
 
-function RouteComponent() {
+function EditUserPage() {
   const { userId } = Route.useParams()
   return (
     <div>
       <p>Hello "/dashboard/users/$userId/edit"!</p>
-      <p>User id: {userId}</p>
+      <p>Edit user id: {userId}</p>
     </div>
   )
 }

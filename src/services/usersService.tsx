@@ -25,7 +25,7 @@ const USER_LIST_SELECT = USER_LIST_FIELDS.join(',')
 // Utility for testing loading states
 const responseDelayer = new Promise((res, _) => {
   setTimeout(() => {
-    res(console.log('[Response is throttle in usersService]'))
+    res(console.log('[Response is throttled in usersService]'))
   }, 1500)
 })
 
@@ -98,9 +98,15 @@ export class UsersService extends ApiClient {
     return { total, users }
   }
 
-  async getUser(id: Pick<IUser, 'id'>) {
-    console.log(id)
-    return id
+  async getUser(id: string | number) {
+    const user = await db.users.get({ id })
+
+    if (!user) {
+      throw new Error(`Unable to fetch user with ID: ${id}`)
+    }
+
+    await responseDelayer
+    return user
   }
 }
 

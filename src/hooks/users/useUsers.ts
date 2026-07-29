@@ -9,8 +9,13 @@ import type {
 import { useCallback, useMemo } from 'react'
 import { usersQueryKeys } from './useUsersQueryKeys'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { useDummyUsersQueryFn, useUsersQueryFn } from './useUsersQueries'
-import { TEN_MINUTES, TWO_HOURS } from '#/utils/constants'
+import {
+  useDummyUsersQueryFn,
+  useUserQueryFn,
+  useUsersQueryFn,
+} from './useUsersQueries'
+import { TEN_MINUTES, THIRDY_MINUTES, TWO_HOURS } from '#/utils/constants'
+import type { IUser } from '#/types/users'
 
 interface UseFeedUsersOptions {
   params?: DummyUsersQueryParams
@@ -39,12 +44,29 @@ export interface UseUsersOptions {
   refetchInterval?: number
 }
 
+export interface UseUserOptions {
+  /**
+   * Whether to automatically load auth user data when the hook is initialized
+   * @default true
+   */
+  autoload?: boolean
+  /**
+   * Refetch interval (Tanstack query defaults)
+   * @default undefined
+   */
+  refetchInterval?: number
+}
+
 interface UseDummyUsersResult extends BaseResult {
   data?: DummyUsersResponse
 }
 
-interface UseUserResult extends BaseResult {
+interface UseUsersResult extends BaseResult {
   data?: UsersResponse
+}
+
+interface UseUserResult extends BaseResult {
+  data: IUser | undefined
 }
 
 // Used only at start to feed indexedDB
@@ -94,7 +116,7 @@ export const useGetUsers = ({
   params = {},
   autoload = true,
   refetchInterval,
-}: UseUsersOptions = {}): UseUserResult => {
+}: UseUsersOptions = {}): UseUsersResult => {
   const queryKey = useMemo(() => usersQueryKeys.list(params), [params])
 
   const { data, isLoading, error, refetch } = useQuery({
@@ -121,6 +143,45 @@ export const useGetUsers = ({
     data,
     isLoading,
     error: usersError,
+    refresh,
+  }
+}
+
+export const useGetUser = ({
+  options = {},
+  id,
+}: {
+  options: UseUserOptions
+  id: number
+}): UseUserResult => {
+  const { autoload, refetchInterval } = options
+
+  const queryKey = useMemo(() => usersQueryKeys.detail(id), [id])
+
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey,
+    queryFn: () => useUserQueryFn(id),
+    enabled: autoload && !!id,
+    refetchInterval: refetchInterval,
+    refetchOnReconnect: true,
+    placeholderData: (previousData) => previousData,
+    staleTime: THIRDY_MINUTES,
+    gcTime: TWO_HOURS,
+  })
+
+  const refresh = useCallback(async () => {
+    await refetch()
+  }, [])
+
+  const userError = useMemo<Error | undefined>(() => {
+    if (!error) return undefined
+    return error
+  }, [error])
+
+  return {
+    data,
+    isLoading,
+    error: userError,
     refresh,
   }
 }

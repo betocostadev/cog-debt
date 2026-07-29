@@ -5,6 +5,7 @@ import type {
   UsersQueryParams,
   UsersResponse,
 } from '#/types/queries'
+import type { IUser } from '#/types/users'
 import type { QueryFunctionContext } from '@tanstack/react-query'
 
 export const useDummyUsersQueryFn = async ({
@@ -23,4 +24,11 @@ export const useUsersQueryFn = async ({
 
   const users = usersService.getAllUsers(params)
   return users
+}
+
+export const useUserQueryFn = async (
+  id: number,
+): Promise<IUser | undefined> => {
+  const user = usersService.getUser(id)
+  return user
 }
