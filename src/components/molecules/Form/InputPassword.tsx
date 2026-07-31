@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 import type { BaseInputProps } from '#/types/form'
-import { FormField } from '#/components/atoms/FormInputs/FormField'
+import { InputField } from '#/components/atoms/FormInputs/InputField'
 
 export function InputPassword({
   name,
@@ -16,7 +16,7 @@ export function InputPassword({
   const id = props.id ?? String(name)
 
   return (
-    <FormField
+    <InputField
       id={id}
       label={label}
       error={error}
@@ -48,6 +48,6 @@ export function InputPassword({
           )}
         </button>
       </div>
-    </FormField>
+    </InputField>
   )
 }

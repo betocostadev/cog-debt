@@ -33,7 +33,7 @@ export function UserStatusRow(status: Pick<UserTableRow, 'status'>) {
               ? 'red'
               : userStatus === Statuses.ONLEAVE
                 ? 'palevioletred'
-                : 'white'
+                : 'cornflowerblue'
         }
         size={22}
       />

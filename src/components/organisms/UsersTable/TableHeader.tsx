@@ -1,4 +1,5 @@
 import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
+import { TableHeaderSkeleton } from '#/components/atoms/Table/TableHeaderSkeleton'
 
 import { InputText } from '#/components/molecules/Form/InputText'
 import { Statuses } from '#/types/users'
@@ -6,6 +7,7 @@ import { icons } from '#/utils/icons'
 import { useNavigate } from '@tanstack/react-router'
 
 interface UsersTableHeaderProps {
+  isLoading: boolean
   searchQuery: string
   onSearchChange: (value: string) => void
   statusFilter: string
@@ -13,6 +15,7 @@ interface UsersTableHeaderProps {
 }
 
 export function UsersTableHeader({
+  isLoading,
   searchQuery,
   onSearchChange,
   statusFilter,
@@ -25,7 +28,11 @@ export function UsersTableHeader({
   }
 
   const statusOptions = ['All', ...Object.values(Statuses)]
-  // TODO: Move Filter Select and Search to its own components
+
+  if (isLoading) {
+    return <TableHeaderSkeleton />
+  }
+
   return (
     <div className="flex mb-2">
       <div className="w-4/6 mr-4">

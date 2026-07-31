@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { UsersTable } from '#/components/organisms/UsersTable/UsersTable'
+import { Card } from '#/components/atoms/Card/Card'
 
 export const Route = createFileRoute('/dashboard/users/')({
   head: () => ({
@@ -13,5 +14,9 @@ export const Route = createFileRoute('/dashboard/users/')({
 })
 
 function RouteComponent() {
-  return <UsersTable />
+  return (
+    <Card>
+      <UsersTable />
+    </Card>
+  )
 }

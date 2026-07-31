@@ -1,13 +1,15 @@
+export type TAvatarSizes = 'sm' | 'md' | 'lg' | 'xl'
+
 type UserAvatarImageProps = {
   src: string
   alt?: string
-  size?: 'small' | 'medium' | 'large'
+  size?: TAvatarSizes
 }
 
 export function UserAvatarImage({
   src,
   alt,
-  size = 'small',
+  size = 'sm',
 }: UserAvatarImageProps) {
   return (
     <>
@@ -15,11 +17,11 @@ export function UserAvatarImage({
         <img
           src={src}
           alt={alt}
-          className={`${size === 'medium' ? 'h-15 w-15' : size === 'large' ? 'h-20 w-20' : 'h-10 w-10'} rounded-full object-cover`}
+          className={`${size === 'md' ? 'h-15 w-15' : size === 'lg' ? 'h-20 w-20' : size === 'xl' ? 'h-28 w-28' : 'h-10 w-10'} rounded-full object-cover`}
         />
       ) : (
         <span
-          className={`${size === 'medium' ? 'h-15 w-15' : size === 'large' ? 'h-20 w-20' : 'h-10 w-10'} rounded-full object-cover`}
+          className={`${size === 'md' ? 'h-15 w-15' : size === 'lg' ? 'h-20 w-20' : size === 'xl' ? 'h-28 w-28' : 'h-10 w-10'} rounded-full object-cover`}
         >
           {alt?.slice(0, 2).toUpperCase()}
         </span>

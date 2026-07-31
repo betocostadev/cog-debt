@@ -1,4 +1,4 @@
-import { FormField } from '#/components/atoms/FormInputs/FormField'
+import { InputField } from '#/components/atoms/FormInputs/InputField'
 import type { BaseInputProps } from '#/types/form'
 
 export function InputText({
@@ -13,7 +13,7 @@ export function InputText({
   const id = props.id ?? String(name)
 
   return (
-    <FormField
+    <InputField
       id={id}
       label={label}
       error={error}
@@ -27,6 +27,6 @@ export function InputText({
         disabled={props.disabled}
         {...props}
       />
-    </FormField>
+    </InputField>
   )
 }

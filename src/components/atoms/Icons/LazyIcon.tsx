@@ -5,6 +5,7 @@ import IconLoading from './IconLoading'
 
 type Props = {
   icon: IconName
+  ariaLabel?: string
   size?: number
   iconClassName?: string
   iconColor?: string
@@ -12,6 +13,7 @@ type Props = {
 
 export default function LazyIcon({
   icon,
+  ariaLabel,
   size = 20,
   iconClassName,
   iconColor,
@@ -19,6 +21,7 @@ export default function LazyIcon({
   return (
     <Suspense fallback={<IconLoading iconSize={size} />}>
       <DynamicIcon
+        aria-label={ariaLabel ?? 'icon'}
         name={icon}
         size={size}
         className={iconClassName}

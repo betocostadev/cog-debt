@@ -6,11 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { InputText } from '../molecules/Form/InputText'
 import { InputPassword } from '../molecules/Form/InputPassword'
 import { BaseButton } from '../atoms/Buttons/BaseButton'
-import { useRef } from 'react'
+import { useId, useRef } from 'react'
 import { throttle } from '#/utils/throttle'
 
 export function LoginForm() {
   const { login, isPending, isError, error } = useLogin()
+  const usernameId = useId()
+  const passId = useId()
 
   const {
     register,
@@ -38,7 +40,7 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit((data) => throttledSubmitRef.current(data))}>
       <InputText
-        id="username"
+        id={usernameId}
         label="Username"
         placeholder="Your user name"
         error={errors.username?.message}
@@ -47,7 +49,7 @@ export function LoginForm() {
       />
 
       <InputPassword
-        id="password"
+        id={passId}
         label="Password"
         error={errors.password?.message}
         disabled={isPending}

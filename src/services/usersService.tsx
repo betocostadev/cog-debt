@@ -6,6 +6,7 @@ import type {
   UsersQueryParams,
 } from '#/types/queries'
 import type { IUser } from '#/types/users'
+import { responseDelay } from '#/utils/throttle'
 
 const USER_LIST_FIELDS = [
   'id',
@@ -21,13 +22,6 @@ const USER_LIST_FIELDS = [
 ] as const
 
 const USER_LIST_SELECT = USER_LIST_FIELDS.join(',')
-
-// Utility for testing loading states
-const responseDelayer = new Promise((res, _) => {
-  setTimeout(() => {
-    res(console.log('[Response is throttled in usersService]'))
-  }, 1500)
-})
 
 export class UsersService extends ApiClient {
   // Uses online DummyJSON data for the first time
@@ -94,18 +88,18 @@ export class UsersService extends ApiClient {
     const total = await filteredCollection.count()
     const users = await filteredCollection.offset(offset).limit(limit).toArray()
 
-    await responseDelayer
+    await responseDelay(2000)
     return { total, users }
   }
 
-  async getUser(id: string | number) {
+  async getUser(id: string | number): Promise<IUser | undefined> {
     const user = await db.users.get({ id })
 
     if (!user) {
       throw new Error(`Unable to fetch user with ID: ${id}`)
     }
 
-    await responseDelayer
+    await responseDelay(3000)
     return user
   }
 }

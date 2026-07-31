@@ -16,3 +16,7 @@ export function throttle<T extends AnyFn>(
     }
   }
 }
+
+export function responseDelay(timeInMili: number) {
+  return new Promise((resolve) => setTimeout(resolve, timeInMili))
+}

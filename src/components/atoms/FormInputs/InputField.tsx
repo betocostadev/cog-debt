@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { InputLabel } from './InputLabel'
 
-type FormFieldProps = {
+type TInputFieldProps = {
   id: string
   label?: string
   error?: string
@@ -10,14 +10,14 @@ type FormFieldProps = {
   labelClassName?: string
 }
 
-export function FormField({
+export function InputField({
   id,
   label,
   error,
   children,
   className,
   labelClassName,
-}: FormFieldProps) {
+}: TInputFieldProps) {
   return (
     <div className={`flex flex-col mb-2 ${className ?? ''}`}>
       {label && (

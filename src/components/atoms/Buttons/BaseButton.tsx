@@ -22,7 +22,7 @@ export function BaseButton({
   loading = false,
   ...props
 }: BaseButtonProps) {
-  const baseStyle = 'rounded-lg px-4 py-2 font-medium transition-colors'
+  const baseStyle = 'rounded-lg px-4 py-2 font-light transition-colors'
   const variantStyle = props.disabled
     ? 'bg-secondary text-slate-400 cursor-not-allowed hover:bg-secondary/80'
     : variant === 'primary'

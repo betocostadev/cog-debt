@@ -14,7 +14,12 @@ import {
   useUserQueryFn,
   useUsersQueryFn,
 } from './useUsersQueries'
-import { TEN_MINUTES, THIRDY_MINUTES, TWO_HOURS } from '#/utils/constants'
+import {
+  ONE_HOUR,
+  TEN_MINUTES,
+  THIRDY_MINUTES,
+  TWO_HOURS,
+} from '#/utils/constants'
 import type { IUser } from '#/types/users'
 
 interface UseFeedUsersOptions {
@@ -166,7 +171,7 @@ export const useGetUser = ({
     refetchOnReconnect: true,
     placeholderData: (previousData) => previousData,
     staleTime: THIRDY_MINUTES,
-    gcTime: TWO_HOURS,
+    gcTime: ONE_HOUR,
   })
 
   const refresh = useCallback(async () => {

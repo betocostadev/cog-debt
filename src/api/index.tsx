@@ -62,8 +62,6 @@ export class ApiClient {
     Object.entries(params).forEach(([key, value]) => {
       const valid = value !== undefined && value !== null && value !== ''.length
       if (valid) {
-        console.log('Object entries received for request, key: ', key)
-        console.log('Object entries received for request, value: ', value)
         searchParams.set(key, String(value))
       }
     })

@@ -18,6 +18,7 @@ export const icons = {
   ArrowUpDown: 'arrow-up-down',
   ArrowUp: 'arrow-up',
   ArrowDown: 'arrow-down',
+  Info: 'info',
 } as const
 
 export type IconName = (typeof icons)[keyof typeof icons]

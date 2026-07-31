@@ -1,4 +1,3 @@
-import { TableHeaderSkeleton } from '#/components/atoms/Table/TableHeaderSkeleton'
 import type { Statuses, UserTableRow } from '#/types/users'
 import type {
   ColumnDef,
@@ -92,6 +91,7 @@ export const columns: ColumnDef<UserTableRow>[] = [
 ]
 
 export function UsersTable() {
+  // TODO: Extract table logic to useUsersTable hook
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -166,16 +166,13 @@ export function UsersTable() {
 
   return (
     <ErrorBoundary>
-      {isLoading ? (
-        <TableHeaderSkeleton />
-      ) : (
-        <UsersTableHeader
-          searchQuery={searchQuery}
-          onSearchChange={handleSearchChange}
-          statusFilter={statusFilter}
-          onStatusChange={handleStatusChange}
-        />
-      )}
+      <UsersTableHeader
+        isLoading={isLoading}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        statusFilter={statusFilter}
+        onStatusChange={handleStatusChange}
+      />
 
       <div className="container mx-auto pb-10">
         <DataTable
