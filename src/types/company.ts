@@ -100,3 +100,47 @@ export const departments = {
     functions: ['Database Administrator'],
   },
 } as const
+
+export interface ICompanyDepartments {
+  accounting: 'Accounting'
+  engineering: 'Engineering'
+  human_resources: 'Human Resources'
+  legal: 'Legal'
+  marketing: 'Marketing'
+  product_management: 'Product Management'
+  research_and_development: 'Research and Development'
+  sales: 'Sales'
+  services: 'Services'
+  support: 'Support'
+  training: 'Training'
+}
+
+export type TAccountingFunctions = [
+  keyof typeof departments.accounting.functions,
+]
+
+export type TEngineeringFunctions = [
+  keyof typeof departments.engineering.functions,
+]
+
+export type THrFunctions = [keyof typeof departments.human_resources.functions]
+
+export type TLegalFunctions = [keyof typeof departments.legal.functions]
+
+export type TMarketingFunctions = [keyof typeof departments.marketing.functions]
+
+export type TProductManFunctions = [
+  keyof typeof departments.product_management.functions,
+]
+
+export type TRandDFunctions = [
+  keyof typeof departments.research_and_development.functions,
+]
+
+export type TSalesFunctions = [keyof typeof departments.sales.functions]
+
+export type TServicesFunctions = [keyof typeof departments.services.functions]
+
+export type TSupportFunctions = [keyof typeof departments.support.functions]
+
+export type TTrainingFunctions = [keyof typeof departments.training.functions]

@@ -5,6 +5,7 @@ export function InputText({
   name,
   error,
   label,
+  className,
   labelClassName,
   inputClassName,
   placeholder = '',
@@ -18,6 +19,7 @@ export function InputText({
       label={label}
       error={error}
       labelClassName={labelClassName}
+      className={className}
     >
       <input
         name={name}

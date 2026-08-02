@@ -1,5 +1,6 @@
 import { Card } from '#/components/atoms/Card/Card'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
+import { UserForm } from '#/components/organisms/Users/UserForm'
 import { UserViewEditHeader } from '#/components/organisms/Users/UserViewEditHeader'
 import { useGetUser } from '#/hooks/users/useUsers'
 import { createFileRoute } from '@tanstack/react-router'
@@ -41,11 +42,8 @@ function EditUserPage() {
             data?.firstName ? `${data.firstName} ${data.lastName}` : 'User'
           }
         />
-        <Card
-          outerClass="bg-slate-900"
-          innerClass="w-full flex flex-row content-between justify-between items-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20"
-        >
-          <p>Edit user id: {userId}</p>
+        <Card outerClass="mt-2">
+          <UserForm isEditing={true} userId={userId} />
         </Card>
       </div>
     </ErrorBoundary>

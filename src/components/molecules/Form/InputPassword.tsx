@@ -7,6 +7,7 @@ export function InputPassword({
   name,
   error,
   label,
+  className,
   labelClassName,
   inputClassName,
   placeholder = 'Password',
@@ -21,6 +22,7 @@ export function InputPassword({
       label={label}
       error={error}
       labelClassName={labelClassName}
+      className={className}
       aria-invalid={!!error}
       aria-describedby={`${id}-error`}
     >
