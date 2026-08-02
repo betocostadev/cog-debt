@@ -1,7 +1,9 @@
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
 import { InputText } from '#/components/molecules/Form/InputText'
 import { icons } from '#/utils/icons'
-import { useId } from 'react'
+import { useId, useState } from 'react'
+import { StatusSelector } from './StatusSelector'
+import { Statuses } from '#/types/users'
 
 interface IUserFormProps {
   isEditing: boolean
@@ -21,6 +23,16 @@ export function UserForm({ isEditing, userId }: IUserFormProps) {
   const admDateId = useId()
   const salaryId = useId()
 
+  const [selectedStatus, setSelectedStatus] = useState<Statuses>(
+    Statuses.ACTIVE,
+  )
+
+  const handleStatusChange = (val: Statuses) => {
+    setSelectedStatus(val)
+  }
+
+  console.log('Selected Status: ', selectedStatus)
+
   return (
     <form>
       <div className="flex justify-between pb-4">
@@ -29,7 +41,10 @@ export function UserForm({ isEditing, userId }: IUserFormProps) {
         </div>
         <div>
           {isEditing && userId && <p>ID: {userId}</p>}
-          <p>Status selector</p>
+          <StatusSelector
+            selectedStatus={selectedStatus}
+            onStatusChange={handleStatusChange}
+          />
         </div>
       </div>
 

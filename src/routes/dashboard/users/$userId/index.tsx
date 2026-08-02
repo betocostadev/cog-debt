@@ -30,7 +30,7 @@ function UserPage() {
     const amount = typeof salary === 'string' ? parseFloat(salary) : salary
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'EUR',
     }).format(amount)
   }
 

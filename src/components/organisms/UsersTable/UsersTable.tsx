@@ -75,7 +75,7 @@ export const columns: ColumnDef<UserTableRow>[] = [
       const amount = parseFloat(row.getValue('salary'))
       const formatted = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'EUR',
       }).format(amount)
       return <div className="font-medium">{formatted}</div>
     },
