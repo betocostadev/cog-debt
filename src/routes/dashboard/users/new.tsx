@@ -12,7 +12,7 @@ function RouteComponent() {
     <div className="w-full">
       <BackButton />
       <Card outerClass="mt-2">
-        <UserForm isEditing={true} />
+        <UserForm isEditing={true} isLoading={false} />
       </Card>
     </div>
   )

@@ -43,7 +43,12 @@ function EditUserPage() {
           }
         />
         <Card outerClass="mt-2">
-          <UserForm isEditing={true} userId={userId} />
+          <UserForm
+            isEditing={true}
+            isLoading={isLoading}
+            userId={userId}
+            userData={data}
+          />
         </Card>
       </div>
     </ErrorBoundary>

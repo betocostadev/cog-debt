@@ -1,16 +1,29 @@
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
 import { InputText } from '#/components/molecules/Form/InputText'
 import { icons } from '#/utils/icons'
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { StatusSelector } from './StatusSelector'
-import { Statuses } from '#/types/users'
+import type { IUser, TUserDataInput } from '#/types/users'
+import { Statuses, userSchema } from '#/types/users'
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ImageLinkDialog } from './ImageLinkDialog'
 
 interface IUserFormProps {
   isEditing: boolean
+  isLoading: boolean
   userId?: string
+  userData?: IUser
+  onSubmit?: (data: TUserDataInput) => void
 }
 
-export function UserForm({ isEditing, userId }: IUserFormProps) {
+export function UserForm({
+  isEditing,
+  isLoading,
+  userId,
+  userData,
+  onSubmit,
+}: IUserFormProps) {
   const usernameId = useId()
   const emailId = useId()
   const firstNameId = useId()
@@ -19,32 +32,122 @@ export function UserForm({ isEditing, userId }: IUserFormProps) {
   const cityId = useId()
   const stateId = useId()
   const departmentId = useId()
-  const roleId = useId() // import user roles T-Area-Functions - company types
+  const jobTitleId = useId() // import user roles T-Area-Functions - company types
   const admDateId = useId()
   const salaryId = useId()
 
-  const [selectedStatus, setSelectedStatus] = useState<Statuses>(
-    Statuses.ACTIVE,
-  )
+  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false)
 
-  const handleStatusChange = (val: Statuses) => {
-    setSelectedStatus(val)
+  // } = useForm<TUserDataInput>({ // Zod conflicts with React Hook form due to coerce
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      image: '',
+      status: Statuses.ACTIVE,
+      department: 'Engineering',
+      jobTitle: 'Web Developer',
+      admissionDate: new Date().toISOString().split('T')[0],
+    },
+  })
+
+  useEffect(() => {
+    if (userData) {
+      reset({
+        status: userData.status,
+        image: userData.image,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        username: userData.username,
+        email: userData.email,
+        phone: userData.phone,
+        city: userData.address.city,
+        state: userData.address.state,
+        department: userData.company.department,
+        jobTitle: userData.company.jobTitle,
+        // Format Date object correctly for HTML date input (YYYY-MM-DD)
+        admissionDate: new Date(userData.admissionDate)
+          .toISOString()
+          .split('T')[0],
+        salary: userData.salary,
+      })
+    }
+  }, [userData, reset])
+
+  const onFormSubmit = (data: TUserDataInput) => {
+    if (onSubmit) {
+      // onSubmit(data)
+      console.log('Form data to submit: ', data)
+    } else {
+      console.log('Form data to test: ', data)
+    }
   }
 
-  console.log('Selected Status: ', selectedStatus)
-
   return (
-    <form>
+    <form onSubmit={handleSubmit(onFormSubmit)}>
       <div className="flex justify-between pb-4">
-        <div className="flex content-center items-center justify-center h-28 w-28 rounded-full object-cover bg-slate-200 cursor-pointer">
-          <span className="text-background text-sm">Upload image</span>
+        <div>
+          <Controller
+            name="image"
+            control={control}
+            render={({ field }) => (
+              <>
+                <div
+                  onClick={() => setIsImageDialogOpen(true)}
+                  className="flex content-center items-center justify-center h-28 w-28 rounded-full overflow-hidden bg-slate-200 cursor-pointer border border-dashed border-slate-400 hover:opacity-90 transition"
+                >
+                  {field.value ? (
+                    <img
+                      aria-disabled={isLoading}
+                      src={field.value}
+                      alt="Avatar Preview"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-slate-600 text-xs text-center p-2">
+                      {isLoading ? 'Loading...' : 'Link image'}
+                    </span>
+                  )}
+                </div>
+
+                <ImageLinkDialog
+                  showDialog={isImageDialogOpen}
+                  setShowDialog={setIsImageDialogOpen}
+                  currentImage={field.value}
+                  onImageSelected={(url) => field.onChange(url)}
+                />
+              </>
+            )}
+          />
+          {errors.image && (
+            <span className="text-red-500 block mt-2">
+              {errors.image.message}
+            </span>
+          )}
         </div>
         <div>
           {isEditing && userId && <p>ID: {userId}</p>}
-          <StatusSelector
-            selectedStatus={selectedStatus}
-            onStatusChange={handleStatusChange}
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <StatusSelector
+                isLoading={isLoading || isSubmitting}
+                selectedStatus={field.value}
+                onStatusChange={field.onChange}
+              />
+            )}
           />
+          {errors.status && (
+            <span className="text-red-500 text-sm">
+              {errors.status.message}
+            </span>
+          )}
         </div>
       </div>
 
@@ -57,17 +160,17 @@ export function UserForm({ isEditing, userId }: IUserFormProps) {
           className="w-2/4 sm:w-full lg:w-2/4"
           id={firstNameId}
           label="First Name"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.firstName?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('firstName')}
         />
         <InputText
           className="w-2/4 sm:w-full lg:w-2/4"
           id={lastNameId}
           label="Last Name"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.lastName?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('lastName')}
         />
       </div>
       <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4">
@@ -75,17 +178,17 @@ export function UserForm({ isEditing, userId }: IUserFormProps) {
           className="w-2/4 sm:w-full lg:w-2/4"
           id={usernameId}
           label="Username"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.username?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('username')}
         />
         <InputText
           className="w-2/4 sm:w-full lg:w-2/4"
           id={emailId}
           label="Email"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.email?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('email')}
         />
       </div>
       <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4 mb-4">
@@ -93,25 +196,25 @@ export function UserForm({ isEditing, userId }: IUserFormProps) {
           className="w-2/5 sm:w-full lg:w-2/5"
           id={phoneId}
           label="Phone"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.phone?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('phone')}
         />
         <InputText
           className="w-2/5 sm:w-full lg:w-2/5"
           id={cityId}
           label="City"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.city?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('city')}
         />
         <InputText
           className="w-1/5 sm:w-full lg:w-1/5"
           id={stateId}
           label="State"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.state?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('state')}
         />
       </div>
       <h3 className="flex y-4 text-lg items-center">
@@ -124,38 +227,47 @@ export function UserForm({ isEditing, userId }: IUserFormProps) {
           className="sm:w-full lg:w-2/4"
           id={departmentId}
           label="Department"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.department?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('department')}
         />
         <InputText
           className="sm:w-full lg:w-2/4"
-          id={roleId}
-          label="Role"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          id={jobTitleId}
+          label="Job title"
+          error={errors.jobTitle?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('jobTitle')}
         />
       </div>
       <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4">
         <InputText
           className="sm:w-full lg:w-2/4"
           id={admDateId}
-          label="Department"
+          label="Admission date"
           type="date"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.admissionDate?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('admissionDate')}
         />
         <InputText
           className="sm:w-full lg:w-2/4"
           id={salaryId}
-          label="Anual salary (€)"
+          label="Annual salary (€)"
           type="number"
-          // error={errors.username?.message}
-          // disabled={isPending | isEditing && isLoading}
-          // {...register('username')}
+          error={errors.salary?.message}
+          disabled={isLoading || isSubmitting}
+          {...register('salary')}
         />
+      </div>
+      <div className="mt-6 flex justify-end">
+        <button
+          type="submit"
+          disabled={isLoading || isSubmitting}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+        >
+          {isEditing ? 'Save Changes' : 'Create User'}
+        </button>
       </div>
     </form>
   )

@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 // Real App Users - Writing and read from Dexie
 export type Company = {
   department: string
@@ -42,3 +44,29 @@ export type UserTableRow = {
   salary: number
   status: Statuses
 }
+
+export const userSchema = z.object({
+  image: z.string().min(1, 'User image for avatar is required'),
+  status: z.enum([
+    Statuses.ACTIVE,
+    Statuses.INACTIVE,
+    Statuses.ONLEAVE,
+    Statuses.VACATION,
+  ]),
+  firstName: z.string().min(3, 'First name is required'),
+  lastName: z.string().min(3, 'Last name is required'),
+  username: z.string().min(5, 'Username is required'),
+  email: z.email('Please provide a valid email').min(5, 'Email is required'),
+  phone: z.string().min(9, 'Phone is required'),
+  city: z.string().min(3, 'City is required'),
+  state: z
+    .string()
+    .min(2, 'State is required')
+    .max(2, 'Please provide only two letters for state'),
+  department: z.string().min(5, 'Department is required'),
+  jobTitle: z.string().min(5, 'Job title is required'),
+  admissionDate: z.coerce.date({ message: 'Admission date is required' }),
+  salary: z.coerce.number().min(1, 'Salary is required'),
+})
+
+export type TUserDataInput = z.infer<typeof userSchema>

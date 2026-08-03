@@ -102,6 +102,13 @@ export class UsersService extends ApiClient {
     await responseDelay(3000)
     return user
   }
+
+  async updateUser(id: string | number, payload: IUser): Promise<IUser> {
+    // const user = await db.users.update({ key: id, data})
+    console.log(`[Update user service, id]: ${id}`)
+    console.log(`[Update user service, payload]: ${payload}`)
+    return payload
+  }
 }
 
 export const usersService = new UsersService()

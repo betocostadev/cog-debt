@@ -4,11 +4,13 @@ import { Statuses } from '#/types/users'
 import { useId } from 'react'
 
 interface StatusSelectorProps {
+  isLoading: boolean
   selectedStatus: Statuses
   onStatusChange: (value: Statuses) => void
 }
 
 export function StatusSelector({
+  isLoading,
   selectedStatus = Statuses.ACTIVE,
   onStatusChange,
 }: StatusSelectorProps) {
@@ -37,8 +39,9 @@ export function StatusSelector({
       <select
         id={statusId}
         value={selectedStatus}
+        disabled={isLoading}
         onChange={(e) => onStatusChange(e.target.value as Statuses)}
-        className="h-full w-full rounded-md border border-input px-2 py-2 text-sm"
+        className={`h-full w-full rounded-md border border-input px-2 py-2 text-sm ${isLoading ? 'bg-slate-600 cursor-not-allowed' : ''}`}
       >
         {statusOptions.map((status) => (
           <option key={status} value={status}>
