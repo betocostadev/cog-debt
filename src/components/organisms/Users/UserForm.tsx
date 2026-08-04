@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ImageLinkDialog } from './ImageLinkDialog'
 import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
 import { useNavigate } from '@tanstack/react-router'
+import { useGetCompanyDepartments } from '#/hooks/company/useCompany'
 
 interface IUserFormProps {
   isEditing: boolean
@@ -37,6 +38,16 @@ export function UserForm({
   const jobTitleId = useId() // import user roles T-Area-Functions - company types
   const admDateId = useId()
   const salaryId = useId()
+
+  const {
+    departments,
+    isLoading: isFetchingDepartments,
+    error,
+  } = useGetCompanyDepartments()
+  console.log('[UserForm - Departments query]')
+  console.log(departments)
+  console.log(isFetchingDepartments)
+  console.log(error)
 
   const navigate = useNavigate()
 

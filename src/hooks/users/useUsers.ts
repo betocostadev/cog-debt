@@ -148,6 +148,7 @@ export const useGetUsers = ({
     await refetch()
   }, [refetch])
 
+  // TODO: Map users errors
   const usersError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
     return error

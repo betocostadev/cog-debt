@@ -1,9 +1,11 @@
+import type { ICompanyDepartment } from './company'
 import type { DummyUserListItem } from './dummyUsers'
+import type { AppError } from './errors'
 import type { IUser, Statuses } from './users'
 
 export interface BaseResult {
   isLoading: boolean
-  error: Error | undefined
+  error: AppError | undefined
   refresh: () => Promise<void>
 }
 
@@ -40,5 +42,18 @@ export interface UsersQueryParams {
 
 export interface UsersResponse {
   users: IUser[]
+  total: number
+}
+
+export interface ICompanyDepartmentsQueryParams {
+  where?: string
+  offset?: number
+  orderBy?: string
+  limit?: number
+  reverse?: boolean
+}
+
+export interface ICompanyDepartmentsResponse {
+  departments: ICompanyDepartment[]
   total: number
 }
