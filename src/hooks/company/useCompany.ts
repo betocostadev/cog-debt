@@ -26,7 +26,7 @@ export interface UseCompanyDepartmentOptions {
 }
 
 interface UseCompanyDepartmentsResult extends BaseResult {
-  departments?: ICompanyDepartmentsResponse
+  data?: ICompanyDepartmentsResponse
 }
 
 export const useGetCompanyDepartments = ({
@@ -65,7 +65,7 @@ export const useGetCompanyDepartments = ({
   }, [error])
 
   return {
-    departments: data,
+    data,
     isLoading,
     error: departmentsError,
     refresh,

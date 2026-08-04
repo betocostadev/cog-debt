@@ -11,6 +11,8 @@ import { ImageLinkDialog } from './ImageLinkDialog'
 import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
 import { useNavigate } from '@tanstack/react-router'
 import { useGetCompanyDepartments } from '#/hooks/company/useCompany'
+import { DepartmentSelector } from '../Company/DepartmentSelector'
+import type { ICompanyDepartment } from '#/types/company'
 
 interface IUserFormProps {
   isEditing: boolean
@@ -34,22 +36,21 @@ export function UserForm({
   const phoneId = useId()
   const cityId = useId()
   const stateId = useId()
-  const departmentId = useId()
   const jobTitleId = useId() // import user roles T-Area-Functions - company types
   const admDateId = useId()
   const salaryId = useId()
 
+  const navigate = useNavigate()
+
   const {
-    departments,
+    data: deptsData,
     isLoading: isFetchingDepartments,
     error,
   } = useGetCompanyDepartments()
   console.log('[UserForm - Departments query]')
-  console.log(departments)
+  console.log(deptsData)
   console.log(isFetchingDepartments)
   console.log(error)
-
-  const navigate = useNavigate()
 
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false)
 
@@ -59,39 +60,54 @@ export function UserForm({
     handleSubmit,
     control,
     reset,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(userSchema),
     defaultValues: {
       image: '',
       status: Statuses.ACTIVE,
+      department: '',
+      jobTitle: '',
       admissionDate: new Date().toISOString().split('T')[0],
     },
   })
 
+  const currentDepartmentTitle = watch('department')
+
+  const selectedDepartment: ICompanyDepartment | undefined =
+    deptsData?.departments.find((dept) => dept.title === currentDepartmentTitle)
+
+  const deptFunctions = selectedDepartment?.functions ?? []
+
   useEffect(() => {
-    if (userData) {
-      reset({
-        id: userData.id,
-        status: userData.status,
-        image: userData.image,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        username: userData.username,
-        email: userData.email,
-        phone: userData.phone,
-        city: userData.address.city,
-        state: userData.address.state,
-        department: userData.company.department,
-        jobTitle: userData.company.jobTitle,
-        // Format Date object correctly for HTML date input (YYYY-MM-DD)
-        admissionDate: new Date(userData.admissionDate)
-          .toISOString()
-          .split('T')[0],
-        salary: userData.salary,
-      })
+    if (deptsData?.departments && deptsData.departments.length > 0) {
+      if (userData) {
+        // Populate form with existing user data
+        reset({
+          id: userData.id,
+          status: userData.status,
+          image: userData.image,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          username: userData.username,
+          email: userData.email,
+          phone: userData.phone,
+          city: userData.address.city,
+          state: userData.address.state,
+          department: userData.company.department,
+          jobTitle: userData.company.jobTitle,
+          admissionDate: new Date(userData.admissionDate)
+            .toISOString()
+            .split('T')[0],
+          salary: userData.salary,
+        })
+      } else if (!isEditing && !currentDepartmentTitle) {
+        setValue('department', deptsData.departments[0].title)
+      }
     }
-  }, [userData, reset])
+  }, [userData, deptsData, isEditing, reset, setValue, currentDepartmentTitle])
 
   const onFormSubmit = (data: TUserDataInput) => {
     if (onSubmit) {
@@ -242,14 +258,23 @@ export function UserForm({
       </h3>
 
       <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4">
-        <InputText
-          className="sm:w-full lg:w-2/4"
-          id={departmentId}
-          label="Department"
-          error={errors.department?.message}
-          disabled={isLoading || isSubmitting}
-          {...register('department')}
+        <Controller
+          name="department"
+          control={control}
+          render={({ field }) => (
+            <DepartmentSelector
+              isLoading={isFetchingDepartments || isLoading || isSubmitting}
+              departments={deptsData?.departments}
+              selectedDepartmentTitle={field.value}
+              onDepartmentChange={field.onChange}
+            />
+          )}
         />
+        {errors.department && (
+          <span className="text-red-500 text-sm">
+            {errors.department.message}
+          </span>
+        )}
         <InputText
           className="sm:w-full lg:w-2/4"
           id={jobTitleId}

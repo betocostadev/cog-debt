@@ -144,3 +144,15 @@ export type TServicesFunctions = [keyof typeof departments.services.functions]
 export type TSupportFunctions = [keyof typeof departments.support.functions]
 
 export type TTrainingFunctions = [keyof typeof departments.training.functions]
+
+export type TDeptFunctionsUnion =
+  | TAccountingFunctions
+  | TEngineeringFunctions
+  | THrFunctions
+  | TLegalFunctions
+  | TMarketingFunctions
+  | TProductManFunctions
+  | TRandDFunctions
+  | TSalesFunctions
+  | TSupportFunctions
+  | TTrainingFunctions
