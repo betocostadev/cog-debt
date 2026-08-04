@@ -46,6 +46,7 @@ export type UserTableRow = {
 }
 
 export const userSchema = z.object({
+  id: z.number().optional(),
   image: z.string().min(1, 'User image for avatar is required'),
   status: z.enum([
     Statuses.ACTIVE,

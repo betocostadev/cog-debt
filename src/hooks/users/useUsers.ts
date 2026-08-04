@@ -8,7 +8,12 @@ import type {
 
 import { useCallback, useMemo } from 'react'
 import { usersQueryKeys } from './useUsersQueryKeys'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import {
+  // keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import {
   useDummyUsersQueryFn,
   useUserQueryFn,
@@ -20,7 +25,11 @@ import {
   THIRDY_MINUTES,
   TWO_HOURS,
 } from '#/utils/constants'
-import type { IUser } from '#/types/users'
+import type { IUser, TUserDataInput } from '#/types/users'
+import { useNavigate } from '@tanstack/react-router'
+import { useUpdateUserMutationFn } from './useUserMutations'
+import { toast } from 'sonner'
+import { NotFoundError } from '#/types/errors'
 
 interface UseFeedUsersOptions {
   params?: DummyUsersQueryParams
@@ -130,7 +139,7 @@ export const useGetUsers = ({
     enabled: autoload,
     refetchInterval,
     refetchOnReconnect: true,
-    placeholderData: keepPreviousData,
+    // placeholderData: keepPreviousData,
     staleTime: TEN_MINUTES,
     gcTime: TWO_HOURS,
   })
@@ -169,7 +178,7 @@ export const useGetUser = ({
     enabled: autoload && !!id,
     refetchInterval: refetchInterval,
     refetchOnReconnect: true,
-    placeholderData: (previousData) => previousData,
+    // placeholderData: (previousData) => previousData,
     staleTime: THIRDY_MINUTES,
     gcTime: ONE_HOUR,
   })
@@ -191,8 +200,59 @@ export const useGetUser = ({
   }
 }
 
-// TODO: Update user
+// Update user
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
+  const mutation = useMutation({
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string | number
+      payload: TUserDataInput
+    }) => useUpdateUserMutationFn({ id, payload }),
+    onSuccess: (user) => {
+      if (user) {
+        queryClient.invalidateQueries({
+          queryKey: usersQueryKeys.detail(Number(user.id)),
+        })
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey
+            return (
+              queryKey.length === 2 &&
+              queryKey[0] === 'users' &&
+              typeof queryKey[1] === 'object'
+            )
+          },
+        })
+        toast.success(`User ${user.firstName} ${user.lastName} updated`)
+        navigate({
+          to: '/dashboard/users/$userId',
+          params: { userId: String(user.id!) },
+        })
+      }
+    },
+    onError: (error) => {
+      // TODO: Map users errors class
+      if (error instanceof NotFoundError) {
+        toast.error('User not found.')
+      } else {
+        toast.error(error.message)
+      }
+    },
+  })
+
+  return {
+    update: mutation.mutateAsync,
+    isPending: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error as Error | undefined,
+    reset: mutation.reset,
+  }
+}
 // TODO: Create user
 
 // TODO: Delete user

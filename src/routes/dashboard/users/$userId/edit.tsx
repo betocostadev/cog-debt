@@ -2,8 +2,10 @@ import { Card } from '#/components/atoms/Card/Card'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { UserForm } from '#/components/organisms/Users/UserForm'
 import { UserViewEditHeader } from '#/components/organisms/Users/UserViewEditHeader'
-import { useGetUser } from '#/hooks/users/useUsers'
+import { useGetUser, useUpdateUser } from '#/hooks/users/useUsers'
+import type { TUserDataInput } from '#/types/users'
 import { createFileRoute } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/dashboard/users/$userId/edit')({
   component: EditUserPage,
@@ -15,11 +17,20 @@ function EditUserPage() {
     options: {},
     id: Number(userId),
   })
+  const { update, isPending, isError, error: mutationError } = useUpdateUser()
 
-  console.log(`[Edit user page]`)
-  console.log(data)
-  console.log(isLoading)
-  console.log(error)
+  const handleUpdateUser = async (updatedData: TUserDataInput) => {
+    if (updatedData.id) {
+      await update({
+        id: updatedData.id,
+        payload: updatedData,
+      })
+    }
+    if (isError) {
+      console.log(mutationError)
+      toast.error(mutationError?.message)
+    }
+  }
 
   if (error) {
     return (
@@ -45,9 +56,10 @@ function EditUserPage() {
         <Card outerClass="mt-2">
           <UserForm
             isEditing={true}
-            isLoading={isLoading}
+            isLoading={isLoading || isPending}
             userId={userId}
             userData={data}
+            onSubmit={handleUpdateUser}
           />
         </Card>
       </div>

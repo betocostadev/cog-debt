@@ -18,7 +18,7 @@ export default function DataTablePagination<TData>({
           <BaseButton
             label="First page"
             loading={false}
-            className="hidden lg:flex font-light"
+            className="hidden lg:flex text-sm"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           />
@@ -27,6 +27,7 @@ export default function DataTablePagination<TData>({
           <BaseButton
             label="Prev"
             loading={false}
+            className="text-sm"
             iconLeft={icons.ChevronLeft}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
@@ -41,6 +42,7 @@ export default function DataTablePagination<TData>({
           <BaseButton
             label="Next"
             loading={false}
+            className="text-sm"
             iconRight={icons.ChevronRight}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
@@ -50,7 +52,7 @@ export default function DataTablePagination<TData>({
           <BaseButton
             label="Last page"
             loading={false}
-            className="hidden lg:flex"
+            className="hidden lg:flex text-sm"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           />

@@ -8,6 +8,8 @@ import { Statuses, userSchema } from '#/types/users'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ImageLinkDialog } from './ImageLinkDialog'
+import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
+import { useNavigate } from '@tanstack/react-router'
 
 interface IUserFormProps {
   isEditing: boolean
@@ -36,6 +38,8 @@ export function UserForm({
   const admDateId = useId()
   const salaryId = useId()
 
+  const navigate = useNavigate()
+
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false)
 
   // } = useForm<TUserDataInput>({ // Zod conflicts with React Hook form due to coerce
@@ -50,8 +54,6 @@ export function UserForm({
     defaultValues: {
       image: '',
       status: Statuses.ACTIVE,
-      department: 'Engineering',
-      jobTitle: 'Web Developer',
       admissionDate: new Date().toISOString().split('T')[0],
     },
   })
@@ -59,6 +61,7 @@ export function UserForm({
   useEffect(() => {
     if (userData) {
       reset({
+        id: userData.id,
         status: userData.status,
         image: userData.image,
         firstName: userData.firstName,
@@ -81,10 +84,15 @@ export function UserForm({
 
   const onFormSubmit = (data: TUserDataInput) => {
     if (onSubmit) {
-      // onSubmit(data)
-      console.log('Form data to submit: ', data)
+      onSubmit(data)
+    }
+  }
+
+  const handleCancel = () => {
+    if (isEditing && userId) {
+      navigate({ to: '/dashboard/users/$userId', params: { userId } })
     } else {
-      console.log('Form data to test: ', data)
+      navigate({ to: '/dashboard/users' })
     }
   }
 
@@ -261,13 +269,20 @@ export function UserForm({
         />
       </div>
       <div className="mt-6 flex justify-end">
-        <button
+        <BaseButton
+          type="button"
+          variant="secondary"
+          disabled={isLoading || isSubmitting}
+          className="px-4 py-2 mr-2"
+          label={'Cancel'}
+          onClick={handleCancel}
+        />
+        <BaseButton
           type="submit"
           disabled={isLoading || isSubmitting}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-        >
-          {isEditing ? 'Save Changes' : 'Create User'}
-        </button>
+          className="px-4 py-2"
+          label={isEditing ? 'Save Changes' : 'Create User'}
+        />
       </div>
     </form>
   )

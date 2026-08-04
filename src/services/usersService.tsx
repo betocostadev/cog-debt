@@ -5,7 +5,7 @@ import type {
   DummyUsersResponse,
   UsersQueryParams,
 } from '#/types/queries'
-import type { IUser } from '#/types/users'
+import type { IUser, TUserDataInput } from '#/types/users'
 import { responseDelay } from '#/utils/throttle'
 
 const USER_LIST_FIELDS = [
@@ -103,11 +103,30 @@ export class UsersService extends ApiClient {
     return user
   }
 
-  async updateUser(id: string | number, payload: IUser): Promise<IUser> {
-    // const user = await db.users.update({ key: id, data})
-    console.log(`[Update user service, id]: ${id}`)
-    console.log(`[Update user service, payload]: ${payload}`)
-    return payload
+  async updateUser({
+    id,
+    payload,
+  }: {
+    id: string | number
+    payload: TUserDataInput
+  }): Promise<IUser | undefined> {
+    const addedFields = Object.assign(
+      {
+        company: { department: payload.department, jobTitle: payload.jobTitle },
+        address: { city: payload.city, state: payload.state },
+      },
+      payload,
+    )
+    const { city, department, ...updatedUser } = addedFields
+
+    const updated = await db.users.update(Number(id), updatedUser)
+
+    await responseDelay(1500)
+
+    if (updated) {
+      return updatedUser
+    }
+    return undefined
   }
 }
 
