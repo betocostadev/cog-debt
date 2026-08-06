@@ -121,7 +121,6 @@ export function UsersTable() {
   })
 
   const handleSearchChange = (val: string) => {
-    // TODO: Add debounce to search input
     setSearchQuery(val)
     setPagination((prev) => ({ ...prev, pageIndex: 0 }))
   }
