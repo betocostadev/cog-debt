@@ -18,7 +18,7 @@ export function DropdownMenu({ options }: DropdownMenuProps) {
       key={option.id}
       type="button"
       data-option={option.id}
-      className={`block w-full px-4 py-3 text-left hover:bg-slate-700 rounded-t-xl ${idx < options.length - 1 ? 'border-b-2 border-b-slate-500' : ''}`}
+      className={`block w-full px-4 py-3 text-left hover:bg-slate-700 ${idx < options.length - 1 ? 'border-b-2 border-b-slate-500' : ''} ${idx === 0 ? 'rounded-t-xl' : idx === options.length - 1 ? 'rounded-b-xl' : ''}`}
     >
       {option.label}
     </button>

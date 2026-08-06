@@ -42,6 +42,7 @@ function EditUserPage() {
       </ErrorBoundary>
     )
   }
+
   return (
     <ErrorBoundary>
       <div className="w-full">

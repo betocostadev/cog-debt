@@ -128,6 +128,31 @@ export class UsersService extends ApiClient {
     }
     return undefined
   }
+
+  async createUser(
+    payload: Omit<TUserDataInput, 'id'>,
+  ): Promise<number | undefined> {
+    console.log('[Users service - create]')
+
+    const addedFields = Object.assign(
+      {
+        company: { department: payload.department, jobTitle: payload.jobTitle },
+        address: { city: payload.city, state: payload.state },
+      },
+      payload,
+    )
+
+    const { city, department, ...newUser } = addedFields
+    console.log('User data to insert: ', addedFields)
+
+    const newUserId = await db.users.add(newUser)
+
+    if (newUserId) {
+      return newUserId
+    }
+
+    return undefined
+  }
 }
 
 export const usersService = new UsersService()

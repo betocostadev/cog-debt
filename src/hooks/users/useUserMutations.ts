@@ -10,3 +10,9 @@ export const useUpdateUserMutationFn = async ({
 }) => {
   return await usersService.updateUser({ id, payload })
 }
+
+export const useAddUserMutationFn = async (
+  payload: Omit<TUserDataInput, 'id'>,
+) => {
+  return await usersService.createUser(payload)
+}

@@ -121,6 +121,7 @@ export function UsersTable() {
   })
 
   const handleSearchChange = (val: string) => {
+    // TODO: Add debounce to search input
     setSearchQuery(val)
     setPagination((prev) => ({ ...prev, pageIndex: 0 }))
   }
@@ -174,7 +175,7 @@ export function UsersTable() {
         onStatusChange={handleStatusChange}
       />
 
-      <div className="container mx-auto pb-10">
+      <div className="container mx-auto pb-6">
         <DataTable
           columns={columns}
           data={tableData.users}

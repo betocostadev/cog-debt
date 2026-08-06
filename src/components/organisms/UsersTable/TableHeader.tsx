@@ -5,6 +5,7 @@ import { InputText } from '#/components/molecules/Form/InputText'
 import { Statuses } from '#/types/users'
 import { icons } from '#/utils/icons'
 import { useNavigate } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 
 interface UsersTableHeaderProps {
   isLoading: boolean
@@ -22,6 +23,7 @@ export function UsersTableHeader({
   onStatusChange,
 }: UsersTableHeaderProps) {
   const navigate = useNavigate()
+  const [hasFirstFetch, setHasFirstFetch] = useState<boolean>(false)
 
   const handleRedirectNewUser = () => {
     navigate({ to: '/dashboard/users/new' })
@@ -29,7 +31,13 @@ export function UsersTableHeader({
 
   const statusOptions = ['All', ...Object.values(Statuses)]
 
-  if (isLoading) {
+  useEffect(() => {
+    if (isLoading && !hasFirstFetch) {
+      setHasFirstFetch(true)
+    }
+  }, [])
+
+  if (isLoading && !hasFirstFetch) {
     return <TableHeaderSkeleton />
   }
 
@@ -41,7 +49,7 @@ export function UsersTableHeader({
           placeholder="Search by name, department, or city"
           value={searchQuery}
           error=""
-          disabled={false}
+          // disabled={isLoading && hasFirstFetch}
           onChange={(e) => onSearchChange(e.target.value)}
         />
       </div>
@@ -53,7 +61,8 @@ export function UsersTableHeader({
           id="status-select"
           value={statusFilter}
           onChange={(e) => onStatusChange(e.target.value as Statuses)}
-          className="h-full w-full rounded-md border border-input px-2 py-2 text-sm"
+          className={`h-full w-full rounded-md border border-input px-2 py-2 text-sm ${isLoading && hasFirstFetch ? 'bg-slate-600 cursor-not-allowed' : ''}`}
+          disabled={isLoading && hasFirstFetch}
         >
           {statusOptions.map((status) => (
             <option key={status} value={status}>

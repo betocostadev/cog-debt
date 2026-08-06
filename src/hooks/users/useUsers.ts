@@ -27,7 +27,10 @@ import {
 } from '#/utils/constants'
 import type { IUser, TUserDataInput } from '#/types/users'
 import { useNavigate } from '@tanstack/react-router'
-import { useUpdateUserMutationFn } from './useUserMutations'
+import {
+  useAddUserMutationFn,
+  useUpdateUserMutationFn,
+} from './useUserMutations'
 import { toast } from 'sonner'
 import { NotFoundError } from '#/types/errors'
 
@@ -254,6 +257,46 @@ export const useUpdateUser = () => {
     reset: mutation.reset,
   }
 }
-// TODO: Create user
+
+export const useAddUser = () => {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+
+  const mutation = useMutation({
+    mutationFn: (payload: Omit<TUserDataInput, 'id'>) =>
+      useAddUserMutationFn(payload),
+    onSuccess: (user, variables) => {
+      if (user) {
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey
+            return (
+              queryKey.length === 2 &&
+              queryKey[0] === 'users' &&
+              typeof queryKey[1] === 'object'
+            )
+          },
+        })
+
+        toast.success(`${variables.firstName} ${variables.lastName} added`)
+        navigate({
+          to: '/dashboard/users/$userId',
+          params: { userId: String(user) },
+        })
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
+  return {
+    add: mutation.mutateAsync,
+    isPending: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error as Error | undefined,
+    reset: mutation.reset,
+  }
+}
 
 // TODO: Delete user
