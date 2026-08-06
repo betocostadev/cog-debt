@@ -4,6 +4,7 @@ import { icons } from '#/utils/icons'
 import { useLocation, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { DeleteUserDialog } from './DeleteUserDialog'
+import { useDeleteUser } from '#/hooks/users/useUsers'
 
 interface IUserViewEditHeaderProps {
   isLoading: boolean
@@ -22,6 +23,8 @@ export function UserViewEditHeader({
   const location = useLocation()
   const isEditPage = location.pathname.includes('/edit')
 
+  const { deleteUser, isPending, isError, error } = useDeleteUser()
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const goToEditPage = () => {
@@ -29,11 +32,18 @@ export function UserViewEditHeader({
   }
 
   const handleDeleteUser = () => {
-    console.log('Not implemented')
+    if (hasData && userId) {
+      deleteUser(Number(userId))
+    }
+    setIsDeleteDialogOpen(false)
   }
 
   const handleDeleteDropdown = () => {
     setIsDeleteDialogOpen(true)
+  }
+
+  if (isError) {
+    console.error(error)
   }
 
   return (
@@ -48,7 +58,7 @@ export function UserViewEditHeader({
               label="Edit"
               variant="primary"
               iconLeft={icons.SquarePen}
-              disabled={isLoading || !hasData}
+              disabled={isLoading || !hasData || isPending}
               onClick={goToEditPage}
             />
           )}
@@ -56,7 +66,7 @@ export function UserViewEditHeader({
             label="Delete"
             className="bg-red-400 mx-2 hover:bg-red-500"
             iconLeft={icons.Trash2}
-            disabled={isLoading || !hasData}
+            disabled={isLoading || !hasData || isPending}
             onClick={handleDeleteDropdown}
           />
         </div>

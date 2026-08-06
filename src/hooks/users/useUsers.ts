@@ -7,7 +7,7 @@ import type {
 } from '#/types/queries'
 
 import { useCallback, useMemo } from 'react'
-import { usersQueryKeys } from './useUsersQueryKeys'
+import { isUserListQueryKey, usersQueryKeys } from './useUsersQueryKeys'
 import {
   // keepPreviousData,
   useMutation,
@@ -29,6 +29,7 @@ import type { IUser, TUserDataInput } from '#/types/users'
 import { useNavigate } from '@tanstack/react-router'
 import {
   useAddUserMutationFn,
+  useDeleteUserMutationFn,
   useUpdateUserMutationFn,
 } from './useUserMutations'
 import { toast } from 'sonner'
@@ -225,11 +226,7 @@ export const useUpdateUser = () => {
         queryClient.invalidateQueries({
           predicate: (query) => {
             const queryKey = query.queryKey
-            return (
-              queryKey.length === 2 &&
-              queryKey[0] === 'users' &&
-              typeof queryKey[1] === 'object'
-            )
+            return isUserListQueryKey(queryKey)
           },
         })
         toast.success(`User ${user.firstName} ${user.lastName} updated`)
@@ -241,6 +238,7 @@ export const useUpdateUser = () => {
     },
     onError: (error) => {
       // TODO: Map users errors class
+      console.error(error)
       if (error instanceof NotFoundError) {
         toast.error('User not found.')
       } else {
@@ -270,11 +268,7 @@ export const useAddUser = () => {
         queryClient.invalidateQueries({
           predicate: (query) => {
             const queryKey = query.queryKey
-            return (
-              queryKey.length === 2 &&
-              queryKey[0] === 'users' &&
-              typeof queryKey[1] === 'object'
-            )
+            return isUserListQueryKey(queryKey)
           },
         })
 
@@ -286,6 +280,7 @@ export const useAddUser = () => {
       }
     },
     onError: (error) => {
+      console.error(error)
       toast.error(error.message)
     },
   })
@@ -299,4 +294,37 @@ export const useAddUser = () => {
   }
 }
 
-// TODO: Delete user
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+
+  const mutation = useMutation({
+    mutationFn: (id: number) => useDeleteUserMutationFn(Number(id)),
+    onSuccess: (id, variables) => {
+      if (id) {
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey
+            return isUserListQueryKey(queryKey)
+          },
+        })
+        toast.success(`User with ID: ${variables} has been removed`)
+        navigate({
+          to: '/dashboard/users',
+        })
+      }
+    },
+    onError: (error) => {
+      console.error(error)
+      toast.error(error.message)
+    },
+  })
+
+  return {
+    deleteUser: mutation.mutateAsync,
+    isPending: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error as Error | undefined,
+    reset: mutation.reset,
+  }
+}

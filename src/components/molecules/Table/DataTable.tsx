@@ -86,7 +86,7 @@ export function DataTable<TData, TValue>({
               <TableRow key={rowIndex}>
                 {columns.map((__, colIndex) => (
                   <TableCell key={colIndex}>
-                    <div className="h-8 w-full animate-pulse rounded-full bg-slate-600"></div>
+                    <div className="h-8 w-full animate-pulse rounded-full bg-slate-600 my-2"></div>
                   </TableCell>
                 ))}
               </TableRow>

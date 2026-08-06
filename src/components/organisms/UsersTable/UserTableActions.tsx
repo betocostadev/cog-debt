@@ -11,6 +11,7 @@ import {
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
 import type { DropdownOption } from '#/components/molecules/DropdownMenu'
 import { DropdownMenu } from '#/components/molecules/DropdownMenu'
+import { useDeleteUser } from '#/hooks/users/useUsers'
 import { icons } from '#/utils/icons'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
@@ -25,6 +26,7 @@ export function UserTableActions({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const navigate = useNavigate()
+  const { deleteUser, isPending, isError, error } = useDeleteUser()
 
   const editUser = () => {
     navigate({
@@ -43,15 +45,16 @@ export function UserTableActions({
   }
 
   const handleDeleteDialog = () => {
-    console.log('Delete user called')
     setIsDropdownOpen(false)
     setShowDeleteDialog(true)
   }
 
   const confirmDelete = () => {
-    // TODO: Implement mutation and db code after creating users
-    console.log(`Deleting user id: ${userId}`)
+    deleteUser(userId)
     setShowDeleteDialog(false)
+    if (isError) {
+      console.error(`[Delete mutation error]: ${error}`)
+    }
   }
 
   const getLabelAndIcon = ({
@@ -141,6 +144,7 @@ export function UserTableActions({
                 <BaseButton
                   label="Cancel"
                   className="bg-secondary/70 hover:bg-secondary/90 text-secondary"
+                  disabled={isPending}
                 />
               }
             />
@@ -148,6 +152,7 @@ export function UserTableActions({
               label="Delete"
               className="bg-red-500 text-white hover:bg-red-600"
               onClick={confirmDelete}
+              disabled={isPending}
             />
           </DialogFooter>
         </DialogContent>

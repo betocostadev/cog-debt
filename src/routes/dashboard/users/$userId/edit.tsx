@@ -27,7 +27,7 @@ function EditUserPage() {
       })
     }
     if (isError) {
-      console.log(mutationError)
+      console.error(mutationError)
       toast.error(mutationError?.message)
     }
   }
@@ -47,7 +47,7 @@ function EditUserPage() {
     <ErrorBoundary>
       <div className="w-full">
         <UserViewEditHeader
-          isLoading={isLoading}
+          isLoading={isLoading || isPending}
           hasData={!!data}
           userId={userId}
           userFullname={

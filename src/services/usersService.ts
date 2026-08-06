@@ -132,8 +132,6 @@ export class UsersService extends ApiClient {
   async createUser(
     payload: Omit<TUserDataInput, 'id'>,
   ): Promise<number | undefined> {
-    console.log('[Users service - create]')
-
     const addedFields = Object.assign(
       {
         company: { department: payload.department, jobTitle: payload.jobTitle },
@@ -143,7 +141,6 @@ export class UsersService extends ApiClient {
     )
 
     const { city, department, ...newUser } = addedFields
-    console.log('User data to insert: ', addedFields)
 
     const newUserId = await db.users.add(newUser)
 
@@ -152,6 +149,13 @@ export class UsersService extends ApiClient {
     }
 
     return undefined
+  }
+
+  async deleteUser(id: number): Promise<number | undefined> {
+    const res = await db.users.where('id').equals(id).delete()
+    if (res === 0) throw new Error(`Failed to delete user with id: ${id}`)
+
+    return res
   }
 }
 

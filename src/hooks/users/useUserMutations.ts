@@ -16,3 +16,7 @@ export const useAddUserMutationFn = async (
 ) => {
   return await usersService.createUser(payload)
 }
+
+export const useDeleteUserMutationFn = async (id: number) => {
+  return await usersService.deleteUser(id)
+}
