@@ -1,5 +1,6 @@
 import { ApiClient } from '#/api'
 import { db } from '#/db/db'
+import { NotFoundError } from '#/types/errors'
 import type {
   DummyUsersQueryParams,
   DummyUsersResponse,
@@ -7,6 +8,7 @@ import type {
 } from '#/types/queries'
 import type { IUser, TUserDataInput } from '#/types/users'
 import { responseDelay } from '#/utils/throttle'
+import { companyService } from './companyService'
 
 const USER_LIST_FIELDS = [
   'id',
@@ -88,7 +90,7 @@ export class UsersService extends ApiClient {
     const total = await filteredCollection.count()
     const users = await filteredCollection.offset(offset).limit(limit).toArray()
 
-    await responseDelay(2000)
+    await responseDelay(1500)
     return { total, users }
   }
 
@@ -99,7 +101,7 @@ export class UsersService extends ApiClient {
       throw new Error(`Unable to fetch user with ID: ${id}`)
     }
 
-    await responseDelay(3000)
+    await responseDelay(1500)
     return user
   }
 
@@ -110,6 +112,29 @@ export class UsersService extends ApiClient {
     id: string | number
     payload: TUserDataInput
   }): Promise<IUser | undefined> {
+    const user = await this.getUser(id)
+    if (!user) {
+      throw new NotFoundError('User not found')
+    }
+
+    const previousDepartment = await companyService.getByTitle(
+      user.company.department,
+    )
+
+    if (
+      payload.department &&
+      previousDepartment &&
+      payload.department !== previousDepartment.title
+    ) {
+      const newDepartment = await companyService.getByTitle(payload.department)
+      if (newDepartment?.id) {
+        await companyService.updateDepartmentEmployeeChange({
+          oldDept: previousDepartment,
+          newDept: newDepartment,
+        })
+      }
+    }
+
     const addedFields = Object.assign(
       {
         company: { department: payload.department, jobTitle: payload.jobTitle },
@@ -121,7 +146,7 @@ export class UsersService extends ApiClient {
 
     const updated = await db.users.update(Number(id), updatedUser)
 
-    await responseDelay(1500)
+    await responseDelay(1000)
 
     if (updated) {
       return updatedUser
@@ -144,6 +169,10 @@ export class UsersService extends ApiClient {
 
     const newUserId = await db.users.add(newUser)
 
+    await companyService.incrementDepartmentCount(newUser.company.department)
+
+    await responseDelay(500)
+
     if (newUserId) {
       return newUserId
     }
@@ -152,10 +181,17 @@ export class UsersService extends ApiClient {
   }
 
   async deleteUser(id: number): Promise<number | undefined> {
-    const res = await db.users.where('id').equals(id).delete()
-    if (res === 0) throw new Error(`Failed to delete user with id: ${id}`)
+    const user = await db.users.get(Number(id))
+    if (user) {
+      await companyService.decrementDepartmentCount(user.company.department)
+    }
+    const deleteCount = await db.users.where('id').equals(id).delete()
+    if (deleteCount === 0)
+      throw new Error(`Failed to delete user with id: ${id}`)
 
-    return res
+    await responseDelay(500)
+
+    return deleteCount
   }
 }
 
