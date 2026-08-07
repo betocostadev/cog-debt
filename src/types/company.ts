@@ -3,31 +3,35 @@ export interface ICompanyDepartment {
   departmentKey: string
   title: string
   functions: string[]
+  numberOfEmployees: number
 }
 
 export const departments = {
   engineering: {
     title: 'Engineering',
     functions: [
-      'Sales Manager',
-      'Web Developer',
-      'Database Administrator',
       'Chief Technology Officer',
-      'Marketing Manager',
-      'Developer',
-      'Technical Support Engineer',
       'Chief Executive Officer',
+      'Quality Assurance Engineer',
+      'Database Administrator',
+      'Developer',
+      'Full Stack Developer',
+      'Systems Architect',
+      'Technical Support Engineer',
+      'Web Developer',
     ],
+    numberOfEmployees: 0,
   },
   support: {
     title: 'Support',
     functions: [
       'Support Specialist',
-      'Research Analyst',
-      'Legal Counsel',
-      'Chief Financial Officer',
-      'Sales Manager',
+      'Research Support',
+      'Legal Support',
+      'Database Support',
+      'Website Support',
     ],
+    numberOfEmployees: 0,
   },
   research_and_development: {
     title: 'Research and Development',
@@ -35,17 +39,20 @@ export const departments = {
       'Accountant',
       'Engineer',
       'Legal Counsel',
-      'Chief Financial Officer',
-      'Database Administrator',
+      'Researcher',
+      'Research Database Administrator',
     ],
+    numberOfEmployees: 0,
   },
   human_resources: {
     title: 'Human Resources',
     functions: [
-      'Quality Assurance Engineer',
+      'HR Operator',
+      'Human Resources Manager',
       'Business Analyst',
-      'Chief Technology Officer',
+      'Chief HR Officer',
     ],
+    numberOfEmployees: 0,
   },
   product_management: {
     title: 'Product Management',
@@ -54,50 +61,70 @@ export const departments = {
       'Quality Assurance Engineer',
       'Software Engineer',
       'Technical Support Engineer',
+      'Sales Manager',
+      'Product Owner',
     ],
+    numberOfEmployees: 0,
   },
   marketing: {
     title: 'Marketing',
     functions: [
       'Chief Executive Officer',
-      'Chief Financial Officer',
+      'Chief Marketing Officer',
       'Software Architect',
       'Research Analyst',
+      'Market Researcher',
+      'Public Relations',
     ],
+    numberOfEmployees: 0,
   },
   services: {
     title: 'Services',
-    functions: ['Web Developer', 'Sales Manager', 'Human Resources Manager'],
+    functions: [
+      'Services Controller',
+      'Operations',
+      'Services Manager',
+      'Chief Operating Officer',
+    ],
+    numberOfEmployees: 0,
   },
   accounting: {
     title: 'Accounting',
     functions: [
+      'Accountant',
       'Business Analyst',
       'Chief Executive Officer',
-      'Database Administrator',
       'Project Manager',
-      'Technical Support Engineer',
-      'Chief Operating Officer',
+      'Chief Financial Officer',
+      'Sales Manager',
     ],
+    numberOfEmployees: 0,
   },
   training: {
     title: 'Training',
-    functions: ['Data Analyst', 'Junior Software developer'],
+    functions: [
+      'Junior Data Analyst',
+      'Junior Database Administrator',
+      'Junior Software Developer',
+      'Junior Legal Councel',
+      'Junior Seller',
+    ],
+    numberOfEmployees: 0,
   },
   legal: {
     title: 'Legal',
     functions: [
-      'Web Developer',
       'Business Analyst',
       'Business Development Manager',
-      'Chief Information Officer',
-      'Database Administrator',
-      'Chief Financial Officer',
+      'Legal Counsel',
+      'Chief Legal Officer',
     ],
+    numberOfEmployees: 0,
   },
   sales: {
     title: 'Sales',
-    functions: ['Database Administrator'],
+    functions: ['System Seller', 'Service Seller', 'Sales Manager'],
+    numberOfEmployees: 0,
   },
 } as const
 
