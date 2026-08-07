@@ -20,6 +20,9 @@ export const icons = {
   ArrowDown: 'arrow-down',
   Info: 'info',
   Building2: 'building-2',
+  ChartColumn: 'chart-column',
+  CircleUser: 'circle-user',
+  LogOut: 'log-out',
 } as const
 
 export type IconName = (typeof icons)[keyof typeof icons]

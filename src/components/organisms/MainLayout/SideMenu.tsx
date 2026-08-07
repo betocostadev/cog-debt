@@ -6,6 +6,11 @@ import { icons } from '#/utils/icons'
 
 const items = [
   {
+    label: 'Home',
+    to: '/dashboard/',
+    icon: icons.ChartColumn,
+  },
+  {
     label: 'Colaborators',
     to: '/dashboard/users',
     icon: icons.UsersRound,

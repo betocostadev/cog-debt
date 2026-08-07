@@ -4,9 +4,10 @@ import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 
 import { InputText } from '#/components/molecules/Form/InputText'
 import { Statuses } from '#/types/users'
+import { debounce } from '#/utils/debounce'
 import { icons } from '#/utils/icons'
 import { useNavigate } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface UsersTableHeaderProps {
   isLoading: boolean
@@ -26,11 +27,28 @@ export function UsersTableHeader({
   const navigate = useNavigate()
   const [hasFirstFetch, setHasFirstFetch] = useState<boolean>(false)
 
+  const [localSearch, setLocalSearch] = useState<string>(searchQuery)
+
+  useEffect(() => {
+    setLocalSearch(searchQuery)
+  }, [searchQuery])
+
   const handleRedirectNewUser = () => {
     navigate({ to: '/dashboard/users/new' })
   }
 
   const statusOptions = ['All', ...Object.values(Statuses)]
+
+  const debouncedSearchChange = useMemo(
+    () => debounce((value: string) => onSearchChange(value), 800),
+    [onSearchChange],
+  )
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setLocalSearch(value)
+    debouncedSearchChange(value)
+  }
 
   useEffect(() => {
     if (isLoading && !hasFirstFetch) {
@@ -53,10 +71,10 @@ export function UsersTableHeader({
           <InputText
             id="search-field"
             placeholder="Search by name, department, or city"
-            value={searchQuery}
+            value={localSearch}
             error=""
             // disabled={isLoading && hasFirstFetch}
-            onChange={(e) => onSearchChange(e.target.value)}
+            onChange={handleInputChange}
           />
         </div>
         <div className="flex flex-row h-11 w-2/6 ml-4 items-center">

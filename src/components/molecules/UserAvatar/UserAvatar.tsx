@@ -25,23 +25,44 @@ export function UserAvatar() {
   const dropdownOptions: DropdownOption[] = [
     {
       id: 'profile',
-      label: userName ?? 'User',
+      label: (
+        <div className="flex gap-3 items-center">
+          <LazyIcon icon={icons.CircleUser} size={18} iconColor="deepskyblue" />
+          <span>{userName ?? 'User'}</span>
+        </div>
+      ),
       action: '/dashboard/profile',
     },
     {
       id: 'about',
-      label: 'About',
+      label: (
+        <div className="flex gap-3 items-center">
+          <LazyIcon icon={icons.Info} size={18} iconColor="deepskyblue" />
+          <span>About</span>
+        </div>
+      ),
       action: '/dashboard/about',
     },
     {
       id: 'logout',
-      label: 'Logout',
+      label: (
+        <div className="flex gap-3 items-center">
+          <LazyIcon icon={icons.LogOut} size={18} iconColor="red" />
+          <span>Logout</span>
+        </div>
+      ),
       action: logout,
     },
   ]
 
+  const handleBlur: React.FocusEventHandler<HTMLDivElement> = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setIsDropdownOpen(false)
+    }
+  }
+
   return (
-    <div className="relative">
+    <div className="relative" onBlur={handleBlur} data-handle="menu">
       <button
         type="button"
         className="transition-opacity hover:opacity-80 cursor-pointer flex items-center gap-2"

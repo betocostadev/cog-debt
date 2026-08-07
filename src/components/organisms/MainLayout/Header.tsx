@@ -6,7 +6,7 @@ export function Header() {
     <header className="border-b border-white/10 bg-background/90 px-6 py-4 backdrop-blur">
       <div className="mx-auto flex max-w-8/12 items-center justify-between">
         <Link
-          to="/"
+          to="/dashboard"
           className="text-xl font-semibold tracking-tight transition-opacity hover:opacity-80"
         >
           Cog Debt

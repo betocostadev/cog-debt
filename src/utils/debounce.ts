@@ -1,4 +1,6 @@
-export function debounce<T extends (...args: any[]) => void>(
+type AnyFn = (...args: any[]) => void
+
+export function debounce<T extends AnyFn>(
   fn: T,
   delay: number,
 ): (...args: Parameters<T>) => void {
