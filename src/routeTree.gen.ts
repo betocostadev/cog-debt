@@ -15,11 +15,12 @@ import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
-import { Route as DashboardDepartmentsRouteImport } from './routes/dashboard/departments'
 import { Route as DashboardAboutRouteImport } from './routes/dashboard/about'
 import { Route as DashboardUsersIndexRouteImport } from './routes/dashboard/users/index'
+import { Route as DashboardDepartmentsIndexRouteImport } from './routes/dashboard/departments/index'
 import { Route as DashboardUsersNewRouteImport } from './routes/dashboard/users/new'
 import { Route as DashboardUsersUserIdIndexRouteImport } from './routes/dashboard/users/$userId/index'
+import { Route as DashboardDepartmentsDepartmentIdIndexRouteImport } from './routes/dashboard/departments/$departmentId/index'
 import { Route as DashboardUsersUserIdEditRouteImport } from './routes/dashboard/users/$userId/edit'
 
 const LoginRoute = LoginRouteImport.update({
@@ -52,11 +53,6 @@ const DashboardProfileRoute = DashboardProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardDepartmentsRoute = DashboardDepartmentsRouteImport.update({
-  id: '/departments',
-  path: '/departments',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardAboutRoute = DashboardAboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -67,6 +63,12 @@ const DashboardUsersIndexRoute = DashboardUsersIndexRouteImport.update({
   path: '/users/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardDepartmentsIndexRoute =
+  DashboardDepartmentsIndexRouteImport.update({
+    id: '/departments/',
+    path: '/departments/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 const DashboardUsersNewRoute = DashboardUsersNewRouteImport.update({
   id: '/users/new',
   path: '/users/new',
@@ -76,6 +78,12 @@ const DashboardUsersUserIdIndexRoute =
   DashboardUsersUserIdIndexRouteImport.update({
     id: '/users/$userId/',
     path: '/users/$userId/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
+const DashboardDepartmentsDepartmentIdIndexRoute =
+  DashboardDepartmentsDepartmentIdIndexRouteImport.update({
+    id: '/departments/$departmentId/',
+    path: '/departments/$departmentId/',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
 const DashboardUsersUserIdEditRoute =
@@ -91,12 +99,13 @@ export interface FileRoutesByFullPath {
   '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
   '/dashboard/about': typeof DashboardAboutRoute
-  '/dashboard/departments': typeof DashboardDepartmentsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/users/new': typeof DashboardUsersNewRoute
+  '/dashboard/departments/': typeof DashboardDepartmentsIndexRoute
   '/dashboard/users/': typeof DashboardUsersIndexRoute
   '/dashboard/users/$userId/edit': typeof DashboardUsersUserIdEditRoute
+  '/dashboard/departments/$departmentId/': typeof DashboardDepartmentsDepartmentIdIndexRoute
   '/dashboard/users/$userId/': typeof DashboardUsersUserIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -104,12 +113,13 @@ export interface FileRoutesByTo {
   '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
   '/dashboard/about': typeof DashboardAboutRoute
-  '/dashboard/departments': typeof DashboardDepartmentsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/users/new': typeof DashboardUsersNewRoute
+  '/dashboard/departments': typeof DashboardDepartmentsIndexRoute
   '/dashboard/users': typeof DashboardUsersIndexRoute
   '/dashboard/users/$userId/edit': typeof DashboardUsersUserIdEditRoute
+  '/dashboard/departments/$departmentId': typeof DashboardDepartmentsDepartmentIdIndexRoute
   '/dashboard/users/$userId': typeof DashboardUsersUserIdIndexRoute
 }
 export interface FileRoutesById {
@@ -119,12 +129,13 @@ export interface FileRoutesById {
   '/api-check': typeof ApiCheckRoute
   '/login': typeof LoginRoute
   '/dashboard/about': typeof DashboardAboutRoute
-  '/dashboard/departments': typeof DashboardDepartmentsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/users/new': typeof DashboardUsersNewRoute
+  '/dashboard/departments/': typeof DashboardDepartmentsIndexRoute
   '/dashboard/users/': typeof DashboardUsersIndexRoute
   '/dashboard/users/$userId/edit': typeof DashboardUsersUserIdEditRoute
+  '/dashboard/departments/$departmentId/': typeof DashboardDepartmentsDepartmentIdIndexRoute
   '/dashboard/users/$userId/': typeof DashboardUsersUserIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -135,12 +146,13 @@ export interface FileRouteTypes {
     | '/api-check'
     | '/login'
     | '/dashboard/about'
-    | '/dashboard/departments'
     | '/dashboard/profile'
     | '/dashboard/'
     | '/dashboard/users/new'
+    | '/dashboard/departments/'
     | '/dashboard/users/'
     | '/dashboard/users/$userId/edit'
+    | '/dashboard/departments/$departmentId/'
     | '/dashboard/users/$userId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -148,12 +160,13 @@ export interface FileRouteTypes {
     | '/api-check'
     | '/login'
     | '/dashboard/about'
-    | '/dashboard/departments'
     | '/dashboard/profile'
     | '/dashboard'
     | '/dashboard/users/new'
+    | '/dashboard/departments'
     | '/dashboard/users'
     | '/dashboard/users/$userId/edit'
+    | '/dashboard/departments/$departmentId'
     | '/dashboard/users/$userId'
   id:
     | '__root__'
@@ -162,12 +175,13 @@ export interface FileRouteTypes {
     | '/api-check'
     | '/login'
     | '/dashboard/about'
-    | '/dashboard/departments'
     | '/dashboard/profile'
     | '/dashboard/'
     | '/dashboard/users/new'
+    | '/dashboard/departments/'
     | '/dashboard/users/'
     | '/dashboard/users/$userId/edit'
+    | '/dashboard/departments/$departmentId/'
     | '/dashboard/users/$userId/'
   fileRoutesById: FileRoutesById
 }
@@ -222,13 +236,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProfileRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/departments': {
-      id: '/dashboard/departments'
-      path: '/departments'
-      fullPath: '/dashboard/departments'
-      preLoaderRoute: typeof DashboardDepartmentsRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/dashboard/about': {
       id: '/dashboard/about'
       path: '/about'
@@ -241,6 +248,13 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/dashboard/users/'
       preLoaderRoute: typeof DashboardUsersIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/departments/': {
+      id: '/dashboard/departments/'
+      path: '/departments'
+      fullPath: '/dashboard/departments/'
+      preLoaderRoute: typeof DashboardDepartmentsIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/users/new': {
@@ -257,6 +271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardUsersUserIdIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/departments/$departmentId/': {
+      id: '/dashboard/departments/$departmentId/'
+      path: '/departments/$departmentId'
+      fullPath: '/dashboard/departments/$departmentId/'
+      preLoaderRoute: typeof DashboardDepartmentsDepartmentIdIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/users/$userId/edit': {
       id: '/dashboard/users/$userId/edit'
       path: '/users/$userId/edit'
@@ -269,23 +290,26 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteRouteChildren {
   DashboardAboutRoute: typeof DashboardAboutRoute
-  DashboardDepartmentsRoute: typeof DashboardDepartmentsRoute
   DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardUsersNewRoute: typeof DashboardUsersNewRoute
+  DashboardDepartmentsIndexRoute: typeof DashboardDepartmentsIndexRoute
   DashboardUsersIndexRoute: typeof DashboardUsersIndexRoute
   DashboardUsersUserIdEditRoute: typeof DashboardUsersUserIdEditRoute
+  DashboardDepartmentsDepartmentIdIndexRoute: typeof DashboardDepartmentsDepartmentIdIndexRoute
   DashboardUsersUserIdIndexRoute: typeof DashboardUsersUserIdIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardAboutRoute: DashboardAboutRoute,
-  DashboardDepartmentsRoute: DashboardDepartmentsRoute,
   DashboardProfileRoute: DashboardProfileRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardUsersNewRoute: DashboardUsersNewRoute,
+  DashboardDepartmentsIndexRoute: DashboardDepartmentsIndexRoute,
   DashboardUsersIndexRoute: DashboardUsersIndexRoute,
   DashboardUsersUserIdEditRoute: DashboardUsersUserIdEditRoute,
+  DashboardDepartmentsDepartmentIdIndexRoute:
+    DashboardDepartmentsDepartmentIdIndexRoute,
   DashboardUsersUserIdIndexRoute: DashboardUsersUserIdIndexRoute,
 }
 

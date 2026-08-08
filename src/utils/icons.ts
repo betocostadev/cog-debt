@@ -23,6 +23,18 @@ export const icons = {
   ChartColumn: 'chart-column',
   CircleUser: 'circle-user',
   LogOut: 'log-out',
+  // Department icons
+  BrainCog: 'brain-cog',
+  HeartHandshake: 'heart-handshake',
+  BadgePercent: 'badge-percent',
+  Microscope: 'microscope',
+  UserCog: 'user-cog',
+  Boxes: 'boxes',
+  Newspaper: 'newspaper',
+  ToolCase: 'tool-case',
+  Calculator: 'calculator',
+  GraduationCap: 'graduation-cap',
+  Scale: 'scale',
 } as const
 
 export type IconName = (typeof icons)[keyof typeof icons]

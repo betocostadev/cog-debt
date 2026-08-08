@@ -4,6 +4,7 @@ import type {
   ICompanyDepartmentsResponse,
 } from '#/types/queries'
 import { companyService } from '#/services/companyService'
+import type { ICompanyDepartment } from '#/types/company'
 
 export const useCompanyDepartmentsQueryFn = async ({
   queryKey,
@@ -12,4 +13,11 @@ export const useCompanyDepartmentsQueryFn = async ({
   const departments = companyService.getCompanyDepartments(params)
 
   return departments
+}
+
+export const useGetDepartmentByIdQueryFn = async (
+  id: number,
+): Promise<ICompanyDepartment | undefined> => {
+  const company = companyService.getById(id)
+  return company
 }
