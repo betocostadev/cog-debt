@@ -9,6 +9,7 @@ import { useGetUser } from '#/hooks/users/useUsers'
 import { Statuses } from '#/types/users'
 import { icons } from '#/utils/icons'
 import { createFileRoute } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/dashboard/users/$userId/')({
   component: UserPage,
@@ -35,6 +36,8 @@ function UserPage() {
   }
 
   if (error) {
+    console.error(error)
+    toast.error(error.message)
     return (
       <ErrorBoundary>
         <div>

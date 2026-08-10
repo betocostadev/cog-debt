@@ -3,6 +3,7 @@ import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { useGetDepartmentById } from '#/hooks/company/useCompany'
 import { getDeptIcon } from '#/utils/departmentHelper'
 import { createFileRoute } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/dashboard/departments/$departmentId/')({
   component: RouteComponent,
@@ -28,10 +29,12 @@ function RouteComponent() {
   }
 
   if (error) {
+    console.error(error)
+    toast.error(error.message)
     return (
       <ErrorBoundary>
-        <p>Error</p>
-        <pre>{error.message}</pre>
+        <p>Error loading department information</p>
+        {error.message && <pre>{error.message}</pre>}
       </ErrorBoundary>
     )
   }

@@ -1,12 +1,14 @@
 import { ApiClient } from '#/api'
 import { db } from '#/db/db'
-import { NotFoundError } from '#/types/errors'
+import { NotFoundError, ServerError } from '#/types/errors'
 import type {
   DummyUsersQueryParams,
   DummyUsersResponse,
+  UsersByStatusResponse,
   UsersQueryParams,
 } from '#/types/queries'
 import type { IUser, TUserDataInput } from '#/types/users'
+import { Statuses } from '#/types/users'
 import { responseDelay } from '#/utils/throttle'
 import { companyService } from './companyService'
 
@@ -95,14 +97,27 @@ export class UsersService extends ApiClient {
   }
 
   async getUser(id: string | number): Promise<IUser | undefined> {
-    const user = await db.users.get({ id })
+    try {
+      const user = await db.users.get({ id })
 
-    if (!user) {
-      throw new Error(`Unable to fetch user with ID: ${id}`)
+      if (!user) {
+        throw new NotFoundError(`Unable to fetch user with ID: ${id}.`)
+      }
+
+      await responseDelay(1500)
+
+      return user
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error
+      }
+
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
-
-    await responseDelay(1500)
-    return user
   }
 
   async updateUser({
@@ -192,6 +207,49 @@ export class UsersService extends ApiClient {
     await responseDelay(500)
 
     return deleteCount
+  }
+
+  async getAllUsersStatus(): Promise<UsersByStatusResponse> {
+    try {
+      const allUsers = await db.users.toArray()
+
+      if (!allUsers.length) {
+        throw new NotFoundError(`Unable to fetch users by status. Not found.`)
+      }
+
+      const active = allUsers.filter((user) => user.status === Statuses.ACTIVE)
+      const inactive = allUsers.filter(
+        (user) => user.status === Statuses.INACTIVE,
+      )
+      const vacation = allUsers.filter(
+        (user) => user.status === Statuses.VACATION,
+      )
+      const onLeave = allUsers.filter(
+        (user) => user.status === Statuses.ONLEAVE,
+      )
+
+      await responseDelay(1000)
+
+      return {
+        total: allUsers.length,
+        usersByStatus: [
+          { name: Statuses.ACTIVE, value: active.length },
+          { name: Statuses.INACTIVE, value: inactive.length },
+          { name: Statuses.VACATION, value: vacation.length },
+          { name: Statuses.ONLEAVE, value: onLeave.length },
+        ],
+      }
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error
+      }
+
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
+    }
   }
 }
 

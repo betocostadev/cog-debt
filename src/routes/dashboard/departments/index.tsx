@@ -5,6 +5,7 @@ import { useGetCompanyDepartments } from '#/hooks/company/useCompany'
 import { getDeptIcon } from '#/utils/departmentHelper'
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/dashboard/departments/')({
   head: () => ({
@@ -49,6 +50,19 @@ function RouteComponent() {
           </Card>
         ))}
       </div>
+    )
+  }
+
+  if (error) {
+    console.error(error)
+    toast.error(error.message)
+    return (
+      <ErrorBoundary>
+        <div>
+          <p>Error loading company departments</p>
+          {error.message && <pre>Error: {error.message}</pre>}
+        </div>
+      </ErrorBoundary>
     )
   }
 

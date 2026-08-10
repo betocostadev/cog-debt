@@ -13,6 +13,7 @@ import { UserTableActions } from './UserTableActions'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { DataTable } from '#/components/molecules/Table/DataTable'
 import { SortableColumnHeader } from '#/components/molecules/Table/SortableColumnHeader'
+import { toast } from 'sonner'
 
 export const columns: ColumnDef<UserTableRow>[] = [
   {
@@ -154,7 +155,8 @@ export function UsersTable() {
   }, [data, formattedUsers])
 
   if (error) {
-    console.log(error)
+    console.error(error)
+    toast.error(error.message)
     return (
       <ErrorBoundary>
         <div className="container mx-auto pb-10">

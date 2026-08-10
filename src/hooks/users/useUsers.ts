@@ -2,6 +2,7 @@ import type {
   BaseResult,
   DummyUsersQueryParams,
   DummyUsersResponse,
+  UsersByStatusResponse,
   UsersQueryParams,
   UsersResponse,
 } from '#/types/queries'
@@ -17,6 +18,7 @@ import {
 import {
   useDummyUsersQueryFn,
   useUserQueryFn,
+  useUsersByStatusQueryFN,
   useUsersQueryFn,
 } from './useUsersQueries'
 import {
@@ -33,7 +35,7 @@ import {
   useUpdateUserMutationFn,
 } from './useUserMutations'
 import { toast } from 'sonner'
-import { NotFoundError } from '#/types/errors'
+import { NotFoundError, ServerError } from '#/types/errors'
 
 interface UseFeedUsersOptions {
   params?: DummyUsersQueryParams
@@ -85,6 +87,10 @@ interface UseUsersResult extends BaseResult {
 
 interface UseUserResult extends BaseResult {
   data: IUser | undefined
+}
+
+interface UseUserByStatusResult extends BaseResult {
+  data?: UsersByStatusResponse
 }
 
 // Used only at start to feed indexedDB
@@ -152,9 +158,13 @@ export const useGetUsers = ({
     await refetch()
   }, [refetch])
 
-  // TODO: Map users errors
   const usersError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
+
+    if (error instanceof NotFoundError || error instanceof ServerError) {
+      return error
+    }
+
     return error
   }, [error])
 
@@ -194,6 +204,11 @@ export const useGetUser = ({
 
   const userError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
+
+    if (error instanceof NotFoundError || error instanceof ServerError) {
+      return error
+    }
+
     return error
   }, [error])
 
@@ -326,5 +341,47 @@ export const useDeleteUser = () => {
     isError: mutation.isError,
     error: mutation.error as Error | undefined,
     reset: mutation.reset,
+  }
+}
+
+export const useGetUsersByStatus = ({
+  options = {},
+}: {
+  options: UseUserOptions
+}): UseUserByStatusResult => {
+  const { autoload, refetchInterval } = options
+
+  const queryKey = usersQueryKeys.usersByStatus()
+
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey,
+    queryFn: () => useUsersByStatusQueryFN(),
+    enabled: autoload,
+    refetchInterval: refetchInterval,
+    refetchOnReconnect: true,
+    placeholderData: (previousData) => previousData,
+    staleTime: ONE_HOUR,
+    gcTime: TWO_HOURS,
+  })
+
+  const refresh = useCallback(async () => {
+    await refetch()
+  }, [])
+
+  const userError = useMemo<Error | undefined>(() => {
+    if (!error) return undefined
+
+    if (error instanceof NotFoundError || error instanceof ServerError) {
+      return error
+    }
+
+    return error
+  }, [error])
+
+  return {
+    data,
+    isLoading,
+    error: userError,
+    refresh,
   }
 }

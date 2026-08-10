@@ -45,6 +45,16 @@ export interface UsersResponse {
   total: number
 }
 
+export type UserStatusChartItem = {
+  name: Statuses
+  value: number
+}
+
+export interface UsersByStatusResponse {
+  total: number
+  usersByStatus: UserStatusChartItem[]
+}
+
 export interface ICompanyDepartmentsQueryParams {
   where?: string
   offset?: number

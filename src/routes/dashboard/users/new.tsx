@@ -5,6 +5,7 @@ import { UserForm } from '#/components/organisms/Users/UserForm'
 import { useAddUser } from '#/hooks/users/useUsers'
 import type { TUserDataInput } from '#/types/users'
 import { createFileRoute } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/dashboard/users/new')({
   component: RouteComponent,
@@ -15,12 +16,17 @@ function RouteComponent() {
 
   const handleAddUser = async (newData: Omit<TUserDataInput, 'id'>) => {
     add(newData)
+
     if (isError) {
-      console.log(error)
+      console.error(error)
     }
+
+    toast.success(`User ${newData.firstName} ${newData.lastName} added`)
   }
 
   if (error) {
+    console.error(error)
+    toast.message(error.message)
     return (
       <ErrorBoundary>
         <div>

@@ -2,6 +2,7 @@ import { usersService } from '#/services/usersService'
 import type {
   DummyUsersQueryParams,
   DummyUsersResponse,
+  UsersByStatusResponse,
   UsersQueryParams,
   UsersResponse,
 } from '#/types/queries'
@@ -31,4 +32,11 @@ export const useUserQueryFn = async (
 ): Promise<IUser | undefined> => {
   const user = usersService.getUser(id)
   return user
+}
+
+export const useUsersByStatusQueryFN = async (): Promise<
+  UsersByStatusResponse | undefined
+> => {
+  const users = usersService.getAllUsersStatus()
+  return users
 }

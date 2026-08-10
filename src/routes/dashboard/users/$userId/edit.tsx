@@ -33,6 +33,8 @@ function EditUserPage() {
   }
 
   if (error) {
+    console.error(error)
+    toast.error(error.message)
     return (
       <ErrorBoundary>
         <div>
