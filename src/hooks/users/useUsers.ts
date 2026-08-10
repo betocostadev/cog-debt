@@ -368,7 +368,7 @@ export const useGetUsersByStatus = ({
     await refetch()
   }, [])
 
-  const userError = useMemo<Error | undefined>(() => {
+  const usersError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
 
     if (error instanceof NotFoundError || error instanceof ServerError) {
@@ -381,7 +381,7 @@ export const useGetUsersByStatus = ({
   return {
     data,
     isLoading,
-    error: userError,
+    error: usersError,
     refresh,
   }
 }

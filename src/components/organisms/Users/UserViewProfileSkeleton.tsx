@@ -2,7 +2,7 @@ import { Card } from '#/components/atoms/Card/Card'
 
 export function UserViewProfileSkeleton() {
   return (
-    <Card outerClass="bg-slate-900">
+    <Card>
       {/* User main card skeleton */}
       <div className="w-full flex flex-row content-between justify-between items-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20 animate-pulse">
         <div className="flex items-center gap-2">

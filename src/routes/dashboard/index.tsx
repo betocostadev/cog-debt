@@ -1,4 +1,5 @@
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
+import { StarUserCard } from '#/components/organisms/Dashboard/StarUser/StarUserCard'
 import { UserStatusChart } from '#/components/organisms/Dashboard/UserStatusChart'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -19,13 +20,15 @@ function Dashboard() {
             <div className="h-72 w-72 border-2 border-slate-500"></div>
           </div>
           <div className="sm:w-full lg:w-2/4">
-            <p className="py-2 text-md lg:text-lg">Colaborators by status</p>
+            <p className="py-2 text-md lg:text-lg">Colaborators status</p>
             <UserStatusChart />
           </div>
         </div>
-        <div className="my-4">
-          <p>Employee of the Quarter</p>
-          <p>Gandalf</p>
+        <div className="mt-6">
+          <p className="xs:text-md md:text-lg">
+            Meet our Employee of the Quarter
+          </p>
+          <StarUserCard employeeId={51} />
         </div>
       </div>
     </ErrorBoundary>
