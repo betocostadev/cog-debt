@@ -6,15 +6,24 @@ import { StarUserCardSkeleton } from './StarUserCardSkeleton'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
 import { icons } from '#/utils/icons'
-import { Statuses } from '#/types/users'
-import { getUserStatusIcon } from '#/components/atoms/UserStatus/UserStatusRow'
 import { getDeptIcon } from '#/utils/departmentHelper'
+import { sanitizeString } from '#/utils/strings'
+import { useNavigate } from '@tanstack/react-router'
+import { getUserStatusIcon } from '#/utils/userHelper'
 
 export function StarUserCard({ employeeId }: { employeeId: number }) {
+  const navigate = useNavigate()
   const { data, isLoading, error } = useGetUser({
     options: {},
     id: Number(employeeId),
   })
+
+  const viewEmployeeOfTheQuarter = () => {
+    navigate({
+      to: '/dashboard/users/$userId',
+      params: { userId: String(employeeId) },
+    })
+  }
 
   if (isLoading) {
     return <StarUserCardSkeleton />
@@ -37,44 +46,40 @@ export function StarUserCard({ employeeId }: { employeeId: number }) {
     <ErrorBoundary>
       {data && (
         <Card
-          outerClass="mt-4 p-2 bg-slate-800 rounded-2xl max-w-4xl"
-          innerClass="w-full flex flex-col md:flex-row content-between justify-between items-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20"
+          onClick={viewEmployeeOfTheQuarter}
+          outerClass="mt-4 p-2 bg-slate-800 rounded-2xl max-w-2xl"
+          innerClass="w-full flex flex-col content-center justify-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20 cursor-pointer"
         >
-          <div className="flex self-start md:self-center">
-            <UserAvatarImage src={data.image} alt={data.firstName} size="xl" />
+          <p className="sm:text-md mb-4 md:text-lg">
+            Meet our Employee of the Quarter
+          </p>
+          <div className="flex self-start">
+            <UserAvatarImage src={data.image} alt={data.firstName} size="lg" />
             <div className="flex flex-col gap-2 pl-4 self-center">
               <h3 className="text-lg font-bold">
                 {data.firstName} {data.lastName}
               </h3>
               <p>{data.email}</p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 self-start mt-6 md:mt-0">
+            <div className="flex gap-4 mt-2 items-center">
               <p className="flex gap-2 items-center">
                 <LazyIcon icon={icons.Info} size={16} ariaLabel="User status" />
                 <span className="sr-only">Status</span>
                 {data.status}
                 <LazyIcon
-                  icon={getUserStatusIcon(data.status)}
-                  iconColor={
-                    data.status === Statuses.ACTIVE
-                      ? 'lawngreen'
-                      : data.status === Statuses.INACTIVE
-                        ? 'red'
-                        : data.status === Statuses.ONLEAVE
-                          ? 'palevioletred'
-                          : 'cornflowerblue'
-                  }
+                  icon={getUserStatusIcon(data.status).icon}
+                  iconColor={getUserStatusIcon(data.status).color}
                   size={22}
                 />
               </p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2 pr-2 self-start md:self-center mt-4 md:mt-0">
-            <div className="flex gap-4 mt-2 items-center">
               <LazyIcon
-                icon={getDeptIcon(data.company.department.toLowerCase()).icon}
+                icon={getDeptIcon(sanitizeString(data.company.department)).icon}
                 iconColor={
-                  getDeptIcon(data.company.department.toLowerCase()).color
+                  getDeptIcon(sanitizeString(data.company.department)).color
                 }
-                size={20}
+                size={22}
               />
               <p>{data.company.department}</p>
             </div>

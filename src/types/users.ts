@@ -71,3 +71,24 @@ export const userSchema = z.object({
 })
 
 export type TUserDataInput = z.infer<typeof userSchema>
+
+// Added to help create url params for users table page
+export const userSearchSchema = z.object({
+  where: z.string().catch('').optional(),
+  status: z
+    .enum([
+      'All',
+      Statuses.ACTIVE,
+      Statuses.INACTIVE,
+      Statuses.ONLEAVE,
+      Statuses.VACATION,
+    ])
+    .catch('All')
+    .optional(),
+  offset: z.number().catch(0).optional(),
+  limit: z.number().catch(10).optional(),
+  orderBy: z.string().catch('id').optional(),
+  reverse: z.boolean().catch(false).optional(),
+})
+
+export type TUserSearch = z.infer<typeof userSearchSchema>

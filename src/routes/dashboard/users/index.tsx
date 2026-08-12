@@ -1,8 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { UsersTable } from '#/components/organisms/UsersTable/UsersTable'
 import { Card } from '#/components/atoms/Card/Card'
+import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
+import { userSearchSchema } from '#/types/users'
 
 export const Route = createFileRoute('/dashboard/users/')({
+  validateSearch: userSearchSchema,
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
@@ -14,9 +17,13 @@ export const Route = createFileRoute('/dashboard/users/')({
 })
 
 function RouteComponent() {
+  const searchParams = Route.useSearch()
+
   return (
-    <Card>
-      <UsersTable />
-    </Card>
+    <ErrorBoundary>
+      <Card>
+        <UsersTable initialParams={searchParams} />
+      </Card>
+    </ErrorBoundary>
   )
 }

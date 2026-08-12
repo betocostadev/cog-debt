@@ -1,4 +1,4 @@
-import type { Statuses, UserTableRow } from '#/types/users'
+import type { Statuses, TUserSearch, UserTableRow } from '#/types/users'
 import type {
   ColumnDef,
   PaginationState,
@@ -6,7 +6,7 @@ import type {
 } from '@tanstack/react-table'
 import { UsersTableHeader } from './TableHeader'
 import { useGetUsers } from '#/hooks/users/useUsers'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { UserAvatarImage } from '#/components/atoms/UserAvatarImage/UserAvatarImage'
 import { UserStatusRow } from '#/components/atoms/UserStatus/UserStatusRow'
 import { UserTableActions } from './UserTableActions'
@@ -14,6 +14,7 @@ import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { DataTable } from '#/components/molecules/Table/DataTable'
 import { SortableColumnHeader } from '#/components/molecules/Table/SortableColumnHeader'
 import { toast } from 'sonner'
+import { useNavigate } from '@tanstack/react-router'
 
 export const columns: ColumnDef<UserTableRow>[] = [
   {
@@ -91,45 +92,87 @@ export const columns: ColumnDef<UserTableRow>[] = [
   },
 ]
 
-export function UsersTable() {
+export function UsersTable({ initialParams }: { initialParams: TUserSearch }) {
+  const navigate = useNavigate()
+
   // TODO: Extract table logic to useUsersTable hook
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  })
+  const pagination: PaginationState = {
+    pageIndex: (initialParams.offset ?? 0) / (initialParams.limit ?? 10),
+    pageSize: initialParams.limit ?? 10,
+  }
 
-  const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<Statuses | 'All'>('All')
-  const limit = pagination.pageSize
-  const offset = pagination.pageIndex * pagination.pageSize
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'id', desc: false },
-  ])
-
-  const currentSort = sorting[0]
-  const orderBy = currentSort.id
-  const reverse = currentSort.desc
-
-  const { data, isLoading, error } = useGetUsers({
-    params: {
-      limit,
-      offset,
-      where: searchQuery,
-      status: statusFilter,
-      orderBy,
-      reverse,
+  const sorting: SortingState = [
+    {
+      id: initialParams.orderBy ?? 'id',
+      desc: initialParams.reverse ?? false,
     },
-  })
+  ]
+
+  const searchQuery = initialParams.where ?? ''
+  const statusFilter = initialParams.status ?? 'All'
+
+  const updateSearchParams = (updates: Record<string, any>) => {
+    navigate({
+      to: '/dashboard/users',
+      search: (prev) => ({
+        ...prev,
+        ...updates,
+      }),
+      replace: true,
+    })
+  }
 
   const handleSearchChange = (val: string) => {
-    setSearchQuery(val)
-    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+    updateSearchParams({
+      where: val || undefined, // clear param if empty string
+      offset: 0, // reset to page 1 on search change
+    })
   }
 
   const handleStatusChange = (val: Statuses | 'All') => {
-    setStatusFilter(val)
-    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+    updateSearchParams({
+      status: val,
+      offset: 0, // reset to page 1 on filter change
+    })
   }
+
+  const handlePaginationChange = (updaterOrValue: any) => {
+    const newPagination =
+      typeof updaterOrValue === 'function'
+        ? updaterOrValue(pagination)
+        : updaterOrValue
+
+    updateSearchParams({
+      limit: newPagination.pageSize,
+      offset: newPagination.pageIndex * newPagination.pageSize,
+    })
+  }
+
+  const handleSortingChange = (updaterOrValue: any) => {
+    const newSorting =
+      typeof updaterOrValue === 'function'
+        ? updaterOrValue(sorting)
+        : updaterOrValue
+
+    const currentSort = newSorting[0] || { id: 'id', desc: false }
+    updateSearchParams({
+      orderBy: currentSort.id,
+      reverse: currentSort.desc,
+      offset: 0,
+    })
+  }
+
+  const { data, isLoading, error } = useGetUsers({
+    autoload: true,
+    params: {
+      limit: initialParams.limit ?? 10,
+      offset: initialParams.offset ?? 0,
+      where: initialParams.where ?? '',
+      status: initialParams.status ?? 'All',
+      orderBy: initialParams.orderBy ?? 'id',
+      reverse: initialParams.reverse ?? false,
+    },
+  })
 
   const formattedUsers: UserTableRow[] = useMemo(() => {
     if (!data?.users) return []
@@ -183,9 +226,9 @@ export function UsersTable() {
           isLoading={isLoading}
           rowCount={tableData.total}
           pagination={pagination}
-          onPaginationChange={setPagination}
+          onPaginationChange={handlePaginationChange}
           sorting={sorting}
-          onSortingChange={setSorting}
+          onSortingChange={handleSortingChange}
           caption="Cognitive Debt Colaborators"
         />
       </div>

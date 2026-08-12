@@ -1,6 +1,6 @@
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
-import { getUserStatusIcon } from '#/components/atoms/UserStatus/UserStatusRow'
 import { Statuses } from '#/types/users'
+import { getUserStatusIcon } from '#/utils/userHelper'
 import { useId } from 'react'
 
 interface StatusSelectorProps {
@@ -23,16 +23,8 @@ export function StatusSelector({
         Status{' '}
         <LazyIcon
           iconClassName="ml-2"
-          icon={getUserStatusIcon(selectedStatus)}
-          iconColor={
-            selectedStatus === Statuses.ACTIVE
-              ? 'lawngreen'
-              : selectedStatus === Statuses.INACTIVE
-                ? 'red'
-                : selectedStatus === Statuses.ONLEAVE
-                  ? 'palevioletred'
-                  : 'cornflowerblue'
-          }
+          icon={getUserStatusIcon(selectedStatus).icon}
+          iconColor={getUserStatusIcon(selectedStatus).color}
           size={22}
         />
       </label>

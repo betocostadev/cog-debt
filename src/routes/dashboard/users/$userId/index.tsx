@@ -1,18 +1,24 @@
 import { Card } from '#/components/atoms/Card/Card'
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
 import { UserAvatarImage } from '#/components/atoms/UserAvatarImage/UserAvatarImage'
-import { getUserStatusIcon } from '#/components/atoms/UserStatus/UserStatusRow'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { UserViewEditHeader } from '#/components/organisms/Users/UserViewEditHeader'
 import { UserViewProfileSkeleton } from '#/components/organisms/Users/UserViewProfileSkeleton'
 import { useGetUser } from '#/hooks/users/useUsers'
-import { Statuses } from '#/types/users'
 import { icons } from '#/utils/icons'
+import { getUserStatusIcon } from '#/utils/userHelper'
 import { createFileRoute } from '@tanstack/react-router'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/dashboard/users/$userId/')({
   component: UserPage,
+  head: () => ({
+    meta: [
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'Cog Debt Colaborator' },
+    ],
+  }),
 })
 
 function UserPage() {
@@ -91,16 +97,8 @@ function UserPage() {
                   <span className="sr-only">Status</span>
                   {data.status}
                   <LazyIcon
-                    icon={getUserStatusIcon(data.status)}
-                    iconColor={
-                      data.status === Statuses.ACTIVE
-                        ? 'lawngreen'
-                        : data.status === Statuses.INACTIVE
-                          ? 'red'
-                          : data.status === Statuses.ONLEAVE
-                            ? 'palevioletred'
-                            : 'cornflowerblue'
-                    }
+                    icon={getUserStatusIcon(data.status).icon}
+                    iconColor={getUserStatusIcon(data.status).color}
                     size={22}
                   />
                 </p>
