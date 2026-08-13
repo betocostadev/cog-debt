@@ -4,6 +4,7 @@ import { UserByDepartmentChart } from '#/components/organisms/Dashboard/UserByDe
 import { UserStatusChart } from '#/components/organisms/Dashboard/UserStatusChart/UserStatusChart'
 
 import { VideoFrame } from '#/components/organisms/VideoFrame'
+import { dashboardVideos } from '#/utils/videoSources'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/')({
@@ -30,28 +31,19 @@ function Dashboard() {
             <StarUserCard employeeId={51} />
           </div>
         </div>
-        <div className="sm:w-full lg:w-4/5 items-center mx-auto pt-10">
+        <div className="sm:w-full lg:w-4/5 items-center mx-auto pt-6">
           <h3 className="text-lg sm:mt-6 font-bold">Cog Debt on the media</h3>
 
-          <VideoFrame
-            title="Check it out about our recent studies done with Stanford about AI
-            productivity."
-            subtitle="TLDR: The results will shock you. Not only the benefits are very
-            small, in many ways they can DECREASE developer productivity!"
-            source="https://www.youtube.com/embed/tbDDYKRFjhk?si=RqVplwHJjnq3HNVF"
-            videoTitle="Does AI Actually Boost Developer Productivity"
-          />
-
-          <div className="mt-12">
-            <VideoFrame
-              title="Cognitive Debt and burnout? The aspect that companies don't want
-              you to know."
-              subtitle="TLDR: Software Developers, from Juniors to Seniors are start to
-              notice that the more they use AI for coding, the worst is their
-              understanding of the code base."
-              source="https://www.youtube.com/embed/Tk0hIOAwf6M?si=7mROThsYEpUBJVhV"
-              videoTitle="AI Cognitive Debt"
-            />
+          <div className="mb-10">
+            {dashboardVideos.map((vid) => (
+              <VideoFrame
+                key={vid.id}
+                title={vid.title}
+                subtitle={vid.subtitle}
+                source={vid.source}
+                videoTitle={vid.videoTitle}
+              />
+            ))}
           </div>
         </div>
       </div>

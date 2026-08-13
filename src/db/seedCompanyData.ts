@@ -12,7 +12,7 @@ export async function seedCompanyTableData(departmentsObj: typeof departments) {
       const users = await db.users.toArray()
 
       if (users.length < 1) {
-        console.error('Failed to seed company data, no users found')
+        console.error('Failed to seed company data, no users found.')
         return false
       }
 
@@ -25,6 +25,7 @@ export async function seedCompanyTableData(departmentsObj: typeof departments) {
           return {
             departmentKey: key,
             title: value.title,
+            description: value.description,
             functions: value.functions,
             numberOfEmployees: employeeCount,
           }

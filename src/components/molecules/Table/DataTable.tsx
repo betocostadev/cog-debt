@@ -25,10 +25,10 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   isLoading: boolean
   rowCount: number
-  pagination: PaginationState
-  onPaginationChange: OnChangeFn<PaginationState>
-  sorting: SortingState
-  onSortingChange: OnChangeFn<SortingState>
+  pagination?: PaginationState
+  onPaginationChange?: OnChangeFn<PaginationState>
+  sorting?: SortingState
+  onSortingChange?: OnChangeFn<SortingState>
   caption?: string
 }
 
@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
+    manualPagination: pagination ? true : false,
     manualSorting: true,
     rowCount,
     state: {
@@ -114,7 +114,7 @@ export function DataTable<TData, TValue>({
         </TableBody>
         {/* <TableFooter>Table Footer</TableFooter> */}
       </Table>
-      <DataTablePagination table={table} />
+      {pagination && <DataTablePagination table={table} />}
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import type { UserTableRow } from '#/types/users'
-import { Statuses } from '#/types/users'
 import { getUserStatusIcon } from '#/utils/userHelper'
 import LazyIcon from '../Icons/LazyIcon'
 

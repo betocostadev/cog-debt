@@ -4,11 +4,13 @@ export interface ICompanyDepartment {
   title: string
   functions: string[]
   numberOfEmployees: number
+  description?: string
 }
 
 export const departments = {
   engineering: {
     title: 'Engineering',
+    description: 'Our wizards that make our engines run.',
     functions: [
       'Chief Technology Officer',
       'Chief Executive Officer',
@@ -24,6 +26,8 @@ export const departments = {
   },
   support: {
     title: 'Support',
+    description:
+      'Help for every need, be it via call, message or anything else. Our support is always here.',
     functions: [
       'Support Specialist',
       'Research Support',
@@ -35,6 +39,8 @@ export const departments = {
   },
   research_and_development: {
     title: 'Research and Development',
+    description:
+      'Our research team always looking forward to develop new ways to make our lives better.',
     functions: [
       'Accountant',
       'Engineer',
@@ -46,6 +52,8 @@ export const departments = {
   },
   human_resources: {
     title: 'Human Resources',
+    description:
+      'Everybody needs help and needs to understand our process for everything.',
     functions: [
       'HR Operator',
       'Human Resources Manager',
@@ -56,6 +64,8 @@ export const departments = {
   },
   product_management: {
     title: 'Product Management',
+    description:
+      'Our department that focuses on creating the best possible experience for our applications.',
     functions: [
       'Research Analyst',
       'Quality Assurance Engineer',
@@ -68,6 +78,8 @@ export const departments = {
   },
   marketing: {
     title: 'Marketing',
+    description:
+      'Our public team that is always at the media, showing our services and talking about them.',
     functions: [
       'Chief Executive Officer',
       'Chief Marketing Officer',
@@ -80,6 +92,8 @@ export const departments = {
   },
   services: {
     title: 'Services',
+    description:
+      'Our service team is always ready to make our operations run as nicely as possible.',
     functions: [
       'Services Controller',
       'Operations',
@@ -90,6 +104,7 @@ export const departments = {
   },
   accounting: {
     title: 'Accounting',
+    description: 'We are always taking everything into account.',
     functions: [
       'Accountant',
       'Business Analyst',
@@ -102,6 +117,8 @@ export const departments = {
   },
   training: {
     title: 'Training',
+    description:
+      'Training is always the most important step to achieve greatness.',
     functions: [
       'Junior Data Analyst',
       'Junior Database Administrator',
@@ -113,6 +130,7 @@ export const departments = {
   },
   legal: {
     title: 'Legal',
+    description: 'We can take care of everything legal related.',
     functions: [
       'Business Analyst',
       'Business Development Manager',
@@ -123,6 +141,8 @@ export const departments = {
   },
   sales: {
     title: 'Sales',
+    description:
+      'Our team of sellers that show our clients show Cog Debt products shine.',
     functions: ['System Seller', 'Service Seller', 'Sales Manager'],
     numberOfEmployees: 0,
   },

@@ -1,5 +1,8 @@
+import { Card } from '#/components/atoms/Card/Card'
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
+import { BackButton } from '#/components/molecules/Buttons/BackButton'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
+import { DeptUsersTable } from '#/components/organisms/Company/DeptUsersTable'
 import { useGetDepartmentById } from '#/hooks/company/useCompany'
 import { getDeptIcon } from '#/utils/departmentHelper'
 import { createFileRoute } from '@tanstack/react-router'
@@ -41,8 +44,9 @@ function RouteComponent() {
 
   return (
     <ErrorBoundary>
+      <BackButton />
       {data && (
-        <div>
+        <div className="mt-5">
           <div className="flex gap-4 mt-2 items-center">
             <LazyIcon
               icon={getDeptIcon(data.departmentKey).icon}
@@ -50,6 +54,18 @@ function RouteComponent() {
               size={30}
             />
             <h2 className="text-2xl">{data.title}</h2>
+          </div>
+          <div className="my-4">
+            <p className="text-xl text-slate-300">Department of {data.title}</p>
+            {data.description && (
+              <p className="mt-2 text-slate-400 italic">{data.description}</p>
+            )}
+          </div>
+          <div className="w-full pt-4">
+            <Card>
+              <p className="font-thin">Some of our team at this department:</p>
+              <DeptUsersTable departmentTitle={data.title} />
+            </Card>
           </div>
         </div>
       )}
