@@ -19,9 +19,6 @@ function RouteComponent() {
     id: Number(departmentId),
   })
 
-  console.log('[Department]')
-  console.log(data)
-
   // TODO: Create skeleton loading component
   if (isLoading) {
     return (

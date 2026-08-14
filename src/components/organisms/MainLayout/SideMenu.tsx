@@ -23,7 +23,7 @@ const items = [
 ]
 
 export function SideMenu() {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
 
   return (
     <aside

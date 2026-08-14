@@ -1,13 +1,29 @@
 import { z } from 'zod'
 
+interface IAuthUserAddress {
+  address: string
+  city: string
+  state: string
+  stateCode: string
+}
+
+interface IAuthUserCompany {
+  department: string
+  title: string
+}
+
 export interface IAuthUser {
   id: string
   username: string
   email: string
+  phone?: string
+  role?: string
   firstName: string
   lastName: string
   gender: 'female' | 'male' | ({} & string)
   image: string
+  address: IAuthUserAddress
+  company: IAuthUserCompany
   accessToken: string
   refreshToken: string
 }

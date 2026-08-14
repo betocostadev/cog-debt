@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as ApiCheckRouteImport } from './routes/api-check'
+import { Route as HelpRouteImport } from './routes/help'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
@@ -28,9 +28,9 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiCheckRoute = ApiCheckRouteImport.update({
-  id: '/api-check',
-  path: '/api-check',
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
@@ -96,7 +96,7 @@ const DashboardUsersUserIdEditRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/api-check': typeof ApiCheckRoute
+  '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/dashboard/about': typeof DashboardAboutRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -110,7 +110,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/api-check': typeof ApiCheckRoute
+  '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/dashboard/about': typeof DashboardAboutRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -126,7 +126,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/api-check': typeof ApiCheckRoute
+  '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/dashboard/about': typeof DashboardAboutRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -143,7 +143,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
-    | '/api-check'
+    | '/help'
     | '/login'
     | '/dashboard/about'
     | '/dashboard/profile'
@@ -157,7 +157,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/api-check'
+    | '/help'
     | '/login'
     | '/dashboard/about'
     | '/dashboard/profile'
@@ -172,7 +172,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dashboard'
-    | '/api-check'
+    | '/help'
     | '/login'
     | '/dashboard/about'
     | '/dashboard/profile'
@@ -188,7 +188,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
-  ApiCheckRoute: typeof ApiCheckRoute
+  HelpRoute: typeof HelpRoute
   LoginRoute: typeof LoginRoute
 }
 
@@ -201,11 +201,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api-check': {
-      id: '/api-check'
-      path: '/api-check'
-      fullPath: '/api-check'
-      preLoaderRoute: typeof ApiCheckRouteImport
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -320,7 +320,7 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
-  ApiCheckRoute: ApiCheckRoute,
+  HelpRoute: HelpRoute,
   LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport

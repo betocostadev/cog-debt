@@ -35,11 +35,8 @@ function LoginPage() {
 
             <LoginForm />
 
-            <Link
-              to="/api-check"
-              className="mt-6 inline-flex text-white underline"
-            >
-              Check API health
+            <Link to="/help" className="mt-6 inline-flex text-white underline">
+              Help
             </Link>
           </Card>
         </div>

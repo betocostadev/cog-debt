@@ -1,13 +1,15 @@
+import { Badge } from '#/components/atoms/Badge/Badge'
 import { Card } from '#/components/atoms/Card/Card'
+
 import { healthCheckService } from '#/services/apiHealthCheck'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/api-check')({
-  component: RouteComponent,
+export const Route = createFileRoute('/help')({
+  component: Help,
 })
 
-function RouteComponent() {
+function Help() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['dummyData'],
     queryFn: () => healthCheckService.checkApiHealth(),
@@ -29,46 +31,45 @@ function RouteComponent() {
 
   return (
     <Card>
-      <p className="text-3xl font-bold mb-2">Health check Dummy JSON</p>
+      <h1 className="text-4xl font-semibold tracking-tight">Cognitive Debt</h1>
+
+      <p>
+        Cognitive Debt is a "fake" company website. It uses Dummy JSON service
+        for login.
+      </p>
+      <p>
+        You can get user credentials by using any of the provided Dummy JSON
+        users here:
+      </p>
+      <a
+        href="https://dummyjson.com/users"
+        rel="noreferrer"
+        target="_blank"
+        className="text-blue-400 font-light cursor-pointer underline"
+      >
+        Dummy JSON users
+      </a>
+
+      <p className="text-lg font-bold">TLDR:</p>
+      <p>Fine, use the credentials below:</p>
+      <p>User: emilys</p>
+      <p>Pass: emilyspass</p>
+
+      <Link to="/" className="text-xl text-white cursor-pointer underline">
+        Go to Login
+      </Link>
+
+      <p className="text-xl font-bold mt-4 mb-2">Health check Dummy JSON</p>
       {data && (
-        <p className="text-2xl mb-4">
+        <Badge className="text-xl mb-4">
           Dummy JSON API status:{' '}
           <span
             className={`${data.status === 'ok' ? 'text-green-500' : 'text-red-500'}`}
           >
             {data.status}
           </span>
-        </p>
+        </Badge>
       )}
-
-      <p className="inline-flex w-fit rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary">
-        Layout test
-      </p>
-
-      <p className="inline-flex w-fit rounded-full bg-secondary/15 px-3 py-1 text-sm font-medium">
-        Badge
-      </p>
-
-      <h1 className="text-4xl font-semibold tracking-tight">Cognitive Debt</h1>
-
-      <p className="max-w-2xl text-lg text-muted">
-        Edit <code>src/routes/index.tsx</code> to get started.
-      </p>
-
-      <div className="flex flex-wrap gap-3 pt-2">
-        <button className="rounded-lg bg-primary px-4 py-2 font-medium text-white">
-          Primary action
-        </button>
-        <button className="rounded-lg bg-secondary px-4 py-2 font-medium text-slate-900">
-          Secondary action
-        </button>
-      </div>
-      <Link
-        to="/"
-        className="text-xl text-white cursor-pointer underline line-"
-      >
-        Back to Cognitive Debt
-      </Link>
     </Card>
   )
 }
@@ -79,7 +80,7 @@ function RouteError({ error }: { error: Error }) {
       <p className="text-3xl font-bold text-red-500 mb-2">Error</p>
       <p className="text-white">{error.message}</p>
       <Link to="/" className="text-xl text-white cursor-pointer underline">
-        Back to Home
+        Go to Login
       </Link>
     </div>
   )

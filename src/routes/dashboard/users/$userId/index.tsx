@@ -1,3 +1,4 @@
+import { Badge } from '#/components/atoms/Badge/Badge'
 import { Card } from '#/components/atoms/Card/Card'
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
 import { UserAvatarImage } from '#/components/atoms/UserAvatarImage/UserAvatarImage'
@@ -102,8 +103,8 @@ function UserPage() {
                     size={22}
                   />
                 </p>
-                <p>ID: {data.id}</p>
-                <p>{data.username}</p>
+                <Badge>ID: {data.id}</Badge>
+                <Badge variant="secondary">{data.username}</Badge>
               </div>
             </Card>
 
