@@ -209,9 +209,9 @@ export function UserForm({
           <LazyIcon icon={icons.User} iconClassName="mr-4" /> User information
         </h3>
 
-        <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4">
+        <div className="flex w-full flex-col sm:gap-4 sm:flex-row lg:gap-6 mt-4">
           <InputText
-            className="w-2/4 sm:w-full lg:w-2/4"
+            className="w-full sm:w-3/4 lg:w-2/4"
             id={firstNameId}
             label="First Name"
             error={errors.firstName?.message}
@@ -219,7 +219,7 @@ export function UserForm({
             {...register('firstName')}
           />
           <InputText
-            className="w-2/4 sm:w-full lg:w-2/4"
+            className="w-full sm:w-3/4 lg:w-2/4"
             id={lastNameId}
             label="Last Name"
             error={errors.lastName?.message}
@@ -227,9 +227,9 @@ export function UserForm({
             {...register('lastName')}
           />
         </div>
-        <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4">
+        <div className="flex w-full flex-col sm:gap-4 sm:flex-row lg:gap-6 mt-2">
           <InputText
-            className="w-2/4 sm:w-full lg:w-2/4"
+            className="w-full sm:w-3/4 lg:w-2/4"
             id={usernameId}
             label="Username"
             error={errors.username?.message}
@@ -237,7 +237,7 @@ export function UserForm({
             {...register('username')}
           />
           <InputText
-            className="w-2/4 sm:w-full lg:w-2/4"
+            className="w-full sm:w-3/4 lg:w-2/4"
             id={emailId}
             label="Email"
             error={errors.email?.message}
@@ -245,9 +245,9 @@ export function UserForm({
             {...register('email')}
           />
         </div>
-        <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4 mb-4">
+        <div className="flex w-full flex-col sm:gap-4 sm:flex-row lg:gap-6 mt-2 mb-4">
           <InputText
-            className="w-2/5 sm:w-full lg:w-2/5"
+            className="w-full sm:w-2/5 lg:w-2/5"
             id={phoneId}
             label="Phone"
             error={errors.phone?.message}
@@ -255,7 +255,7 @@ export function UserForm({
             {...register('phone')}
           />
           <InputText
-            className="w-2/5 sm:w-full lg:w-2/5"
+            className="w-full sm:w-2/5 lg:w-2/5"
             id={cityId}
             label="City"
             error={errors.city?.message}
@@ -263,7 +263,7 @@ export function UserForm({
             {...register('city')}
           />
           <InputText
-            className="w-1/5 sm:w-full lg:w-1/5"
+            className="w-full sm:w-2/5 lg:w-1/5"
             id={stateId}
             label="State"
             error={errors.state?.message}
@@ -276,7 +276,7 @@ export function UserForm({
           information
         </h3>
 
-        <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4">
+        <div className="flex w-full flex-col sm:flex-row sm:gap-4 lg:flex-row lg:gap-6 mt-2">
           <Controller
             name="department"
             control={control}
@@ -312,7 +312,7 @@ export function UserForm({
             </span>
           )}
         </div>
-        <div className="flex w-full sm:flex-col sm:gap-4 lg:flex-row lg:gap-6 mt-4">
+        <div className="flex w-full flex-col sm:flex-row sm:gap-4 lg:flex-row lg:gap-6 mt-2">
           <InputText
             className="sm:w-full lg:w-2/4"
             id={admDateId}

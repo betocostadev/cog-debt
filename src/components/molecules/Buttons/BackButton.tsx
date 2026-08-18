@@ -12,7 +12,7 @@ export function BackButton() {
         <BaseButton
           label="Back"
           iconLeft={icons.ChevronLeft}
-          className="bg-slate-700 hover:bg-slate-800"
+          className="bg-slate-700 hover:bg-slate-800 text-sm sm:text-md"
           onClick={() => router.history.back()}
         />
       )}

@@ -70,8 +70,8 @@ export function UserStatusChart({ isAnimationActive = true }) {
   return (
     <ErrorBoundary>
       <div
-        className="flex flex-col w-full p-4 rounded-xl border border-white/10 bg-surface shadow-lg gap-4"
-        style={{ maxWidth: '600px' }}
+        className="flex flex-col w-full md:mx-auto p-4 rounded-xl border border-white/10 bg-surface shadow-lg gap-4"
+        style={{ maxWidth: '550px' }}
       >
         <div className="flex flex-col gap-1">
           <h3 className="text-lg font-semibold text-foreground">
@@ -85,9 +85,9 @@ export function UserStatusChart({ isAnimationActive = true }) {
           <PieChart
             style={{
               width: '100%',
-              maxWidth: '600px',
+              maxWidth: '550px',
               maxHeight: '80vh',
-              aspectRatio: 1.7,
+              aspectRatio: 1.8,
             }}
             responsive
           >

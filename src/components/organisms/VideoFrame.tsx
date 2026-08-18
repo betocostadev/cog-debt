@@ -20,7 +20,7 @@ export function VideoFrame({
         {subtitle && <p className="font-thin text-md pt-2">{subtitle}</p>}
       </div>
       <iframe
-        className={`${videoClassName ? videoClassName : 'sm:w-full w-3/5 h-96'}`}
+        className={`${videoClassName ? videoClassName : 'w-full px-2 md:w-4/5 md:mx-auto h-96'}`}
         src={source}
         title={`${videoTitle ? videoTitle : 'YouTube video player'}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

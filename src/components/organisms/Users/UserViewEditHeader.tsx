@@ -52,11 +52,12 @@ export function UserViewEditHeader({
         <div className="self-start pl-2">
           <BackButton />
         </div>
-        <div className="justify-end">
+        <div className="flex justify-end flex-col sm:flex-row text-sm sm:text-md">
           {!isEditPage && (
             <BaseButton
               label="Edit"
               variant="primary"
+              className="mx-2 mb-2 sm:mb-0"
               iconLeft={icons.SquarePen}
               disabled={isLoading || !hasData || isPending}
               onClick={goToEditPage}

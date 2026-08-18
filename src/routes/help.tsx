@@ -31,7 +31,9 @@ function Help() {
 
   return (
     <Card>
-      <h1 className="text-4xl font-semibold tracking-tight">Cognitive Debt</h1>
+      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">
+        Cognitive Debt
+      </h1>
 
       <p>
         Cognitive Debt is a "fake" company website. It uses Dummy JSON service
@@ -55,16 +57,16 @@ function Help() {
       <p>User: emilys</p>
       <p>Pass: emilyspass</p>
 
-      <Link to="/" className="text-xl text-white cursor-pointer underline">
+      <Link to="/" className="text-white cursor-pointer underline">
         Go to Login
       </Link>
 
       <p className="text-xl font-bold mt-4 mb-2">Health check Dummy JSON</p>
       {data && (
-        <Badge className="text-xl mb-4">
+        <Badge className="text-lg md:text-xl mb-4">
           Dummy JSON API status:{' '}
           <span
-            className={`${data.status === 'ok' ? 'text-green-500' : 'text-red-500'}`}
+            className={`mx-2 ${data.status === 'ok' ? 'text-green-500' : 'text-red-500'}`}
           >
             {data.status}
           </span>

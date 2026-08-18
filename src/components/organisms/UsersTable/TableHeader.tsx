@@ -66,8 +66,8 @@ export function UsersTableHeader({
 
   return (
     <ErrorBoundary>
-      <div className="flex mb-2">
-        <div className="w-4/6 mr-4">
+      <div className="flex mb-2 items-center flex-col sm:flex-row pl-1 pr-4">
+        <div className="w-full sm:w-4/6 pr-4">
           <InputText
             id="search-field"
             placeholder="Search by name, department, or city"
@@ -77,9 +77,12 @@ export function UsersTableHeader({
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex flex-row h-11 w-2/6 ml-4 items-center">
-          <label htmlFor="status-select" className="text-secondary text-sm">
-            Filter by status:
+        <div className="flex flex-col sm:flex-row w-full sm:w-3/6 lg:w-2/6 ml-0 sm:ml-4 pr-4">
+          <label
+            htmlFor="status-select"
+            className="text-secondary text-xs sm:text-md"
+          >
+            Filter by status
           </label>
           <select
             id="status-select"
@@ -95,12 +98,11 @@ export function UsersTableHeader({
             ))}
           </select>
         </div>
-        <div className="flex w-1/6 justify-end">
+        <div className="sm:self-end sm:mt-0 md:mt-0 md:self-center mt-4">
           <BaseButton
             title="Add User"
             label="Add"
             variant="primary"
-            className="h-12"
             iconRight={icons.UserPlus}
             iconSize={20}
             loading={false}

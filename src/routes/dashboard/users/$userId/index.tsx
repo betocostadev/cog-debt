@@ -72,7 +72,7 @@ function UserPage() {
             {/* User main card */}
             <Card
               outerClass="bg-slate-900"
-              innerClass="w-full flex flex-row content-between justify-between items-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20"
+              innerClass="w-full flex flex-col sm:flex-row content-between justify-between items-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20"
             >
               <div className="flex">
                 <UserAvatarImage
@@ -80,7 +80,7 @@ function UserPage() {
                   alt={data.firstName}
                   size="xl"
                 />
-                <div className="flex flex-col gap-2 pl-2 self-center">
+                <div className="flex flex-col gap-2 pl-2 self-center break-all">
                   <h3 className="text-lg font-bold">
                     {data.firstName} {data.lastName}
                   </h3>
@@ -88,7 +88,7 @@ function UserPage() {
                   <p>{data.phone}</p>
                 </div>
               </div>
-              <div className="flex flex-col gap-2 pr-2">
+              <div className="flex mt-0 sm:flex-col gap-2 pr-2">
                 <p className="flex gap-2 items-center">
                   <LazyIcon
                     icon={icons.Info}

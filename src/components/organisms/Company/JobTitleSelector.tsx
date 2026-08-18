@@ -15,7 +15,7 @@ export function JobTitleSelector({
   const jobTitleFieldId = useId()
 
   return (
-    <div className="flex flex-col gap-2 mt-2 sm:w-full lg: w-2/4">
+    <div className="flex flex-col gap-2 mt-2 sm:w-full lg:w-2/4">
       <label htmlFor={jobTitleFieldId} className="text-secondary flex">
         Job Title
       </label>

@@ -47,16 +47,23 @@ export function StarUserCard({ employeeId }: { employeeId: number }) {
       {data && (
         <Card
           onClick={viewEmployeeOfTheQuarter}
-          outerClass="mt-4 p-2 bg-slate-800 rounded-2xl max-w-2xl"
+          outerClass="mt-4 p-2 bg-slate-800 rounded-2xl max-w-xs mx-auto sm:mx-auto sm:max-w-lg md:max-w-lg md:mx-auto"
           innerClass="w-full flex flex-col content-center justify-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20 cursor-pointer"
         >
-          <p className="sm:text-md mb-4 md:text-lg">
-            Meet our Employee of the Quarter
-          </p>
-          <div className="flex self-start">
+          <div className="flex">
+            <LazyIcon
+              icon={icons.SquareStar}
+              size={24}
+              iconColor="palegoldenrod"
+            />
+            <p className="sm:text-md mb-4 md:text-lg pl-2">
+              Meet our Employee of the Quarter
+            </p>
+          </div>
+          <div className="flex self-start truncate">
             <UserAvatarImage src={data.image} alt={data.firstName} size="lg" />
             <div className="flex flex-col gap-2 pl-4 self-center">
-              <h3 className="text-lg font-bold">
+              <h3 className="text-md md:text-lg font-bold truncate">
                 {data.firstName} {data.lastName}
               </h3>
               <p>{data.email}</p>

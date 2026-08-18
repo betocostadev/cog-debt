@@ -43,7 +43,7 @@ function RouteComponent() {
     <ErrorBoundary>
       <BackButton />
       {data && (
-        <div className="mt-5">
+        <div className="mt-5 overflow-auto mr-4 pr-8">
           <div className="flex gap-4 mt-2 items-center">
             <LazyIcon
               icon={getDeptIcon(data.departmentKey).icon}

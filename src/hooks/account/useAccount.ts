@@ -6,7 +6,7 @@ import { accountQueryKeys } from './useAccountQueryKeys'
 import { useAuth } from '#/contexts/authContext'
 import { useCallback, useMemo } from 'react'
 import { useAuthUserQueryFn } from './useAccountQueries'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { NotFoundError, TokenExpiredError } from '#/types/errors'
 import { THIRDY_MINUTES } from '#/utils/constants'
@@ -33,6 +33,9 @@ export const useLogin = () => {
   const { setAuthUser } = useAuth()
   const navigate = useNavigate()
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  const search = useSearch({ strict: false }) as { redirect?: string }
+
   const mutation = useMutation({
     mutationFn: (credentials: TCredentials) => useLoginMutationFn(credentials),
     onSuccess: async (authUserData) => {
@@ -40,7 +43,9 @@ export const useLogin = () => {
 
       queryClient.invalidateQueries({ queryKey: accountQueryKeys.authUser() })
       toast.success(`Welcome back, ${authUserData.firstName}!`)
-      navigate({ to: '/dashboard' })
+
+      const redirectTo = search.redirect || '/dashboard'
+      navigate({ to: redirectTo })
     },
     onError: (error: any) => {
       if (error instanceof TokenExpiredError) {

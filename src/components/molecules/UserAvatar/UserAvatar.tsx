@@ -7,13 +7,25 @@ import { icons } from '#/utils/icons'
 import { useState } from 'react'
 import type { DropdownOption } from '../DropdownMenu'
 import { DropdownMenu } from '../DropdownMenu'
+import { useNavigate } from '@tanstack/react-router'
 
 export function UserAvatar() {
   const { authUser, isLoading } = useGetAuthUser({
     autoload: true,
   })
   const { logout } = useLogout()
+  const navigate = useNavigate()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  const goToProfile = () => {
+    navigate({ to: '/dashboard/profile' })
+    setIsDropdownOpen(false)
+  }
+
+  const goToAbout = () => {
+    navigate({ to: '/dashboard/about' })
+    setIsDropdownOpen(false)
+  }
 
   if (isLoading) {
     return <AvatarImageLoading />
@@ -31,7 +43,7 @@ export function UserAvatar() {
           <span>{userName ?? 'User'}</span>
         </div>
       ),
-      action: '/dashboard/profile',
+      action: goToProfile,
     },
     {
       id: 'about',
@@ -41,7 +53,7 @@ export function UserAvatar() {
           <span>About</span>
         </div>
       ),
-      action: '/dashboard/about',
+      action: goToAbout,
     },
     {
       id: 'logout',

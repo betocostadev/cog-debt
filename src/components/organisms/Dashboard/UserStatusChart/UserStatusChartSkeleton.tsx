@@ -6,7 +6,7 @@ export function UserStatusChartSkeleton() {
       <div
         style={{
           width: '100%',
-          maxWidth: '250px',
+          maxWidth: '200px',
           maxHeight: '60vh',
           aspectRatio: 1,
         }}

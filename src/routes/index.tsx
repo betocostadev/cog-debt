@@ -24,10 +24,10 @@ function Home() {
         </div>
       </header>
 
-      <main className="px-6 py-8">
+      <main className="px-6 py-8 sm:px-4 sm:py-6">
         <div className="mx-auto max-w-4xl">
           <Card>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight">
+            <h2 className="mt-4 text-2xl md:text-4xl font-semibold tracking-tight">
               Welcome to Cognitive Debt
             </h2>
 

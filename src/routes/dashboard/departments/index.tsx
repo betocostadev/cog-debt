@@ -22,12 +22,6 @@ function RouteComponent() {
   const navigate = useNavigate()
   const { data: deptsData, isLoading, error } = useGetCompanyDepartments()
 
-  console.log('[Departments]')
-  console.log('error?', error)
-  console.log('loading?', isLoading)
-  console.log('Data:')
-  console.log(deptsData)
-
   const goToDepartment = (departmentId: number) => {
     navigate({
       to: '/dashboard/departments/$departmentId',
@@ -44,7 +38,7 @@ function RouteComponent() {
           <Card
             key={`loading-card-dept-${idx}`}
             outerClass="bg-background text-foreground"
-            innerClass="flex gap-6 items-center rounded-2xl border border-white/10 bg-surface p-5 shadow-2xl shadow-black/30 hover:shadow-slate-200 hover:shadow-sm hover:cursor-pointer"
+            innerClass="flex gap-6 p-5 items-center rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30 hover:shadow-slate-200 hover:shadow-sm hover:cursor-pointer"
           >
             <div className="h-8 w-full animate-pulse rounded-full bg-slate-600 my-2"></div>
           </Card>
@@ -68,7 +62,7 @@ function RouteComponent() {
 
   return (
     <ErrorBoundary>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full p-2 pr-4 md:pr-6">
         {deptsData?.departments &&
           deptsData.departments.map((dept) => {
             const { icon, color } = getDeptIcon(dept.departmentKey)

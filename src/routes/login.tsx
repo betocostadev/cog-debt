@@ -22,14 +22,14 @@ function LoginPage() {
         </div>
       </header>
 
-      <main className="flex items-center px-6 py-8">
+      <main className="flex items-center px-6 py-8 sm:m-0">
         <div className="mx-auto max-w-4xl">
           <Card>
-            <h2 className="mt-4 text-4xl font-semibold tracking-tight">
+            <h2 className="mt-4 text-2xl md:text-4xl font-semibold tracking-tight">
               Welcome to Cog Debt
             </h2>
 
-            <p className="mt-4 max-w-2xl text-lg text-muted">
+            <p className="mt-4 max-w-2xl text-md md:text-lg text-muted">
               Please, log in below to access your account
             </p>
 

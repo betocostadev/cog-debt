@@ -34,15 +34,15 @@ function RouteComponent() {
       {authUser && (
         <Card
           outerClass="bg-slate-900"
-          innerClass="w-full flex flex-row content-between justify-between items-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20"
+          innerClass="w-full flex flex-col sm:flex-row content-between justify-between items-start sm:items-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20"
         >
-          <div className="flex">
+          <div className="flex break-all flex-col sm:flex-row">
             <UserAvatarImage
               src={authUser.image}
               alt={authUser.firstName}
               size="xl"
             />
-            <div className="flex flex-col gap-2 pl-2 self-center">
+            <div className="flex flex-col gap-2 pl-0 sm:pl-2 pb-2 sm:pb-0 self-center">
               <h3 className="text-lg font-bold">
                 {authUser.firstName} {authUser.lastName}
                 <Badge className="ml-2 items-center">{authUser.role}</Badge>
@@ -75,7 +75,7 @@ function RouteComponent() {
               {authUser.address.stateCode}
             </p>
           </section>
-          <div className="flex items-end justify-end mt-2">
+          <div className="flex items-end justify-end mt-4 mr-1 mb-2">
             <BaseButton
               variant="secondary"
               label="Logout"
