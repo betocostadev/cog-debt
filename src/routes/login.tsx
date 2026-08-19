@@ -35,7 +35,11 @@ function LoginPage() {
 
             <LoginForm />
 
-            <Link to="/help" className="mt-6 inline-flex text-white underline">
+            <Link
+              to="/help"
+              viewTransition={{ types: ['slide-left'] }}
+              className="mt-6 inline-flex text-white underline"
+            >
               Help
             </Link>
           </Card>

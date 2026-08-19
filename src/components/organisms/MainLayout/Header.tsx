@@ -1,3 +1,4 @@
+import { Logo } from '#/components/atoms/Icons/Logo'
 import { UserAvatar } from '#/components/molecules/UserAvatar/UserAvatar'
 import { Link } from '@tanstack/react-router'
 
@@ -7,9 +8,10 @@ export function Header() {
       <div className="mx-auto flex items-center justify-between px-2 lg:px-10">
         <Link
           to="/dashboard"
-          className="text-xl font-semibold tracking-tight transition-opacity hover:opacity-80"
+          className="flex items-center text-xl font-semibold tracking-tight transition-opacity hover:opacity-80"
         >
-          Cog Debt
+          <Logo />
+          <span className="ml-1">Cog Debt</span>
         </Link>
 
         <UserAvatar />

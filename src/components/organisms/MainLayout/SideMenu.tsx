@@ -20,6 +20,11 @@ const items = [
     to: '/dashboard/departments',
     icon: icons.Grid2x2Check,
   },
+  {
+    label: 'About',
+    to: '/dashboard/about',
+    icon: icons.Newspaper,
+  },
 ]
 
 export function SideMenu() {
@@ -36,6 +41,9 @@ export function SideMenu() {
       <div
         className={`flex items-center p-3 transition-all duration-300 ${collapsed ? '' : 'justify-end'}`}
       >
+        <span className={`${collapsed ? 'hidden' : 'inline-flex pr-2'}`}>
+          Menu
+        </span>
         <button
           onClick={() => setCollapsed((value) => !value)}
           className="rounded-base p-2 hover:bg-neutral-tertiary"

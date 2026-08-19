@@ -30,7 +30,7 @@ function Help() {
   }
 
   return (
-    <Card>
+    <Card innerClass="flex flex-col gap-2 rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30">
       <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">
         Cognitive Debt
       </h1>

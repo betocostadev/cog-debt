@@ -1,3 +1,4 @@
+import { ToTopButton } from '#/components/molecules/Buttons/ToTopButton'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { StarUserCard } from '#/components/organisms/Dashboard/StarUser/StarUserCard'
 import { UserByDepartmentChart } from '#/components/organisms/Dashboard/UserByDepartmentChart/UserByDepartmentChart'
@@ -44,6 +45,9 @@ function Dashboard() {
                 videoTitle={vid.videoTitle}
               />
             ))}
+          </div>
+          <div className="flex justify-center pb-4">
+            <ToTopButton />
           </div>
         </div>
       </div>
