@@ -45,7 +45,7 @@ export const useLogin = () => {
       toast.success(`Welcome back, ${authUserData.firstName}!`)
 
       const redirectTo = search.redirect || '/dashboard'
-      navigate({ to: redirectTo })
+      navigate({ to: redirectTo, viewTransition: { types: ['slide-left'] } })
     },
     onError: (error: any) => {
       if (error instanceof TokenExpiredError) {

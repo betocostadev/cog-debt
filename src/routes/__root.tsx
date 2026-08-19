@@ -85,7 +85,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
-            <div className="min-h-screen bg-background text-foreground">
+            <div className="min-h-screen bg-background text-foreground [view-transition-name:main-content]">
               {children}
             </div>
             <Toaster richColors position="top-right" />

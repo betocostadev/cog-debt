@@ -31,7 +31,7 @@ function Help() {
 
   return (
     <Card innerClass="flex flex-col gap-2 rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30">
-      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">
+      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight [view-transition-name:main-content]">
         Cognitive Debt
       </h1>
 
@@ -57,7 +57,11 @@ function Help() {
       <p>User: emilys</p>
       <p>Pass: emilyspass</p>
 
-      <Link to="/" className="text-white cursor-pointer underline">
+      <Link
+        to="/"
+        className="text-white cursor-pointer underline"
+        viewTransition
+      >
         Go to Login
       </Link>
 

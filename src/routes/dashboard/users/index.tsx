@@ -21,6 +21,7 @@ function RouteComponent() {
 
   return (
     <ErrorBoundary>
+      <h2 className="text-xl font-bold mb-2">Colaborators</h2>
       <Card>
         <UsersTable initialParams={searchParams} />
       </Card>

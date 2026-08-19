@@ -34,11 +34,16 @@ function Home() {
             <Link
               to="/dashboard"
               className="mt-6 inline-flex text-white underline"
+              viewTransition
             >
               Dashboard
             </Link>
 
-            <Link to="/help" className="mt-6 inline-flex text-white underline">
+            <Link
+              to="/help"
+              className="mt-6 inline-flex text-white underline"
+              viewTransition
+            >
               Help
             </Link>
           </Card>

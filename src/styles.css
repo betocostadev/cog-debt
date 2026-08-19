@@ -32,3 +32,31 @@ body {
     "Segoe UI", sans-serif;
 }
 
+/* Slide Left Transition */
+html:active-view-transition-type(slide-left) {
+  &::view-transition-old(main-content) {
+    animation: 500ms cubic-bezier(0.4, 0, 0.2, 1) both slide-out-left;
+  }
+  &::view-transition-new(main-content) {
+    animation: 500ms cubic-bezier(0.4, 0, 0.2, 1) both slide-in-left;
+  }
+}
+
+@keyframes slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
