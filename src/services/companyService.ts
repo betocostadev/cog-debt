@@ -1,78 +1,110 @@
 import { ApiClient } from '#/api'
 import { db } from '#/db/db'
 import type { ICompanyDepartment } from '#/types/company'
-import { NotFoundError } from '#/types/errors'
+import { NotFoundError, ServerError } from '#/types/errors'
 import type { ICompanyDepartmentsQueryParams } from '#/types/queries'
 import { responseDelay } from '#/utils/throttle'
 
 export class CompanyService extends ApiClient {
   async getCompanyDepartments(params: ICompanyDepartmentsQueryParams) {
-    const {
-      where = '',
-      offset = 0,
-      limit = 50,
-      orderBy = 'id',
-      reverse = false,
-    } = params
+    try {
+      const {
+        where = '',
+        offset = 0,
+        limit = 50,
+        orderBy = 'id',
+        reverse = false,
+      } = params
 
-    let dbOrderBy = orderBy
+      let dbOrderBy = orderBy
 
-    if (orderBy === 'departmentKey') {
-      dbOrderBy = 'departmentKey'
-    } else if (orderBy === 'title') {
-      dbOrderBy = 'title'
-    }
+      if (orderBy === 'departmentKey') {
+        dbOrderBy = 'departmentKey'
+      } else if (orderBy === 'title') {
+        dbOrderBy = 'title'
+      }
 
-    let collection = db.company_departments.orderBy(dbOrderBy)
+      let collection = db.company_departments.orderBy(dbOrderBy)
 
-    if (reverse) {
-      collection = collection.reverse()
-    }
+      if (reverse) {
+        collection = collection.reverse()
+      }
 
-    const filteredCollection = collection.filter((department) => {
-      const matchesSearch =
-        !where || department.title.toLowerCase().includes(where.toLowerCase())
+      const filteredCollection = collection.filter((department) => {
+        const matchesSearch =
+          !where || department.title.toLowerCase().includes(where.toLowerCase())
 
-      return matchesSearch
-    })
+        return matchesSearch
+      })
 
-    const total = await filteredCollection.count()
-    const departments = await filteredCollection
-      .offset(offset)
-      .limit(limit)
-      .toArray()
+      const total = await filteredCollection.count()
+      const departments = await filteredCollection
+        .offset(offset)
+        .limit(limit)
+        .toArray()
 
-    await responseDelay(1000)
+      await responseDelay(1000)
 
-    return {
-      total,
-      departments,
+      return {
+        total,
+        departments,
+      }
+    } catch (error) {
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
   }
 
   async getById(id: number): Promise<ICompanyDepartment | undefined> {
-    const department = await db.company_departments.get({ id })
+    try {
+      const department = await db.company_departments.get({ id })
 
-    if (!department) {
-      throw new NotFoundError(`Department with ID: ${id} not found`)
+      if (!department) {
+        throw new NotFoundError(`Department with ID: ${id} not found`)
+      }
+
+      return department
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error
+      }
+
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
-
-    return department
   }
 
   async getByTitle(title: string): Promise<ICompanyDepartment | undefined> {
-    const department = await db.company_departments
-      .where('title')
-      .equals(title)
-      .offset(0)
-      .limit(1)
-      .toArray()
+    try {
+      const department = await db.company_departments
+        .where('title')
+        .equals(title)
+        .offset(0)
+        .limit(1)
+        .toArray()
 
-    if (!department[0]) {
-      throw new NotFoundError(`Department ${title} not found`)
+      if (!department[0]) {
+        throw new NotFoundError(`Department ${title} not found`)
+      }
+
+      return department[0]
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error
+      }
+
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
-
-    return department[0]
   }
 
   async updateDepartment({
@@ -82,15 +114,33 @@ export class CompanyService extends ApiClient {
     id: string | number
     payload: ICompanyDepartment
   }): Promise<ICompanyDepartment | undefined> {
-    const updated = await db.company_departments.update(Number(id), {
-      ...payload,
-    })
+    try {
+      const updated = await db.company_departments.update(Number(id), {
+        ...payload,
+      })
 
-    if (updated) {
-      return { ...payload }
+      if (!updated) {
+        throw new NotFoundError(
+          `Unable to update department. Department ${id} not found.`,
+        )
+      }
+
+      if (updated) {
+        return { ...payload }
+      }
+
+      return undefined
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error
+      }
+
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
-
-    return undefined
   }
 
   async updateDepartmentEmployeeChange({
@@ -121,7 +171,11 @@ export class CompanyService extends ApiClient {
         })
       })
     } catch (error) {
-      console.error(error)
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
   }
 
@@ -134,7 +188,11 @@ export class CompanyService extends ApiClient {
           numberOfEmployees: newCount,
         })
       } catch (error) {
-        console.error(error)
+        throw new ServerError(
+          error instanceof Error
+            ? error.message
+            : 'Unknown database error ocurred.',
+        )
       }
     }
   }
@@ -148,7 +206,11 @@ export class CompanyService extends ApiClient {
           numberOfEmployees: Math.max(0, currentCount - 1),
         })
       } catch (error) {
-        console.error(error)
+        throw new ServerError(
+          error instanceof Error
+            ? error.message
+            : 'Unknown database error ocurred.',
+        )
       }
     }
   }

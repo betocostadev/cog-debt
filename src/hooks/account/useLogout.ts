@@ -2,6 +2,7 @@ import { useAuth } from '#/contexts/authContext'
 import store from '#/utils/store'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
 
 export const useLogout = () => {
   const queryClient = useQueryClient()
@@ -18,7 +19,8 @@ export const useLogout = () => {
       queryClient.clear()
       navigate({ to: '/login' })
     } catch (error) {
-      console.log(`Error performing logout: ${error}`)
+      console.error(error)
+      toast.error(`Error performing logout: ${error}`)
     }
   }
 

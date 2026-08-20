@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { DeleteUserDialog } from './DeleteUserDialog'
 import { useDeleteUser } from '#/hooks/users/useUsers'
+import { toast } from 'sonner'
 
 interface IUserViewEditHeaderProps {
   isLoading: boolean
@@ -44,6 +45,7 @@ export function UserViewEditHeader({
 
   if (isError) {
     console.error(error)
+    toast.error('Error deleting user')
   }
 
   return (

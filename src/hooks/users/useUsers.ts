@@ -252,13 +252,12 @@ export const useUpdateUser = () => {
       }
     },
     onError: (error) => {
-      // TODO: Map users errors class
       console.error(error)
-      if (error instanceof NotFoundError) {
-        toast.error('User not found.')
-      } else {
-        toast.error(error.message)
+      if (error instanceof NotFoundError || error instanceof ServerError) {
+        return error
       }
+
+      return error
     },
   })
 
@@ -278,7 +277,8 @@ export const useAddUser = () => {
   const mutation = useMutation({
     mutationFn: (payload: Omit<TUserDataInput, 'id'>) =>
       useAddUserMutationFn(payload),
-    onSuccess: (user, variables) => {
+    // onSuccess: (user, variables) => {
+    onSuccess: (user) => {
       if (user) {
         queryClient.invalidateQueries({
           predicate: (query) => {
@@ -287,7 +287,7 @@ export const useAddUser = () => {
           },
         })
 
-        toast.success(`${variables.firstName} ${variables.lastName} added`)
+        // toast.success(`${variables.firstName} ${variables.lastName} added`)
         navigate({
           to: '/dashboard/users/$userId',
           params: { userId: String(user) },
@@ -296,7 +296,11 @@ export const useAddUser = () => {
     },
     onError: (error) => {
       console.error(error)
-      toast.error(error.message)
+      if (error instanceof NotFoundError || error instanceof ServerError) {
+        return error
+      }
+
+      return error
     },
   })
 
@@ -331,7 +335,11 @@ export const useDeleteUser = () => {
     },
     onError: (error) => {
       console.error(error)
-      toast.error(error.message)
+      if (error instanceof NotFoundError || error instanceof ServerError) {
+        return error
+      }
+
+      return error
     },
   })
 

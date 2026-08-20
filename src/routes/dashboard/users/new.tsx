@@ -26,6 +26,7 @@ function RouteComponent() {
 
     if (isError) {
       console.error(error)
+      toast.error(error?.message)
     }
 
     toast.success(`User ${newData.firstName} ${newData.lastName} added`)

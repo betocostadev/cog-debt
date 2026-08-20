@@ -8,7 +8,7 @@ import { useCallback, useMemo } from 'react'
 import { useAuthUserQueryFn } from './useAccountQueries'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { NotFoundError, TokenExpiredError } from '#/types/errors'
+import { NotFoundError, ServerError, TokenExpiredError } from '#/types/errors'
 import { THIRDY_MINUTES } from '#/utils/constants'
 
 export interface UseAccountOptions {
@@ -48,12 +48,14 @@ export const useLogin = () => {
       navigate({ to: redirectTo, viewTransition: { types: ['slide-left'] } })
     },
     onError: (error: any) => {
-      if (error instanceof TokenExpiredError) {
-        toast.error('Session expired, please log in again.')
-      } else if (error instanceof NotFoundError) {
-        toast.error('Resource not found.')
-      } else {
-        toast.error(error.message)
+      if (!error) return undefined
+
+      if (
+        error instanceof TokenExpiredError ||
+        error instanceof NotFoundError ||
+        error instanceof ServerError
+      ) {
+        return error
       }
     },
   })
@@ -92,6 +94,11 @@ export const useGetAuthUser = (
 
   const authUserError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
+
+    if (error instanceof NotFoundError || error instanceof ServerError) {
+      return error
+    }
+
     return error
   }, [error])
 

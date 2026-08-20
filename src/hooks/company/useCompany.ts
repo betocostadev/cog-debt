@@ -75,10 +75,10 @@ export const useGetCompanyDepartments = ({
     if (!error) return undefined
     if (error instanceof NotFoundError) {
       toast.error(error.message)
-      return new NotFoundError('Company departments not found.')
+      return error
     } else if (error instanceof ServerError) {
       toast.error(error.message)
-      return new ServerError('Internal server error fetching departments.')
+      return error
     } else {
       toast.error(error.message)
       return error
@@ -119,12 +119,9 @@ export const useGetDepartmentById = ({
 
   const departmentError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
-    if (error instanceof NotFoundError) {
+    if (error instanceof NotFoundError || error instanceof ServerError) {
       toast.error(error.message)
-      return new NotFoundError('Department not found.')
-    } else if (error instanceof ServerError) {
-      toast.error(error.message)
-      return new ServerError('Internal server error fetching department.')
+      return error
     } else {
       toast.error(error.message)
       return error

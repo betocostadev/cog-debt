@@ -137,6 +137,7 @@ export function UserForm({
   }
 
   if (error) {
+    console.error(error)
     toast.error(error.message)
     handleCancel()
   }

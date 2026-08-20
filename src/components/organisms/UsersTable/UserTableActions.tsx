@@ -15,6 +15,7 @@ import { useDeleteUser } from '#/hooks/users/useUsers'
 import { icons } from '#/utils/icons'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export function UserTableActions({
   userId,
@@ -53,7 +54,8 @@ export function UserTableActions({
     deleteUser(userId)
     setShowDeleteDialog(false)
     if (isError) {
-      console.error(`[Delete mutation error]: ${error}`)
+      console.error(`Delete user error: ${error}`)
+      toast.error(error?.message)
     }
   }
 

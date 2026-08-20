@@ -7,6 +7,7 @@ import { PieChart, Pie, Sector, Label, LabelList, Tooltip } from 'recharts'
 import { UserStatusChartSkeleton } from './UserStatusChartSkeleton'
 import { useNavigate } from '@tanstack/react-router'
 import type { Statuses } from '#/types/users'
+import { toast } from 'sonner'
 
 type TChartTargetPayload = {
   payload: {
@@ -48,6 +49,8 @@ export function UserStatusChart({ isAnimationActive = true }) {
   }
 
   if (error) {
+    console.error(error)
+    toast.error(error.message)
     return (
       <ErrorBoundary>
         <div className="flex flex-col gap-2">

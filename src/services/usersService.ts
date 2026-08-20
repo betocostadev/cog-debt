@@ -51,49 +51,61 @@ export class UsersService extends ApiClient {
     Queries below use DB users
   */
   async getAllUsers(params: UsersQueryParams) {
-    const {
-      where = '',
-      status = 'All',
-      offset = 0,
-      orderBy = 'id',
-      limit = 10,
-      reverse = false,
-    } = params
+    try {
+      const {
+        where = '',
+        status = 'All',
+        offset = 0,
+        orderBy = 'id',
+        limit = 10,
+        reverse = false,
+      } = params
 
-    let dbOrderBy = orderBy
+      let dbOrderBy = orderBy
 
-    if (orderBy === 'name') {
-      dbOrderBy = 'firstName'
-    } else if (orderBy === 'department') {
-      dbOrderBy = 'company.department'
-    } else if (orderBy === 'jobTitle') {
-      dbOrderBy = 'company.jobTitle'
-    } else if (orderBy === 'city') {
-      dbOrderBy = 'address.city'
+      if (orderBy === 'name') {
+        dbOrderBy = 'firstName'
+      } else if (orderBy === 'department') {
+        dbOrderBy = 'company.department'
+      } else if (orderBy === 'jobTitle') {
+        dbOrderBy = 'company.jobTitle'
+      } else if (orderBy === 'city') {
+        dbOrderBy = 'address.city'
+      }
+
+      let collection = db.users.orderBy(dbOrderBy)
+      if (reverse) {
+        collection = collection.reverse()
+      }
+
+      const filteredCollection = collection.filter((user) => {
+        const matchesStatus = status === 'All' || user.status === status
+        const matchesSearch =
+          !where ||
+          user.firstName.toLowerCase().includes(where.toLowerCase()) ||
+          user.lastName.toLowerCase().includes(where.toLowerCase()) ||
+          user.company.department.toLowerCase().includes(where.toLowerCase()) ||
+          user.address.city.toLowerCase().includes(where.toLowerCase())
+
+        return matchesStatus && matchesSearch
+      })
+
+      const total = await filteredCollection.count()
+      const users = await filteredCollection
+        .offset(offset)
+        .limit(limit)
+        .toArray()
+
+      await responseDelay(500)
+
+      return { total, users }
+    } catch (error) {
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
-
-    let collection = db.users.orderBy(dbOrderBy)
-    if (reverse) {
-      collection = collection.reverse()
-    }
-
-    const filteredCollection = collection.filter((user) => {
-      const matchesStatus = status === 'All' || user.status === status
-      const matchesSearch =
-        !where ||
-        user.firstName.toLowerCase().includes(where.toLowerCase()) ||
-        user.lastName.toLowerCase().includes(where.toLowerCase()) ||
-        user.company.department.toLowerCase().includes(where.toLowerCase()) ||
-        user.address.city.toLowerCase().includes(where.toLowerCase())
-
-      return matchesStatus && matchesSearch
-    })
-
-    const total = await filteredCollection.count()
-    const users = await filteredCollection.offset(offset).limit(limit).toArray()
-
-    await responseDelay(1500)
-    return { total, users }
   }
 
   async getUser(id: string | number): Promise<IUser | undefined> {
@@ -104,7 +116,7 @@ export class UsersService extends ApiClient {
         throw new NotFoundError(`Unable to fetch user with ID: ${id}.`)
       }
 
-      await responseDelay(1500)
+      await responseDelay(500)
 
       return user
     } catch (error) {
@@ -127,86 +139,133 @@ export class UsersService extends ApiClient {
     id: string | number
     payload: TUserDataInput
   }): Promise<IUser | undefined> {
-    const user = await this.getUser(id)
-    if (!user) {
-      throw new NotFoundError('User not found')
-    }
-
-    const previousDepartment = await companyService.getByTitle(
-      user.company.department,
-    )
-
-    if (
-      payload.department &&
-      previousDepartment &&
-      payload.department !== previousDepartment.title
-    ) {
-      const newDepartment = await companyService.getByTitle(payload.department)
-      if (newDepartment?.id) {
-        await companyService.updateDepartmentEmployeeChange({
-          oldDept: previousDepartment,
-          newDept: newDepartment,
-        })
+    try {
+      const user = await this.getUser(id)
+      if (!user) {
+        throw new NotFoundError(`Unable to fetch user with ID: ${id}.`)
       }
+
+      const previousDepartment = await companyService.getByTitle(
+        user.company.department,
+      )
+
+      if (
+        payload.department &&
+        previousDepartment &&
+        payload.department !== previousDepartment.title
+      ) {
+        const newDepartment = await companyService.getByTitle(
+          payload.department,
+        )
+        if (newDepartment?.id) {
+          await companyService.updateDepartmentEmployeeChange({
+            oldDept: previousDepartment,
+            newDept: newDepartment,
+          })
+        }
+      }
+
+      const addedFields = Object.assign(
+        {
+          company: {
+            department: payload.department,
+            jobTitle: payload.jobTitle,
+          },
+          address: { city: payload.city, state: payload.state },
+        },
+        payload,
+      )
+      const { city, department, ...updatedUser } = addedFields
+
+      const updated = await db.users.update(Number(id), updatedUser)
+
+      await responseDelay(500)
+
+      if (updated) {
+        return updatedUser
+      }
+
+      return undefined
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error
+      }
+
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
-
-    const addedFields = Object.assign(
-      {
-        company: { department: payload.department, jobTitle: payload.jobTitle },
-        address: { city: payload.city, state: payload.state },
-      },
-      payload,
-    )
-    const { city, department, ...updatedUser } = addedFields
-
-    const updated = await db.users.update(Number(id), updatedUser)
-
-    await responseDelay(1000)
-
-    if (updated) {
-      return updatedUser
-    }
-    return undefined
   }
 
   async createUser(
     payload: Omit<TUserDataInput, 'id'>,
   ): Promise<number | undefined> {
-    const addedFields = Object.assign(
-      {
-        company: { department: payload.department, jobTitle: payload.jobTitle },
-        address: { city: payload.city, state: payload.state },
-      },
-      payload,
-    )
+    try {
+      const addedFields = Object.assign(
+        {
+          company: {
+            department: payload.department,
+            jobTitle: payload.jobTitle,
+          },
+          address: { city: payload.city, state: payload.state },
+        },
+        payload,
+      )
 
-    const { city, department, ...newUser } = addedFields
+      const { city, department, ...newUser } = addedFields
 
-    const newUserId = await db.users.add(newUser)
+      const newUserId = await db.users.add(newUser)
 
-    await companyService.incrementDepartmentCount(newUser.company.department)
+      await companyService.incrementDepartmentCount(newUser.company.department)
 
-    await responseDelay(500)
+      await responseDelay(500)
 
-    if (newUserId) {
-      return newUserId
+      if (newUserId) {
+        return newUserId
+      }
+
+      return undefined
+    } catch (error) {
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
-
-    return undefined
   }
 
   async deleteUser(id: number): Promise<number | undefined> {
-    const user = await db.users.get(Number(id))
-    if (user) {
-      await companyService.decrementDepartmentCount(user.company.department)
+    try {
+      const user = await db.users.get(Number(id))
+      if (user) {
+        await companyService.decrementDepartmentCount(user.company.department)
+      }
+
+      if (!user) {
+        throw new NotFoundError(`User with ID: ${id} not found.`)
+      }
+
+      const deleteCount = await db.users.where('id').equals(id).delete()
+
+      if (deleteCount === 0)
+        throw new Error(`Failed to delete user with id: ${id}`)
+
+      await responseDelay(500)
+
+      return deleteCount
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error
+      }
+
+      throw new ServerError(
+        error instanceof Error
+          ? error.message
+          : 'Unknown database error ocurred.',
+      )
     }
-    const deleteCount = await db.users.where('id').equals(id).delete()
-    if (deleteCount === 0)
-      throw new Error(`Failed to delete user with id: ${id}`)
-
-    await responseDelay(500)
-
-    return deleteCount
   }
 
   async getAllUsersStatus(): Promise<UsersByStatusResponse> {
@@ -214,7 +273,7 @@ export class UsersService extends ApiClient {
       const allUsers = await db.users.toArray()
 
       if (!allUsers.length) {
-        throw new NotFoundError(`Unable to fetch users by status. Not found.`)
+        throw new NotFoundError(`Unable to fetch users by status.`)
       }
 
       const active = allUsers.filter((user) => user.status === Statuses.ACTIVE)
@@ -228,7 +287,7 @@ export class UsersService extends ApiClient {
         (user) => user.status === Statuses.ONLEAVE,
       )
 
-      await responseDelay(1000)
+      await responseDelay(500)
 
       return {
         total: allUsers.length,

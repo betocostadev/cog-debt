@@ -8,6 +8,8 @@ import { InputPassword } from '../molecules/Form/InputPassword'
 import { BaseButton } from '../atoms/Buttons/BaseButton'
 import { useId, useRef } from 'react'
 import { throttle } from '#/utils/throttle'
+import { TokenExpiredError } from '#/types/errors'
+import { toast } from 'sonner'
 
 export function LoginForm() {
   const { login, isPending, isError, error } = useLogin()
@@ -32,7 +34,12 @@ export function LoginForm() {
         password: data.password,
       })
       if (isError) {
-        console.log(error)
+        if (error instanceof TokenExpiredError) {
+          toast.error('Session expired, please log in again.')
+        } else {
+          console.error(error)
+          toast.error(error?.message)
+        }
       }
     }, 1000),
   )
