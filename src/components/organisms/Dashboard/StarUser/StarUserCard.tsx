@@ -22,6 +22,7 @@ export function StarUserCard({ employeeId }: { employeeId: number }) {
     navigate({
       to: '/dashboard/users/$userId',
       params: { userId: String(employeeId) },
+      viewTransition: { types: ['slide-left'] },
     })
   }
 

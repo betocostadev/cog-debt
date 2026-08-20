@@ -1,3 +1,4 @@
+import { NotFoundAuth } from '#/components/molecules/NotFound/NotFoundAuth'
 import { Header } from '#/components/organisms/MainLayout/Header'
 import { SideMenu } from '#/components/organisms/MainLayout/SideMenu'
 import { useFeedDb } from '#/hooks/useFeedDb'
@@ -24,6 +25,7 @@ export const Route = createFileRoute('/dashboard')({
       redirect({ to: location.href })
     }
   },
+  notFoundComponent: () => <NotFoundAuth />,
 })
 
 function DashboardLayout() {

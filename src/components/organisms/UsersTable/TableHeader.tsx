@@ -34,7 +34,10 @@ export function UsersTableHeader({
   }, [searchQuery])
 
   const handleRedirectNewUser = () => {
-    navigate({ to: '/dashboard/users/new' })
+    navigate({
+      to: '/dashboard/users/new',
+      viewTransition: { types: ['slide-left'] },
+    })
   }
 
   const statusOptions = ['All', ...Object.values(Statuses)]

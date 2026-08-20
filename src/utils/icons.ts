@@ -36,6 +36,7 @@ export const icons = {
   GraduationCap: 'graduation-cap',
   Scale: 'scale',
   SquareStar: 'square-star',
+  Bug: 'bug',
 } as const
 
 export type IconName = (typeof icons)[keyof typeof icons]

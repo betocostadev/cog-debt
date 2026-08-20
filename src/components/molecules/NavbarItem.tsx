@@ -19,7 +19,7 @@ export function NavbarItem({ label, to, icon, collapsed }: NavbarItemProps) {
         activeProps={{
           className: 'bg-neutral-tertiary text-fg-brand font-medium',
         }}
-        viewTransition={{ types: ['slide-left'] }}
+        viewTransition
       >
         <LazyIcon icon={icon} size={18} />
         {!collapsed && <span className="ms-3 whitespace-nowrap">{label}</span>}

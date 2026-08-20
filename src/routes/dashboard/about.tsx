@@ -1,6 +1,5 @@
 import { Card } from '#/components/atoms/Card/Card'
 import { Logo } from '#/components/atoms/Icons/Logo'
-import { BackButton } from '#/components/molecules/Buttons/BackButton'
 import { ToTopButton } from '#/components/molecules/Buttons/ToTopButton'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { VideoFrame } from '#/components/organisms/VideoFrame'
@@ -21,7 +20,6 @@ export const Route = createFileRoute('/dashboard/about')({
 function RouteComponent() {
   return (
     <ErrorBoundary>
-      <BackButton />
       <div className="mt-4">
         <div className="flex items-center mb-4">
           <Logo size={64} />

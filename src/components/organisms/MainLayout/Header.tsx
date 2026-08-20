@@ -9,6 +9,7 @@ export function Header() {
         <Link
           to="/dashboard"
           className="flex items-center text-xl font-semibold tracking-tight transition-opacity hover:opacity-80"
+          viewTransition
         >
           <Logo />
           <span className="ml-1">Cog Debt</span>

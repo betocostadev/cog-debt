@@ -36,12 +36,12 @@ export function SideMenu() {
       <aside
         className={`
         border-r border-default border-slate-600 bg-neutral-primary-soft
-        transition-all duration-300 h-lvh
+        transition-all duration-300 h-lvh z-50
         ${collapsed ? 'w-16' : 'w-64'}
       `}
       >
         <div
-          className={`flex items-center p-3 transition-all duration-300 ${collapsed ? '' : 'justify-end'}`}
+          className={`flex items-center p-3 transition-all duration-300 z-50 ${collapsed ? '' : 'justify-end'}`}
         >
           <span className={`${collapsed ? 'hidden' : 'inline-flex pr-2'}`}>
             Menu

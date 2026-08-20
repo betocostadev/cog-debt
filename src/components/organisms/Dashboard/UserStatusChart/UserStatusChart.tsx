@@ -66,6 +66,7 @@ export function UserStatusChart({ isAnimationActive = true }) {
       navigate({
         to: '/dashboard/users',
         search: { status: e.payload.name as Statuses },
+        viewTransition: { types: ['slide-left'] },
       })
     }
   }

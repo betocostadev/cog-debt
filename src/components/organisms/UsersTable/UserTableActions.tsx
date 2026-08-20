@@ -33,6 +33,7 @@ export function UserTableActions({
     navigate({
       to: '/dashboard/users/$userId/edit',
       params: { userId: String(userId) },
+      viewTransition: { types: ['slide-left'] },
     })
     setIsDropdownOpen(false)
   }
@@ -41,6 +42,7 @@ export function UserTableActions({
     navigate({
       to: '/dashboard/users/$userId',
       params: { userId: String(userId) },
+      viewTransition: { types: ['slide-left'] },
     })
     setIsDropdownOpen(false)
   }

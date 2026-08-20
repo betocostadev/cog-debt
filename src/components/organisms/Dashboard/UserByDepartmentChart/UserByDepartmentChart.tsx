@@ -83,6 +83,7 @@ export function UserByDepartmentChart() {
       navigate({
         to: '/dashboard/departments/$departmentId',
         params: { departmentId: String(dept.id) },
+        viewTransition: { types: ['slide-left'] },
       })
     }
   }

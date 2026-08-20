@@ -19,6 +19,7 @@ import { db } from '#/db/db'
 import { seedCompanyTableData } from '#/db/seedCompanyData'
 import { departments } from '#/types/company'
 import { useEffect } from 'react'
+import { NotFoundGeneral } from '#/components/molecules/NotFound/NotFoundGeneral'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -56,13 +57,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
-  notFoundComponent: () => {
-    return (
-      <div className="bg-gray-800 p-4 h-full">
-        <p className="text-3xl font-bold text-white mb-2">Page not found</p>
-      </div>
-    )
-  },
+  notFoundComponent: () => <NotFoundGeneral />,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {

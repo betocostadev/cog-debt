@@ -291,6 +291,7 @@ export const useAddUser = () => {
         navigate({
           to: '/dashboard/users/$userId',
           params: { userId: String(user) },
+          viewTransition: { types: ['slide-left'] },
         })
       }
     },

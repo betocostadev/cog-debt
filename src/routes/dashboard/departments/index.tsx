@@ -26,6 +26,7 @@ function RouteComponent() {
     navigate({
       to: '/dashboard/departments/$departmentId',
       params: { departmentId: departmentId.toString() },
+      viewTransition: { types: ['slide-left'] },
     })
   }
 

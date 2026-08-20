@@ -6,6 +6,20 @@ export function BackButton() {
   const router = useRouter()
   const canGoBack = useCanGoBack()
 
+  const goBack = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (document.startViewTransition) {
+      document.startViewTransition({
+        update: () => {
+          router.history.back()
+        },
+        types: ['slide-right'],
+      })
+    } else {
+      router.history.back()
+    }
+  }
+
   return (
     <>
       {canGoBack && (
@@ -13,7 +27,7 @@ export function BackButton() {
           label="Back"
           iconLeft={icons.ChevronLeft}
           className="bg-slate-700 hover:bg-slate-800 text-sm sm:text-md"
-          onClick={() => router.history.back()}
+          onClick={goBack}
         />
       )}
     </>

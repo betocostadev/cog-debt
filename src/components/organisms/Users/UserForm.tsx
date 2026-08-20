@@ -130,9 +130,16 @@ export function UserForm({
 
   const handleCancel = () => {
     if (isEditing && userId) {
-      navigate({ to: '/dashboard/users/$userId', params: { userId } })
+      navigate({
+        to: '/dashboard/users/$userId',
+        params: { userId },
+        viewTransition: { types: ['slide-right'] },
+      })
     } else {
-      navigate({ to: '/dashboard/users' })
+      navigate({
+        to: '/dashboard/users',
+        viewTransition: { types: ['slide-right'] },
+      })
     }
   }
 
