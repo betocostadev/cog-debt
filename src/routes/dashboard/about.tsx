@@ -32,7 +32,7 @@ function RouteComponent() {
             fictional company. It was created as a mentorship project provided
             by{' '}
             <a
-              href="https://www.aubay.pt/en/contacts?gad_source=1&gad_campaignid=22914645488&gbraid=0AAAAAoV5VbmM2sZhiclV0S3aCHEhhbefK&gclid=CjwKCAjwqJXUBhBNEiwA8BgG7lK8pLhaPA3OAwsJTM88Ekuu18uWc9tmA6YPiq9mB_pZaU1UgSztGhoC8xkQAvD_BwE"
+              href="https://www.aubay.pt/en"
               rel="noreferrer"
               target="_blank"
               className="text-blue-400 font-light cursor-pointer underline"
@@ -81,7 +81,7 @@ function RouteComponent() {
           <p>
             Mentorship was kindly provided by{' '}
             <a
-              href="https://gist.github.com/flaviodamaiajr"
+              href="https://github.com/flaviodamaiajr"
               rel="noreferrer"
               target="_blank"
               className="text-blue-400 font-light cursor-pointer underline"
