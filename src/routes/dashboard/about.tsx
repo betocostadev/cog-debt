@@ -1,3 +1,4 @@
+import { AppDiagSvg } from '#/components/atoms/AppDiagSvg'
 import { Card } from '#/components/atoms/Card/Card'
 import { Logo } from '#/components/atoms/Icons/Logo'
 import { ToTopButton } from '#/components/molecules/Buttons/ToTopButton'
@@ -142,6 +143,14 @@ function RouteComponent() {
               of employees in it
             </li>
           </ul>
+        </div>
+        <div>
+          <h3 className="font-bold text-lg my-8">
+            Here is an overall sketch of the architecture
+          </h3>
+          <div className="w-full">
+            <AppDiagSvg />
+          </div>
         </div>
         <div className="border border-slate-400 mt-6 pl-4">
           <ul>
