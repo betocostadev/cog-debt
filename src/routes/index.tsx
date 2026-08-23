@@ -11,6 +11,10 @@ export const Route = createFileRoute('/')({
           redirect: location.href,
         },
       })
+    } else {
+      throw redirect({
+        to: '/dashboard',
+      })
     }
   },
 })

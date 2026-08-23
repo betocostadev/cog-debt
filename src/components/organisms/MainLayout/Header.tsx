@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router'
 
 export function Header() {
   return (
-    <header className="border-b border-white/10 bg-background/90 px-6 py-4 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-background/90 px-6 py-4 backdrop-blur">
       <div className="mx-auto flex items-center justify-between px-2 lg:px-10">
         <Link
           to="/dashboard"
