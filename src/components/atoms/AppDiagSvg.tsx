@@ -4,7 +4,7 @@ export function AppDiagSvg() {
   return (
     <img
       src={SvgAppFlow}
-      alt="Cog Debt Logo"
+      alt="Cog Debt Small Architecture Diagram"
       className="w-full object-contain"
     />
   )

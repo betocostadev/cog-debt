@@ -6,6 +6,8 @@ Cognitive Debt is an open-source project created as a mentorship initiative by [
 
 [app-cover-image]: ./app-cover.jpeg
 
+There is a [live version here](https://cog-debt.vercel.app/).
+
 ## The Concept
 
 In an era dominated by AI-assisted coding (Claude, Copilot, Devin), many developers have inadvertently created a "cognitive debt"—a reliance that leads to forgetting fundamental programming techniques and losing touch with the underlying codebase. Furthermore, the "Slot Machine" effect of iteratively prompting AI until the output is "good enough" has been linked to increased developer burnout and decreased job satisfaction.
