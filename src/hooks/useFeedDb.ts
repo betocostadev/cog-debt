@@ -5,6 +5,8 @@ import { useFetchInitialUsers } from './users/useUsers'
 import { useEffect, useState } from 'react'
 import { transformDummyUsers } from '#/utils/transformUsers'
 import { seedUserTableData } from '#/db/seedUserData'
+import { seedCompanyTableData } from '#/db/seedCompanyData'
+import { departments } from '#/types/company'
 
 export const useFeedDb = () => {
   // Not good here as It is live: https://dexie.org/docs/dexie-react-hooks/useLiveQuery()
@@ -14,6 +16,7 @@ export const useFeedDb = () => {
   let status = false
 
   const fetchDbUsers = async () => {
+    await db.open()
     const dbUsers = await db.users.toArray()
     if (dbUsers.length < 1) setHasUsers(true)
   }
@@ -31,6 +34,10 @@ export const useFeedDb = () => {
     }
   }
 
+  const addCompanyToDb = async () => {
+    await seedCompanyTableData(departments)
+  }
+
   if (error) {
     toast.success(`Failed to fetch users from Dummy JSON.`)
   }
@@ -39,6 +46,7 @@ export const useFeedDb = () => {
     fetchDbUsers()
     if (hasUsers && data) {
       addUsersToDb()
+      addCompanyToDb()
     }
   }, [isLoading, hasUsers])
 

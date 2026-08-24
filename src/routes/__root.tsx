@@ -15,11 +15,8 @@ import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
-import { db } from '#/db/db'
-import { seedCompanyTableData } from '#/db/seedCompanyData'
-import { departments } from '#/types/company'
-import { useEffect } from 'react'
 import { NotFoundGeneral } from '#/components/molecules/NotFound/NotFoundGeneral'
+import { useFeedDb } from '#/hooks/useFeedDb'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -62,15 +59,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { queryClient } = Route.useRouteContext()
-
-  async function initApp() {
-    await db.open()
-    await seedCompanyTableData(departments)
-  }
-
-  useEffect(() => {
-    initApp()
-  }, [])
+  useFeedDb()
 
   return (
     <html lang="en">
