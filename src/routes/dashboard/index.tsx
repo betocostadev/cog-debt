@@ -20,7 +20,7 @@ export const Route = createFileRoute('/dashboard/')({
 })
 
 function Dashboard() {
-  const starEmployeeId = Math.floor(Math.random() * 50)
+  const starEmployeeId = Math.floor(Math.random() * 50 + 1)
 
   return (
     <ErrorBoundary>

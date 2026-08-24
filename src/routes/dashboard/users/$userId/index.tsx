@@ -66,7 +66,7 @@ function UserPage() {
             data?.firstName ? `${data.firstName} ${data.lastName}` : 'User'
           }
         />
-        {isLoading && <UserViewProfileSkeleton />}
+        {isLoading && <UserViewProfileSkeleton isUserProfile={false} />}
         {!isLoading && data && (
           <Card>
             {/* User main card */}

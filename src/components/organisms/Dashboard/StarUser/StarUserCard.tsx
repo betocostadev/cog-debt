@@ -13,6 +13,7 @@ import { getUserStatusIcon } from '#/utils/userHelper'
 
 export function StarUserCard({ employeeId }: { employeeId: number }) {
   const navigate = useNavigate()
+
   const { data, isLoading, error } = useGetUser({
     options: {},
     id: Number(employeeId),
@@ -35,8 +36,10 @@ export function StarUserCard({ employeeId }: { employeeId: number }) {
     toast.error(error.message)
     return (
       <ErrorBoundary>
-        <div>
-          <p>Error when loading employee of the quarter: {employeeId}</p>
+        <div className="flex flex-col self-center my-2 px-2 overflow-auto">
+          <p className="text-red-400 font-light text-lg py-2">
+            Error loading colaborator: {employeeId}
+          </p>
           {error.message && <pre>Error: {error.message}</pre>}
         </div>
       </ErrorBoundary>

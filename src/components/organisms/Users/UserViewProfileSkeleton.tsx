@@ -1,6 +1,6 @@
 import { Card } from '#/components/atoms/Card/Card'
 
-export function UserViewProfileSkeleton() {
+export function UserViewProfileSkeleton({ isUserProfile = false }) {
   return (
     <Card>
       {/* User main card skeleton */}
@@ -47,6 +47,12 @@ export function UserViewProfileSkeleton() {
         <div className="h-6 w-36 rounded bg-slate-700 my-2" />
         <div className="h-4 w-56 rounded bg-slate-700/70 pb-2" />
       </section>
+
+      {isUserProfile && (
+        <section className="flex self-end px-2 animate pulse">
+          <div className="h-10 w-30 rounded bg-slate-700 my-2" />
+        </section>
+      )}
     </Card>
   )
 }

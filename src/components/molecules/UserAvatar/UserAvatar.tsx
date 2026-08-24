@@ -18,12 +18,12 @@ export function UserAvatar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const goToProfile = () => {
-    navigate({ to: '/dashboard/profile' })
+    navigate({ to: '/dashboard/profile', viewTransition: true })
     setIsDropdownOpen(false)
   }
 
   const goToAbout = () => {
-    navigate({ to: '/dashboard/about' })
+    navigate({ to: '/dashboard/about', viewTransition: true })
     setIsDropdownOpen(false)
   }
 
