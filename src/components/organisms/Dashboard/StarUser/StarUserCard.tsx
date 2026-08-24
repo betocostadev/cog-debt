@@ -58,7 +58,7 @@ export function StarUserCard({ employeeId }: { employeeId: number }) {
               iconColor="palegoldenrod"
             />
             <p className="sm:text-md mb-4 md:text-lg pl-2">
-              Meet our Employee of the Quarter
+              Meet one of our Star Colaborators
             </p>
           </div>
           <div className="flex self-start truncate">
@@ -70,7 +70,7 @@ export function StarUserCard({ employeeId }: { employeeId: number }) {
               <p>{data.email}</p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 self-start mt-6 md:mt-0">
+          <div className="flex flex-col gap-2 self-start mt-6 md:mt-2 md:self-center">
             <div className="flex gap-4 mt-2 items-center">
               <p className="flex gap-2 items-center">
                 <LazyIcon icon={icons.Info} size={16} ariaLabel="User status" />
