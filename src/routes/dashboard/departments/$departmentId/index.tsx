@@ -48,31 +48,37 @@ function RouteComponent() {
 
   return (
     <ErrorBoundary>
-      <BackButton />
-      {data && (
-        <div className="mt-5 overflow-auto mr-4 pr-8">
-          <div className="flex gap-4 mt-2 items-center">
-            <LazyIcon
-              icon={getDeptIcon(data.departmentKey).icon}
-              iconColor={getDeptIcon(data.departmentKey).color}
-              size={30}
-            />
-            <h2 className="text-2xl">{data.title}</h2>
+      <div className="p-2">
+        <BackButton />
+        {data && (
+          <div className="overflow-auto mx-auto p-2">
+            <div className="flex gap-4 mt-2 items-center">
+              <LazyIcon
+                icon={getDeptIcon(data.departmentKey).icon}
+                iconColor={getDeptIcon(data.departmentKey).color}
+                size={30}
+              />
+              <h2 className="text-2xl">{data.title}</h2>
+            </div>
+            <div className="my-4">
+              <p className="text-xl text-slate-300">
+                Department of {data.title}
+              </p>
+              {data.description && (
+                <p className="mt-2 text-slate-400 italic">{data.description}</p>
+              )}
+            </div>
+            <div className="w-full pt-4">
+              <Card>
+                <p className="font-thin">
+                  Some of our team at this department:
+                </p>
+                <DeptUsersTable departmentTitle={data.title} />
+              </Card>
+            </div>
           </div>
-          <div className="my-4">
-            <p className="text-xl text-slate-300">Department of {data.title}</p>
-            {data.description && (
-              <p className="mt-2 text-slate-400 italic">{data.description}</p>
-            )}
-          </div>
-          <div className="w-full pt-4">
-            <Card>
-              <p className="font-thin">Some of our team at this department:</p>
-              <DeptUsersTable departmentTitle={data.title} />
-            </Card>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </ErrorBoundary>
   )
 }

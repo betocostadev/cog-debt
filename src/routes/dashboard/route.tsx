@@ -38,7 +38,7 @@ function DashboardLayout() {
       <div className="flex">
         {!isMobile && <SideMenu />}
 
-        <main className="mx-auto w-full max-w-7xl py-4 px-2 md:px-12 [view-transition-name:main-content]">
+        <main className="mx-auto w-full max-w-7xl py-4 p-2 [view-transition-name:main-content]">
           <Outlet />
         </main>
       </div>

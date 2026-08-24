@@ -148,7 +148,7 @@ export function UsersTable({ initialParams }: { initialParams: TUserSearch }) {
         onStatusChange={handleStatusChange}
       />
 
-      <div className="container mx-auto pb-6">
+      <div className="container mx-auto pb-4">
         <DataTable
           columns={columns}
           data={tableData.users}

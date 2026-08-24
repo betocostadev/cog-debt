@@ -15,7 +15,7 @@ export function Card({
       onClick={onClick}
     >
       <div
-        className={`mx-auto p-2 mr-4 md:mr-2 md:p-4 ${innerClass ? innerClass : 'flex max-w-6xl flex-col gap-4 rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30'} `}
+        className={`mx-auto p-2 md:mr-2 md:p-4 ${innerClass ? innerClass : 'flex max-w-6xl flex-col gap-4 rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30'} `}
       >
         {children}
       </div>

@@ -1,5 +1,6 @@
 import { Card } from '#/components/atoms/Card/Card'
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
+import { PageTitle } from '#/components/atoms/PageTitle/PageTitle'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { useGetCompanyDepartments } from '#/hooks/company/useCompany'
 import { getDeptIcon } from '#/utils/departmentHelper'
@@ -63,38 +64,40 @@ function RouteComponent() {
 
   return (
     <ErrorBoundary>
-      <h2 className="text-xl font-bold mb-2">Departments</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full p-2 pr-4 md:pr-6">
-        {deptsData?.departments &&
-          deptsData.departments.map((dept) => {
-            const { icon, color } = getDeptIcon(dept.departmentKey)
-            return (
-              <Card
-                key={dept.id}
-                outerClass="bg-background text-foreground"
-                innerClass="flex gap-6 items-center rounded-2xl border border-white/10 bg-surface p-5 shadow-2xl shadow-black/30 hover:shadow-slate-200 hover:shadow-sm hover:cursor-pointer"
-                onClick={() => goToDepartment(dept.id!)}
-              >
-                <LazyIcon icon={icon} iconColor={color} size={40} />
-                <div className="flex flex-col gap-4">
-                  <div>
-                    <h4 className="text-lg">{dept.title}</h4>
+      <PageTitle title="Departments" />
+      <div className="p-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full">
+          {deptsData?.departments &&
+            deptsData.departments.map((dept) => {
+              const { icon, color } = getDeptIcon(dept.departmentKey)
+              return (
+                <Card
+                  key={dept.id}
+                  outerClass="bg-background text-foreground"
+                  innerClass="flex gap-6 items-center rounded-2xl border border-white/10 bg-surface p-5 shadow-2xl shadow-black/30 hover:shadow-slate-200 hover:shadow-sm hover:cursor-pointer"
+                  onClick={() => goToDepartment(dept.id!)}
+                >
+                  <LazyIcon icon={icon} iconColor={color} size={40} />
+                  <div className="flex flex-col gap-4">
+                    <div>
+                      <h4 className="text-lg">{dept.title}</h4>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-secondary font-light">
+                        Department roles: {dept.functions.length}
+                      </p>
+                      <p className="text-secondary font-light">
+                        Open positions: {Math.floor(Math.random() * 5)}
+                      </p>
+                      <p className="text-secondary font-light">
+                        Employees: {dept.numberOfEmployees}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-secondary font-light">
-                      Department roles: {dept.functions.length}
-                    </p>
-                    <p className="text-secondary font-light">
-                      Open positions: {Math.floor(Math.random() * 5)}
-                    </p>
-                    <p className="text-secondary font-light">
-                      Employees: {dept.numberOfEmployees}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            )
-          })}
+                </Card>
+              )
+            })}
+        </div>
       </div>
     </ErrorBoundary>
   )

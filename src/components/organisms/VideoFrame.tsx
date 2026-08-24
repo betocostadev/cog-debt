@@ -16,7 +16,7 @@ export function VideoFrame({
   return (
     <ErrorBoundary>
       <div className="text-md my-8 text-secondary">
-        {title && <p className="font-semibold text-lg pt-2">{title}</p>}
+        {title && <p className="font-semibold text-lg">{title}</p>}
         {subtitle && <p className="font-thin text-md pt-2">{subtitle}</p>}
       </div>
       <iframe

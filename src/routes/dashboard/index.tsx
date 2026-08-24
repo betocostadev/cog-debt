@@ -1,3 +1,4 @@
+import { PageTitle } from '#/components/atoms/PageTitle/PageTitle'
 import { ToTopButton } from '#/components/molecules/Buttons/ToTopButton'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { StarUserCard } from '#/components/organisms/Dashboard/StarUser/StarUserCard'
@@ -24,8 +25,8 @@ function Dashboard() {
 
   return (
     <ErrorBoundary>
-      <div className="w-full">
-        <h2 className="text-xl font-bold">Dashboard</h2>
+      <>
+        <PageTitle title="Dashboard" />
         <div className="flex mt-4 gap-4 flex-col lg:flex-row">
           <UserByDepartmentChart />
 
@@ -34,8 +35,10 @@ function Dashboard() {
             <StarUserCard employeeId={starEmployeeId} />
           </div>
         </div>
-        <div className="sm:w-full lg:w-4/5 items-center mx-auto pt-6">
-          <h3 className="text-lg sm:mt-6 font-bold">Cog Debt on the media</h3>
+        <div className="sm:w-full lg:w-4/5 items-center mx-auto pt-6 px-2">
+          <h3 className="text-lg sm:mt-6 mt-4 font-bold">
+            Cog Debt on the media
+          </h3>
 
           <div className="mb-10">
             {dashboardVideos.map((vid) => (
@@ -52,7 +55,7 @@ function Dashboard() {
             <ToTopButton />
           </div>
         </div>
-      </div>
+      </>
     </ErrorBoundary>
   )
 }

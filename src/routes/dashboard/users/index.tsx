@@ -3,6 +3,7 @@ import { UsersTable } from '#/components/organisms/UsersTable/UsersTable'
 import { Card } from '#/components/atoms/Card/Card'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { userSearchSchema } from '#/types/users'
+import { PageTitle } from '#/components/atoms/PageTitle/PageTitle'
 
 export const Route = createFileRoute('/dashboard/users/')({
   validateSearch: userSearchSchema,
@@ -21,7 +22,7 @@ function RouteComponent() {
 
   return (
     <ErrorBoundary>
-      <h2 className="text-xl font-bold mb-2">Colaborators</h2>
+      <PageTitle title="Colaborators" />
       <Card>
         <UsersTable initialParams={searchParams} />
       </Card>

@@ -69,7 +69,7 @@ export function UsersTableHeader({
 
   return (
     <ErrorBoundary>
-      <div className="flex mb-2 items-center flex-col sm:flex-row pl-1 pr-4">
+      <div className="flex mb-2 items-center flex-col sm:flex-row pl-1 pr-2 pt-2">
         <div className="w-full sm:w-4/6 pr-4">
           <InputText
             id="search-field"
