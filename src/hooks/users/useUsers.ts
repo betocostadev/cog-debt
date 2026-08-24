@@ -83,6 +83,7 @@ interface UseDummyUsersResult extends BaseResult {
 
 interface UseUsersResult extends BaseResult {
   data?: UsersResponse
+  isFetching: boolean
 }
 
 interface UseUserResult extends BaseResult {
@@ -143,13 +144,15 @@ export const useGetUsers = ({
 }: UseUsersOptions = {}): UseUsersResult => {
   const queryKey = useMemo(() => usersQueryKeys.list(params), [params])
 
-  const { data, isLoading, error, refetch } = useQuery({
+  // Return isFetching, as it triggers even with previous data
+  // so it can trigger UI states such as disabled, etc.
+  const { data, isLoading, isFetching, error, refetch } = useQuery({
     queryKey,
     queryFn: useUsersQueryFn,
     enabled: autoload,
     refetchInterval,
     refetchOnReconnect: true,
-    // placeholderData: keepPreviousData,
+    placeholderData: (previousData) => previousData,
     staleTime: TEN_MINUTES,
     gcTime: TWO_HOURS,
   })
@@ -171,6 +174,7 @@ export const useGetUsers = ({
   return {
     data,
     isLoading,
+    isFetching,
     error: usersError,
     refresh,
   }

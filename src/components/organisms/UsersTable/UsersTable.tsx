@@ -1,11 +1,6 @@
-import type { Statuses, TUserSearch, UserTableRow } from '#/types/users'
-import type {
-  ColumnDef,
-  PaginationState,
-  SortingState,
-} from '@tanstack/react-table'
+import type { TUserSearch, UserTableRow } from '#/types/users'
+import type { ColumnDef } from '@tanstack/react-table'
 import { UsersTableHeader } from './TableHeader'
-import { useGetUsers } from '#/hooks/users/useUsers'
 import { useMemo } from 'react'
 import { UserAvatarImage } from '#/components/atoms/UserAvatarImage/UserAvatarImage'
 import { UserStatusRow } from '#/components/atoms/UserStatus/UserStatusRow'
@@ -14,7 +9,7 @@ import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { DataTable } from '#/components/molecules/Table/DataTable'
 import { SortableColumnHeader } from '#/components/molecules/Table/SortableColumnHeader'
 import { toast } from 'sonner'
-import { useNavigate } from '@tanstack/react-router'
+import { useUsersTable } from '#/hooks/users/useUsersTable'
 
 export const columns: ColumnDef<UserTableRow>[] = [
   {
@@ -93,86 +88,20 @@ export const columns: ColumnDef<UserTableRow>[] = [
 ]
 
 export function UsersTable({ initialParams }: { initialParams: TUserSearch }) {
-  const navigate = useNavigate()
-
-  // TODO: Extract table logic to useUsersTable hook
-  const pagination: PaginationState = {
-    pageIndex: (initialParams.offset ?? 0) / (initialParams.limit ?? 10),
-    pageSize: initialParams.limit ?? 10,
-  }
-
-  const sorting: SortingState = [
-    {
-      id: initialParams.orderBy ?? 'id',
-      desc: initialParams.reverse ?? false,
-    },
-  ]
-
-  const searchQuery = initialParams.where ?? ''
-  const statusFilter = initialParams.status ?? 'All'
-
-  const updateSearchParams = (updates: Record<string, any>) => {
-    navigate({
-      to: '/dashboard/users',
-      search: (prev) => ({
-        ...prev,
-        ...updates,
-      }),
-      replace: true,
-    })
-  }
-
-  const handleSearchChange = (val: string) => {
-    updateSearchParams({
-      where: val || undefined, // clear param if empty string
-      offset: 0, // reset to page 1 on search change
-    })
-  }
-
-  const handleStatusChange = (val: Statuses | 'All') => {
-    updateSearchParams({
-      status: val,
-      offset: 0, // reset to page 1 on filter change
-    })
-  }
-
-  const handlePaginationChange = (updaterOrValue: any) => {
-    const newPagination =
-      typeof updaterOrValue === 'function'
-        ? updaterOrValue(pagination)
-        : updaterOrValue
-
-    updateSearchParams({
-      limit: newPagination.pageSize,
-      offset: newPagination.pageIndex * newPagination.pageSize,
-    })
-  }
-
-  const handleSortingChange = (updaterOrValue: any) => {
-    const newSorting =
-      typeof updaterOrValue === 'function'
-        ? updaterOrValue(sorting)
-        : updaterOrValue
-
-    const currentSort = newSorting[0] || { id: 'id', desc: false }
-    updateSearchParams({
-      orderBy: currentSort.id,
-      reverse: currentSort.desc,
-      offset: 0,
-    })
-  }
-
-  const { data, isLoading, error } = useGetUsers({
-    autoload: true,
-    params: {
-      limit: initialParams.limit ?? 10,
-      offset: initialParams.offset ?? 0,
-      where: initialParams.where ?? '',
-      status: initialParams.status ?? 'All',
-      orderBy: initialParams.orderBy ?? 'id',
-      reverse: initialParams.reverse ?? false,
-    },
-  })
+  const {
+    data,
+    isLoading,
+    isFetching,
+    error,
+    searchQuery,
+    handleSearchChange,
+    statusFilter,
+    handleStatusChange,
+    pagination,
+    handlePaginationChange,
+    sorting,
+    handleSortingChange,
+  } = useUsersTable({ initialParams })
 
   const formattedUsers: UserTableRow[] = useMemo(() => {
     if (!data?.users) return []
@@ -212,7 +141,7 @@ export function UsersTable({ initialParams }: { initialParams: TUserSearch }) {
   return (
     <ErrorBoundary>
       <UsersTableHeader
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
         statusFilter={statusFilter}
@@ -223,7 +152,7 @@ export function UsersTable({ initialParams }: { initialParams: TUserSearch }) {
         <DataTable
           columns={columns}
           data={tableData.users}
-          isLoading={isLoading}
+          isLoading={isLoading || isFetching}
           rowCount={tableData.total}
           pagination={pagination}
           onPaginationChange={handlePaginationChange}
