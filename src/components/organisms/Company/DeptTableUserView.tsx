@@ -9,6 +9,7 @@ export function DeptTableUserView({ userId }: { userId: number }) {
     navigate({
       to: '/dashboard/users/$userId',
       params: { userId: String(userId) },
+      viewTransition: { types: ['slide-left'] },
     })
   }
 
