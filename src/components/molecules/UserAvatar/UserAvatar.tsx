@@ -81,7 +81,7 @@ export function UserAvatar() {
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {image ? (
-          <UserAvatarImage src={image} alt={userName} />
+          <UserAvatarImage src={image} alt={userName} size="xs" />
         ) : (
           <LazyIcon icon={icons.User} size={18} />
         )}

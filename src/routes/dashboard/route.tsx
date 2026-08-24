@@ -1,6 +1,7 @@
 import { NotFoundAuth } from '#/components/molecules/NotFound/NotFoundAuth'
 import { Header } from '#/components/organisms/MainLayout/Header'
 import { SideMenu } from '#/components/organisms/MainLayout/SideMenu'
+import { useIsMobile } from '#/hooks/useIsMobile'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard')({
@@ -28,12 +29,14 @@ export const Route = createFileRoute('/dashboard')({
 })
 
 function DashboardLayout() {
+  const isMobile = useIsMobile()
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
 
       <div className="flex">
-        <SideMenu />
+        {!isMobile && <SideMenu />}
 
         <main className="mx-auto w-full max-w-7xl py-4 px-2 md:px-12 [view-transition-name:main-content]">
           <Outlet />

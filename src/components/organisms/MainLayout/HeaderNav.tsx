@@ -1,9 +1,8 @@
-import { useState } from 'react'
-import { NavbarItem } from '#/components/molecules/NavbarItem'
-
 import LazyIcon from '#/components/atoms/Icons/LazyIcon'
-import { icons } from '#/utils/icons'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
+import { NavbarItem } from '#/components/molecules/NavbarItem'
+import { icons } from '#/utils/icons'
+import { useState } from 'react'
 
 const items = [
   {
@@ -28,20 +27,29 @@ const items = [
   },
 ]
 
-export function SideMenu() {
+export function HeaderNav() {
   const [collapsed, setCollapsed] = useState(true)
+
+  const handleBlur: React.FocusEventHandler<HTMLDivElement> = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setCollapsed(true)
+    }
+  }
 
   return (
     <ErrorBoundary>
-      <aside
+      <div
         className={`
-        sticky top-16 border-r border-default border-slate-600 bg-neutral-primary-soft
-        transition-all duration-300 h-lvh z-30
-        ${collapsed ? 'w-16' : 'w-56'}
-      `}
+          absolute right-0 top-full bg-background/90 shadow-xl border border-slate-600 rounded-l-md
+          transition-all duration-300 ease-in-out z-40 overflow-hidden
+          ${collapsed ? 'w-14 h-14' : 'w-48 h-auto pb-4'}
+        `}
+        onBlur={handleBlur}
       >
         <div
-          className={`flex items-center p-3 transition-all duration-300 z-30 ${collapsed ? 'justify-center' : 'justify-end'}`}
+          className={`flex p-3 items-center transition-all duration-300 ${
+            collapsed ? 'justify-center' : 'justify-end'
+          }`}
         >
           <span
             className={`transition-opacity duration-300 whitespace-nowrap ${
@@ -61,18 +69,25 @@ export function SideMenu() {
           </button>
         </div>
 
-        <nav className="px-3">
-          <ul className="space-y-2">
+        <nav className="px-2">
+          <ul
+            className={`space-y-2 transition-opacity duration-300 ${
+              collapsed
+                ? 'opacity-0 pointer-events-none invisible'
+                : 'opacity-150 visible'
+            }`}
+          >
             {items.map((item) => (
               <NavbarItem
                 key={`nav-${item.to}`}
                 {...item}
                 collapsed={collapsed}
+                collapse={() => setCollapsed(true)}
               />
             ))}
           </ul>
         </nav>
-      </aside>
+      </div>
     </ErrorBoundary>
   )
 }

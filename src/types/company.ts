@@ -2,9 +2,9 @@ export interface ICompanyDepartment {
   id?: number
   departmentKey: string
   title: string
+  description?: string
   functions: string[]
   numberOfEmployees: number
-  description?: string
 }
 
 export const departments = {
