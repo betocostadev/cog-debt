@@ -16,7 +16,7 @@ describe('Debouncer function', () => {
     debounced()
     expect(callCount).toBe(0)
 
-    await new Promise((r) => setTimeout(r, 100))
+    await new Promise((r) => setTimeout(r, 75))
     expect(callCount).toBe(1)
   })
 
@@ -24,16 +24,16 @@ describe('Debouncer function', () => {
     let callCount = 0
     const debounced = debounce(() => {
       callCount++
-    }, 50)
+    }, 40)
 
     debounced()
-    await new Promise((r) => setTimeout(r, 30))
+    await new Promise((r) => setTimeout(r, 20))
     debounced()
-    await new Promise((r) => setTimeout(r, 30))
+    await new Promise((r) => setTimeout(r, 20))
 
     expect(callCount).toBe(0) // Still waiting
 
-    await new Promise((r) => setTimeout(r, 50))
+    await new Promise((r) => setTimeout(r, 40))
     expect(callCount).toBe(1)
   })
 
@@ -41,13 +41,13 @@ describe('Debouncer function', () => {
     let result = ''
     const debounced = debounce((msg: string) => {
       result = msg
-    }, 50)
+    }, 30)
 
     debounced('a')
     debounced('aba')
     debounced('abaca')
 
-    await new Promise((r) => setTimeout(r, 100))
+    await new Promise((r) => setTimeout(r, 50))
     expect(result).toBe('abaca')
   })
 })
