@@ -22,9 +22,9 @@ function LoginPage() {
         </div>
       </header>
 
-      <main className="flex items-center px-6 py-8 sm:m-0">
+      <main className="flex items-center px-4 py-6 sm:m-0">
         <div className="mx-auto max-w-4xl">
-          <Card>
+          <Card innerClass="flex max-w-6xl flex-col gap-4 p-4 md:p-6 rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30">
             <h2 className="mt-4 text-2xl md:text-4xl font-semibold tracking-tight">
               Welcome to Cog Debt
             </h2>
@@ -38,7 +38,7 @@ function LoginPage() {
             <Link
               to="/help"
               viewTransition={{ types: ['slide-left'] }}
-              className="mt-6 inline-flex text-white underline"
+              className="self-end mt-6 pb-2 inline-flex text-white underline"
             >
               Help
             </Link>

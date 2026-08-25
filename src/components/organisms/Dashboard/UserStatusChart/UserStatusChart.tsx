@@ -33,8 +33,8 @@ const ChartLabel = (props: LabelProps) => (
     {...props}
     fill={colors[(props.index ?? 0) % colors.length]}
     position="outside"
-    offset={15} // Distance from center
-    angle={-2} // Angle the labels
+    offset={12} // Distance from center
+    angle={-15} // Angle the labels
   />
 )
 
@@ -74,8 +74,8 @@ export function UserStatusChart({ isAnimationActive = true }) {
   return (
     <ErrorBoundary>
       <div
-        className="flex flex-col w-full md:mx-auto p-4 rounded-xl border border-white/10 bg-surface shadow-lg gap-4"
-        style={{ maxWidth: '550px' }}
+        className="flex flex-col w-full p-2 md:p-4 rounded-xl border border-white/10 bg-surface shadow-lg gap-4"
+        style={{ maxWidth: '700px' }}
       >
         <div className="flex flex-col gap-1">
           <h3 className="text-lg font-semibold text-foreground">
@@ -89,9 +89,9 @@ export function UserStatusChart({ isAnimationActive = true }) {
           <PieChart
             style={{
               width: '100%',
-              maxWidth: '550px',
-              maxHeight: '80vh',
-              aspectRatio: 1.8,
+              maxWidth: '700px',
+              maxHeight: '100vh',
+              aspectRatio: 1.6,
             }}
             responsive
           >

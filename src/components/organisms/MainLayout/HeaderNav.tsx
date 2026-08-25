@@ -40,7 +40,7 @@ export function HeaderNav() {
     <ErrorBoundary>
       <div
         className={`
-          absolute right-0 top-full bg-background/90 shadow-xl border border-slate-600 rounded-l-md
+          absolute right-0 top-full bg-background/90 shadow-xl border border-white/10 rounded-l-md
           transition-all duration-300 ease-in-out z-40 overflow-hidden
           ${collapsed ? 'w-14 h-14' : 'w-48 h-auto pb-4'}
         `}

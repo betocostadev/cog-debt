@@ -17,21 +17,13 @@ function Help() {
     staleTime: 1000 * 60,
   })
 
-  if (isLoading) {
-    return (
-      <div className="p-4 h-full">
-        <p className="text-2xl mb-4">Loading data...</p>
-      </div>
-    )
-  }
-
   if (error) {
     return <RouteError error={error} />
   }
 
   return (
-    <Card innerClass="flex flex-col gap-2 rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30">
-      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight [view-transition-name:main-content]">
+    <Card innerClass="flex flex-col gap-2 p-4 sm:p-6 m-2 rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30">
+      <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight [view-transition-name:main-content]">
         Cognitive Debt
       </h1>
 
@@ -53,28 +45,36 @@ function Help() {
       </a>
 
       <p className="text-lg font-bold">TLDR:</p>
-      <p>Fine, use the credentials below:</p>
-      <p>User: emilys</p>
-      <p>Pass: emilyspass</p>
+      <p>Fine, to login just use the credentials below</p>
+      <p>
+        <strong>User:</strong> emilys
+      </p>
+      <p>
+        <strong>Pass:</strong> emilyspass
+      </p>
 
       <Link
         to="/"
-        className="text-white cursor-pointer underline"
+        className="text-blue-400 font-light cursor-pointer underline"
         viewTransition
       >
         Go to Login
       </Link>
 
-      <p className="text-xl font-bold mt-4 mb-2">Health check Dummy JSON</p>
-      {data && (
-        <Badge className="text-lg md:text-xl mb-4">
-          Dummy JSON API status:{' '}
-          <span
-            className={`mx-2 ${data.status === 'ok' ? 'text-green-500' : 'text-red-500'}`}
-          >
-            {data.status}
-          </span>
-        </Badge>
+      <p className="text-xl mt-4 mb-2">Health check Dummy JSON</p>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        data && (
+          <Badge className="text-lg md:text-xl mb-4">
+            Dummy JSON API status:{' '}
+            <span
+              className={`mx-2 ${data.status === 'ok' ? 'text-green-500' : 'text-red-500'}`}
+            >
+              {data.status}
+            </span>
+          </Badge>
+        )
       )}
     </Card>
   )

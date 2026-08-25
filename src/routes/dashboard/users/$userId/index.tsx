@@ -66,7 +66,7 @@ function UserPage() {
             data?.firstName ? `${data.firstName} ${data.lastName}` : 'User'
           }
         />
-        {isLoading && <UserViewProfileSkeleton isUserProfile={false} />}
+        {isLoading && <UserViewProfileSkeleton />}
         {!isLoading && data && (
           <Card>
             {/* User main card */}
@@ -88,7 +88,7 @@ function UserPage() {
                   <p>{data.phone}</p>
                 </div>
               </div>
-              <div className="flex mt-0 sm:flex-col gap-2 pr-2">
+              <div className="flex mt-4 sm:mt-0 sm:flex-col gap-2 pr-2">
                 <p className="flex gap-2 items-center">
                   <LazyIcon
                     icon={icons.Info}
@@ -111,11 +111,11 @@ function UserPage() {
             {/* Company Data */}
             <section className="px-2 py-2">
               <h3 className="text-xl py-2">Cognitive debt information</h3>
-              <div className="flex justify-between pb-2">
+              <div className="grid grid-cols-2 gap-2 pb-2">
                 <p>Department: {data.company.department}</p>
                 <p>Role: {data.company.jobTitle}</p>
               </div>
-              <div className="flex justify-between pb-2">
+              <div className="grid grid-cols-2 gap-2 pb-2">
                 <p>Admission Date: {getAdmissionDate(data.admissionDate)}</p>
                 <p>Salary: {getFormattedSalary(data.salary)}</p>
               </div>

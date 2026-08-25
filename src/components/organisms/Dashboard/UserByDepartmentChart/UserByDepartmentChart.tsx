@@ -108,7 +108,7 @@ export function UserByDepartmentChart() {
   return (
     <ErrorBoundary>
       <div
-        className="flex flex-col w-full p-4 rounded-xl border border-white/10 bg-surface shadow-lg gap-4"
+        className="flex flex-col w-full p-2 md:p-4 rounded-xl border border-white/10 bg-surface shadow-lg gap-4"
         style={{ maxWidth: '700px' }}
       >
         <div className="flex flex-col gap-1">
@@ -132,10 +132,10 @@ export function UserByDepartmentChart() {
               data={chartData}
               onClick={(e) => handleDeptClick(e as unknown as ChartTarget)}
               margin={{
-                top: 12,
-                right: 30,
-                left: 30, // Expanded left margin to fit department names safely
-                bottom: 4,
+                top: 0,
+                right: 12,
+                left: 20, // Expanded left margin to fit department names safely
+                bottom: -10,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
@@ -161,7 +161,7 @@ export function UserByDepartmentChart() {
               <XAxis type="number" />
 
               {/* 3. YAxis becomes the category axis displaying department names */}
-              <YAxis dataKey="name" type="category" width={100} />
+              <YAxis dataKey="name" type="category" width={90} />
 
               <Bar
                 dataKey="employees"
@@ -175,7 +175,7 @@ export function UserByDepartmentChart() {
             </BarChart>
 
             {data?.departments && (
-              <p className="text-sm text-muted-foreground pt-6">
+              <p className="text-sm text-muted-foreground pt-4 text-center">
                 Cog Debt Work force:{' '}
                 {data.departments.reduce(
                   (acc, cur) => acc + cur.numberOfEmployees,

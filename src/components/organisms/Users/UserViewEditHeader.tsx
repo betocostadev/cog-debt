@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { DeleteUserDialog } from './DeleteUserDialog'
 import { useDeleteUser } from '#/hooks/users/useUsers'
 import { toast } from 'sonner'
+import { useIsMobile } from '#/hooks/useIsMobile'
 
 interface IUserViewEditHeaderProps {
   isLoading: boolean
@@ -23,6 +24,7 @@ export function UserViewEditHeader({
   const navigate = useNavigate()
   const location = useLocation()
   const isEditPage = location.pathname.includes('/edit')
+  const isMobile = useIsMobile()
 
   const { deleteUser, isPending, isError, error } = useDeleteUser()
 
@@ -50,14 +52,14 @@ export function UserViewEditHeader({
 
   return (
     <>
-      <div className="flex justify-between pb-4 pr-2">
-        <div className="self-start pl-2">
+      <div className="flex pb-4 justify-baseline sm:justify-between">
+        <div className="self-start pl-1 md:pl-2">
           <BackButton />
         </div>
-        <div className="flex justify-end flex-col sm:flex-row text-sm sm:text-md">
+        <div className="flex flex-row text-sm sm:text-md pl-4">
           {!isEditPage && (
             <BaseButton
-              label="Edit"
+              label={isMobile ? 'Edt.' : 'Edit'}
               variant="primary"
               className="mx-2 mb-2 sm:mb-0"
               iconLeft={icons.SquarePen}
@@ -66,8 +68,8 @@ export function UserViewEditHeader({
             />
           )}
           <BaseButton
-            label="Delete"
-            className="bg-red-400 mx-2 hover:bg-red-500"
+            label={isMobile ? 'Del.' : 'Delete'}
+            className="mx-2 mb-2 sm:mb-0 bg-red-400 hover:bg-red-500"
             iconLeft={icons.Trash2}
             disabled={isLoading || !hasData || isPending}
             onClick={handleDeleteDropdown}
