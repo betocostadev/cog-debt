@@ -73,16 +73,14 @@ export const useGetCompanyDepartments = ({
 
   const departmentsError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
-    if (error instanceof NotFoundError) {
-      toast.error(error.message)
-      return error
-    } else if (error instanceof ServerError) {
-      toast.error(error.message)
-      return error
-    } else {
-      toast.error(error.message)
+
+    toast.error(error.message)
+
+    if (error instanceof NotFoundError || error instanceof ServerError) {
       return error
     }
+
+    return error
   }, [error])
 
   return {
@@ -119,13 +117,14 @@ export const useGetDepartmentById = ({
 
   const departmentError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
+
+    toast.error(error.message)
+
     if (error instanceof NotFoundError || error instanceof ServerError) {
-      toast.error(error.message)
-      return error
-    } else {
-      toast.error(error.message)
       return error
     }
+
+    return error
   }, [error])
 
   return {

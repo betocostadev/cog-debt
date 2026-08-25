@@ -248,7 +248,9 @@ export const useUpdateUser = () => {
             return isUserListQueryKey(queryKey)
           },
         })
+
         toast.success(`User ${user.firstName} ${user.lastName} updated`)
+
         navigate({
           to: '/dashboard/users/$userId',
           params: { userId: String(user.id!) },
@@ -291,7 +293,6 @@ export const useAddUser = () => {
           },
         })
 
-        // toast.success(`${variables.firstName} ${variables.lastName} added`)
         navigate({
           to: '/dashboard/users/$userId',
           params: { userId: String(user) },
@@ -332,6 +333,7 @@ export const useDeleteUser = () => {
             return isUserListQueryKey(queryKey)
           },
         })
+
         toast.success(`User with ID: ${variables} has been removed`)
         navigate({
           to: '/dashboard/users',

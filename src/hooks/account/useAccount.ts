@@ -8,7 +8,7 @@ import { useCallback, useMemo } from 'react'
 import { useAuthUserQueryFn } from './useAccountQueries'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { NotFoundError, ServerError, TokenExpiredError } from '#/types/errors'
+import { NotFoundError, ServerError } from '#/types/errors'
 import { THIRDY_MINUTES } from '#/utils/constants'
 
 export interface UseAccountOptions {
@@ -50,13 +50,8 @@ export const useLogin = () => {
     onError: (error: any) => {
       if (!error) return undefined
 
-      if (
-        error instanceof TokenExpiredError ||
-        error instanceof NotFoundError ||
-        error instanceof ServerError
-      ) {
-        return error
-      }
+      toast.error(error.message)
+      return error
     },
   })
 
@@ -94,6 +89,8 @@ export const useGetAuthUser = (
 
   const authUserError = useMemo<Error | undefined>(() => {
     if (!error) return undefined
+
+    toast.error(error.message)
 
     if (error instanceof NotFoundError || error instanceof ServerError) {
       return error

@@ -37,8 +37,8 @@ export function LoginForm() {
         if (error instanceof TokenExpiredError) {
           toast.error('Session expired, please log in again.')
         } else {
-          console.error(error)
           toast.error(error?.message)
+          console.error(error)
         }
       }
     }, 1000),

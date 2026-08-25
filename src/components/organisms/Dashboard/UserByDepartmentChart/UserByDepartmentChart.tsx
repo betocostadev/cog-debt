@@ -132,9 +132,9 @@ export function UserByDepartmentChart() {
               data={chartData}
               onClick={(e) => handleDeptClick(e as unknown as ChartTarget)}
               margin={{
-                top: 0,
-                right: 12,
-                left: 20, // Expanded left margin to fit department names safely
+                top: 2,
+                right: 18,
+                left: 24, // Expanded left margin to fit department names safely
                 bottom: -10,
               }}
             >
