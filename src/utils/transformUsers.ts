@@ -12,33 +12,33 @@ function getRandomBase(length: number) {
   return Math.floor(Math.random() * length)
 }
 
-function getUserAddress() {
-  const locations = {
-    saoPaulo: {
-      state: 'SP',
-      cities: ['São Paulo', 'Campinas', 'Osasco'],
-    },
-    curitiba: {
-      state: 'PR',
-      cities: ['Curitiba', 'Londrina', 'Ponta Grossa'],
-    },
-    porto: {
-      state: 'PT',
-      cities: ['Porto', 'Maia', 'Vila Nova de Gaia'],
-    },
-    lisbon: {
-      state: 'LB',
-      cities: ['Lisboa', 'Almada', 'Cascais'],
-    },
-  }
+export const dummyLocations = {
+  saoPaulo: {
+    state: 'SP',
+    cities: ['São Paulo', 'Campinas', 'Osasco'],
+  },
+  curitiba: {
+    state: 'PR',
+    cities: ['Curitiba', 'Londrina', 'Ponta Grossa'],
+  },
+  porto: {
+    state: 'PT',
+    cities: ['Porto', 'Maia', 'Vila Nova de Gaia'],
+  },
+  lisbon: {
+    state: 'LB',
+    cities: ['Lisboa', 'Almada', 'Cascais'],
+  },
+}
 
-  const states = Object.keys(locations) as (keyof typeof locations)[]
+function getUserAddress() {
+  const states = Object.keys(dummyLocations) as (keyof typeof dummyLocations)[]
 
   const matchState = states[getRandomBase(states.length)]
-  const randomCity = locations[matchState].cities[getRandomBase(3)]
+  const randomCity = dummyLocations[matchState].cities[getRandomBase(3)]
 
   return {
-    state: locations[matchState].state,
+    state: dummyLocations[matchState].state,
     city: randomCity,
   }
 }

@@ -63,7 +63,7 @@ export interface DummyUser {
   address: DummyAddress
   macAddress: string
   university: string
-  bank: DummyBank
+  bank?: DummyBank
   company: DummyCompany
   ein: string
   ssn: string
