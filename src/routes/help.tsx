@@ -1,5 +1,6 @@
 import { Badge } from '#/components/atoms/Badge/Badge'
 import { Card } from '#/components/atoms/Card/Card'
+import { ExternalLink } from '#/components/atoms/ExternalLink'
 
 import { healthCheckService } from '#/services/apiHealthCheck'
 import { useQuery } from '@tanstack/react-query'
@@ -35,14 +36,10 @@ function Help() {
         You can get user credentials by using any of the provided Dummy JSON
         users here:
       </p>
-      <a
-        href="https://dummyjson.com/users"
-        rel="noreferrer"
-        target="_blank"
-        className="text-blue-400 font-light cursor-pointer underline"
-      >
-        Dummy JSON users
-      </a>
+      <ExternalLink
+        link="https://dummyjson.com/users"
+        title="Dummy JSON users"
+      />
 
       <p className="text-lg font-bold">TLDR:</p>
       <p>Fine, to login just use the credentials below</p>

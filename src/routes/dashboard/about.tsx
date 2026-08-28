@@ -1,5 +1,6 @@
 import { AppDiagSvg } from '#/components/atoms/AppDiagSvg'
 import { Card } from '#/components/atoms/Card/Card'
+import { ExternalLink } from '#/components/atoms/ExternalLink'
 import { Logo } from '#/components/atoms/Icons/Logo'
 import { PageTitle } from '#/components/atoms/PageTitle/PageTitle'
 import { ToTopButton } from '#/components/molecules/Buttons/ToTopButton'
@@ -30,23 +31,12 @@ function RouteComponent() {
         <p>
           Cognitive Debt is an <em>Open Source project</em> based on a fictional
           company. It was created as a mentorship project provided by{' '}
-          <a
-            href="https://www.aubay.pt/en"
-            rel="noreferrer"
-            target="_blank"
-            className="text-blue-400 font-light cursor-pointer underline"
-          >
-            Aubay Portugal
-          </a>{' '}
+          <ExternalLink link="https://www.aubay.pt/en" title="Aubay Portugal" />{' '}
           to help me{' '}
-          <a
-            href="https://github.com/betocostadev/betocostadev"
-            rel="noreferrer"
-            target="_blank"
-            className="text-blue-400 font-light cursor-pointer underline"
-          >
-            (Roberto Costa)
-          </a>{' '}
+          <ExternalLink
+            link="https://github.com/betocostadev/betocostadev"
+            title="(Roberto Costa)"
+          />
           recover my skills in development after a long and extensive project
           using too much AI and without any idea back then, generating a
           personal "Cognitive Debt" by forgetting lots of programming
@@ -79,14 +69,10 @@ function RouteComponent() {
         </p>
         <p>
           Mentorship was kindly provided by{' '}
-          <a
-            href="https://github.com/flaviodamaiajr"
-            rel="noreferrer"
-            target="_blank"
-            className="text-blue-400 font-light cursor-pointer underline"
-          >
-            Flávio da Maia Jr
-          </a>{' '}
+          <ExternalLink
+            link="https://github.com/flaviodamaiajr"
+            title="Flávio da Maia Jr"
+          />
           who followed my development closely during the entire project to
           understand and give me advice on my decisions. And to give me tips
           about many things such as using libraries like Dexie.js to handle
@@ -94,29 +80,20 @@ function RouteComponent() {
         </p>
         <p>
           The source code of the project can be found{' '}
-          <a
-            href="https://github.com/betocostadev/cog-debt"
-            rel="noreferrer"
-            target="_blank"
-            className="text-blue-400 font-light cursor-pointer underline"
-          >
-            here
-          </a>
-          .
+          <ExternalLink
+            link="https://github.com/betocostadev/cog-debt"
+            title="here"
+          />
         </p>
       </Card>
       <div className="w-full">
         <h3 className="text-lg font-bold my-4">How Cognitive Debt Works?</h3>
         <p>
           Cognitive Debt uses{' '}
-          <a
-            href="https://dummyjson.com/docs/users#users-limit_skip"
-            rel="noreferrer"
-            target="_blank"
-            className="text-blue-400 font-light cursor-pointer underline"
-          >
-            DummyJson
-          </a>{' '}
+          <ExternalLink
+            link="https://dummyjson.com/docs/users#users-limit_skip"
+            title="DummyJson"
+          />
           service for a simulation of an "Authentication method". Then it
           fetches the first 50 Users using Axios, and finally it starts using
           Dexie.js.
