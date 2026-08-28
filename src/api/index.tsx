@@ -60,7 +60,7 @@ export class ApiClient {
     const searchParams = new URLSearchParams()
 
     Object.entries(params).forEach(([key, value]) => {
-      const valid = value !== undefined && value !== null && value !== ''.length
+      const valid = value !== undefined && value !== null && value !== ''
       if (valid) {
         searchParams.set(key, String(value))
       }
