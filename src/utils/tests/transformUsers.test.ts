@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { dummyLocations, transformDummyUsers } from '../transformUsers'
-import { dummyUsers } from './dummyUsers.mock'
+import { dummyUsers } from '../dummyUsers.mock'
 import { Statuses } from '#/types/users'
 
 describe('Transform Users', () => {

@@ -74,4 +74,5 @@ db.version(3)
     }
   })
 
+// When adding migrations, make sure to also update the test matcher for version number
 export { db }
