@@ -18,7 +18,8 @@ export function ExternalLink({ link, title }: ExternalLinkProps) {
         {title}
         <LazyIcon
           icon={icons.SquareArrowOutUpRight}
-          iconClassName="mx-2 inline"
+          iconClassName="ml-1 mr-2 inline"
+          size={16}
         />
       </a>
     </>

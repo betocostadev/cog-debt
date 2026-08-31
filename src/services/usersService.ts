@@ -28,6 +28,13 @@ const USER_LIST_FIELDS = [
 const USER_LIST_SELECT = USER_LIST_FIELDS.join(',')
 
 export class UsersService extends ApiClient {
+  private isDevelopment: boolean
+
+  constructor() {
+    super()
+
+    this.isDevelopment = import.meta.env.DEV
+  }
   // Uses online DummyJSON data for the first time
   // Feeds users to IndexedDB using Dexie
   // https://dummyjson.com/docs/users#users-limit_skip
@@ -96,7 +103,9 @@ export class UsersService extends ApiClient {
         .limit(limit)
         .toArray()
 
-      await responseDelay(500)
+      console.log('isDevelopment?', this.isDevelopment)
+
+      if (this.isDevelopment) await responseDelay(500)
 
       return { total, users }
     } catch (error) {
@@ -116,7 +125,7 @@ export class UsersService extends ApiClient {
         throw new NotFoundError(`Unable to fetch user with ID: ${id}.`)
       }
 
-      await responseDelay(500)
+      if (this.isDevelopment) await responseDelay(500)
 
       return user
     } catch (error) {
@@ -179,7 +188,7 @@ export class UsersService extends ApiClient {
 
       const updated = await db.users.update(Number(id), updatedUser)
 
-      await responseDelay(500)
+      if (this.isDevelopment) await responseDelay(500)
 
       if (updated) {
         return updatedUser
@@ -220,7 +229,7 @@ export class UsersService extends ApiClient {
 
       await companyService.incrementDepartmentCount(newUser.company.department)
 
-      await responseDelay(500)
+      if (this.isDevelopment) await responseDelay(500)
 
       if (newUserId) {
         return newUserId
@@ -252,7 +261,7 @@ export class UsersService extends ApiClient {
       if (deleteCount === 0)
         throw new Error(`Failed to delete user with id: ${id}`)
 
-      await responseDelay(500)
+      if (this.isDevelopment) await responseDelay(500)
 
       return deleteCount
     } catch (error) {
@@ -287,7 +296,7 @@ export class UsersService extends ApiClient {
         (user) => user.status === Statuses.ONLEAVE,
       )
 
-      await responseDelay(500)
+      if (this.isDevelopment) await responseDelay(500)
 
       return {
         total: allUsers.length,

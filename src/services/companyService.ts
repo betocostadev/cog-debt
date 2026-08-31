@@ -43,7 +43,7 @@ export class CompanyService extends ApiClient {
         .limit(limit)
         .toArray()
 
-      await responseDelay(1000)
+      if (import.meta.env.DEV) await responseDelay(500)
 
       return {
         total,
