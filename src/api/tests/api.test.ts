@@ -8,28 +8,7 @@ import {
   TokenExpiredError,
 } from '#/types/errors'
 import { TEN_SECONDS_IN_MILLI } from '#/utils/constants'
-
-const localStorageMock = (() => {
-  let store: Record<string, string> = {}
-  return {
-    getItem: vi.fn((key: string) => store[key] || null),
-    setItem: vi.fn((key: string, value: string) => {
-      store[key] = String(value)
-    }),
-    removeItem: vi.fn((key: string) => {
-      delete store[key]
-    }),
-    clear: vi.fn(() => {
-      store = {}
-    }),
-  }
-})()
-
-// Bind it to global/window scope before importing store module
-globalThis.localStorage = localStorageMock as any
-
-// eslint-disable-next-line import/first
-import store from '#/utils/store'
+import { mockStore } from '#/utils/testUtils'
 
 const { mockInterceptors } = vi.hoisted(() => {
   return {
@@ -95,13 +74,13 @@ describe('ApiClient', () => {
     })
 
     it('should attach Auth header if store.jwt exists', () => {
-      store.jwt = 'mock-jwt-token'
+      mockStore.jwt = 'mock-jwt-token'
       const config = { headers: {} as Record<string, string> }
 
       const modConfig = mockInterceptors.requestHandler(config)
       expect(modConfig.headers.Authorization).toBe('Bearer mock-jwt-token')
 
-      store.jwt = ''
+      mockStore.jwt = ''
     })
   })
 
