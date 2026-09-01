@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { accountService } from '../accountService'
 import { NotFoundError, ServerError } from '#/types/errors'
-import { mockStore } from '#/utils/testStore'
+import { mockStore } from '#/test/testStore'
 
 vi.mock('#/api', async () => {
   const actual = await vi.importActual('#/api')

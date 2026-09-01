@@ -8,7 +8,7 @@ import {
   TokenExpiredError,
 } from '#/types/errors'
 import { TEN_SECONDS_IN_MILLI } from '#/utils/constants'
-import { mockStore } from '#/utils/testStore'
+import { mockStore } from '#/test/testStore'
 
 const { mockInterceptors } = vi.hoisted(() => {
   return {

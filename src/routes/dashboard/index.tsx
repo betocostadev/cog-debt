@@ -26,7 +26,7 @@ function Dashboard() {
   return (
     <ErrorBoundary>
       <>
-        <PageTitle title="Dashboard" />
+        <PageTitle title="Dashboard" data-testid="dashboard-title" />
         <div className="flex mt-4 gap-4 flex-col lg:flex-row">
           <UserByDepartmentChart />
 

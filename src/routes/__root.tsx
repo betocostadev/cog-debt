@@ -57,9 +57,13 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   notFoundComponent: () => <NotFoundGeneral />,
 })
 
+function FeedDbBootstrap() {
+  useFeedDb()
+  return null
+}
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { queryClient } = Route.useRouteContext()
-  useFeedDb()
 
   return (
     <html lang="en">
@@ -69,6 +73,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
+            <FeedDbBootstrap />
             <div className="min-h-screen bg-background text-foreground">
               {children}
             </div>
