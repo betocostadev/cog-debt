@@ -11,7 +11,7 @@ import {
 // https://tanstack.com/router/latest/docs/how-to/test-file-based-routing
 
 // Import the generated route tree
-import { routeTree } from '../routeTree.gen'
+import { routeTree } from '#/routeTree.gen'
 import { getAuthContextValue } from '#/contexts/authContext'
 import { QueryClient } from '@tanstack/react-query'
 

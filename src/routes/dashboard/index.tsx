@@ -4,7 +4,6 @@ import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { StarUserCard } from '#/components/organisms/Dashboard/StarUser/StarUserCard'
 import { UserByDepartmentChart } from '#/components/organisms/Dashboard/UserByDepartmentChart/UserByDepartmentChart'
 import { UserStatusChart } from '#/components/organisms/Dashboard/UserStatusChart/UserStatusChart'
-
 import { VideoFrame } from '#/components/organisms/VideoFrame'
 import { dashboardVideos } from '#/utils/videoSources'
 import { createFileRoute } from '@tanstack/react-router'

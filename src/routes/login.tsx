@@ -13,7 +13,7 @@ export const Route = createFileRoute('/login')({
   component: LoginPage,
 })
 
-export function LoginPage() {
+function LoginPage() {
   return (
     <div
       data-testid="login-page-container"

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
 import { routeTree } from '#/routeTree.gen'
+import { describe, it, expect } from 'vitest'
 
 // https://tanstack.com/router/latest/docs/how-to/test-file-based-routing
 

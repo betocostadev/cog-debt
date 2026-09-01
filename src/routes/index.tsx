@@ -19,7 +19,7 @@ export const Route = createFileRoute('/')({
   },
 })
 
-export function Home() {
+function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-white/10 bg-background/90 px-6 py-4 backdrop-blur">

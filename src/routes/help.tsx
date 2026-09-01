@@ -10,7 +10,7 @@ export const Route = createFileRoute('/help')({
   component: Help,
 })
 
-export function Help() {
+function Help() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['dummyData'],
     queryFn: () => healthCheckService.checkApiHealth(),
