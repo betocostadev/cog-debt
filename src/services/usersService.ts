@@ -103,8 +103,6 @@ export class UsersService extends ApiClient {
         .limit(limit)
         .toArray()
 
-      console.log('isDevelopment?', this.isDevelopment)
-
       if (this.isDevelopment) await responseDelay(500)
 
       return { total, users }

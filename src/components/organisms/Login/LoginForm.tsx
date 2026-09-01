@@ -3,9 +3,9 @@ import { credentialsSchema } from '#/types/account'
 import { useLogin } from '#/hooks/account/useAccount'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { InputText } from '../molecules/Form/InputText'
-import { InputPassword } from '../molecules/Form/InputPassword'
-import { BaseButton } from '../atoms/Buttons/BaseButton'
+import { InputText } from '../../molecules/Form/InputText'
+import { InputPassword } from '../../molecules/Form/InputPassword'
+import { BaseButton } from '../../atoms/Buttons/BaseButton'
 import { useId, useRef } from 'react'
 import { throttle } from '#/utils/throttle'
 import { TokenExpiredError } from '#/types/errors'
@@ -24,8 +24,6 @@ export function LoginForm() {
     resolver: zodResolver(credentialsSchema),
   })
 
-  // username: 'emilys',
-  // password: 'emilyspass',
   // Added for better controlling the firing function for throttling
   const throttledSubmitRef = useRef(
     throttle(async (data: TCredentialsOutput) => {
@@ -45,9 +43,13 @@ export function LoginForm() {
   )
 
   return (
-    <form onSubmit={handleSubmit((data) => throttledSubmitRef.current(data))}>
+    <form
+      onSubmit={handleSubmit((data) => throttledSubmitRef.current(data))}
+      data-testid="login-form"
+    >
       <InputText
         id={usernameId}
+        data-testid="field-username"
         label="Username"
         placeholder="Your user name"
         error={errors.username?.message}
@@ -57,6 +59,7 @@ export function LoginForm() {
 
       <InputPassword
         id={passId}
+        data-testid="field-password"
         label="Password"
         error={errors.password?.message}
         disabled={isPending}
@@ -64,6 +67,7 @@ export function LoginForm() {
       />
       <div className="mt-6 flex flex-wrap gap-3">
         <BaseButton
+          data-testid="login-submit-btn"
           type="submit"
           label="Login"
           variant="primary"
