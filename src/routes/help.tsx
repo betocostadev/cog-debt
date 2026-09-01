@@ -10,7 +10,7 @@ export const Route = createFileRoute('/help')({
   component: Help,
 })
 
-function Help() {
+export function Help() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['dummyData'],
     queryFn: () => healthCheckService.checkApiHealth(),
@@ -24,11 +24,14 @@ function Help() {
 
   return (
     <Card innerClass="flex flex-col gap-2 p-4 sm:p-6 m-2 rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/30">
-      <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight [view-transition-name:main-content]">
+      <h1
+        data-testid="help-page-header"
+        className="text-2xl sm:text-3xl font-semibold tracking-tight [view-transition-name:main-content]"
+      >
         Cognitive Debt
       </h1>
 
-      <p>
+      <p data-testid="help-text">
         Cognitive Debt is a "fake" company website. It uses Dummy JSON service
         for login.
       </p>
@@ -37,6 +40,7 @@ function Help() {
         users here:
       </p>
       <ExternalLink
+        testId="help-link-to-dummy"
         link="https://dummyjson.com/users"
         title="Dummy JSON users"
       />
@@ -51,6 +55,7 @@ function Help() {
       </p>
 
       <Link
+        data-testid="help-link-to-home"
         to="/"
         className="text-blue-400 font-light cursor-pointer underline"
         viewTransition
@@ -60,10 +65,10 @@ function Help() {
 
       <p className="text-xl mt-4 mb-2">Health check Dummy JSON</p>
       {isLoading ? (
-        <p>Loading...</p>
+        <p data-testid="help-loading-text">Loading...</p>
       ) : (
         data && (
-          <Badge className="text-lg md:text-xl mb-4">
+          <Badge data-testid="bogus" className="text-lg md:text-xl mb-4">
             Dummy JSON API status:{' '}
             <span
               className={`mx-2 ${data.status === 'ok' ? 'text-green-500' : 'text-red-500'}`}

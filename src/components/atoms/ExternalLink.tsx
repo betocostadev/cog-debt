@@ -4,13 +4,15 @@ import LazyIcon from './Icons/LazyIcon'
 type ExternalLinkProps = {
   link: string
   title: string
+  testId?: string
 }
 
-export function ExternalLink({ link, title }: ExternalLinkProps) {
+export function ExternalLink({ link, title, testId }: ExternalLinkProps) {
   return (
     <>
       <a
         href={link}
+        data-testid={testId}
         rel="noreferrer"
         target="_blank"
         className="text-blue-400 font-light cursor-pointer underline"
