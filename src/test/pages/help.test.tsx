@@ -1,7 +1,8 @@
 import { renderWithProviders } from '#/test/testUtils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Help } from '../help'
+
 import { screen } from '@testing-library/dom'
+import { Help } from '#/routes/help'
 
 describe('HelpPage', () => {
   beforeEach(() => {

@@ -2,7 +2,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
 import { renderWithProviders } from '#/test/testUtils'
-import { LoginPage } from '../login'
+import { LoginPage } from '#/routes/login'
 
 describe('LoginPage', () => {
   beforeEach(() => {
