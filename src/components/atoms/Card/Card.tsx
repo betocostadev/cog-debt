@@ -3,14 +3,17 @@ export function Card({
   outerClass,
   innerClass,
   onClick,
+  testId,
 }: {
   children: React.ReactNode
   outerClass?: string
   innerClass?: string
   onClick?: () => void
+  testId?: string
 }) {
   return (
     <div
+      data-testid={testId}
       className={`${outerClass ? outerClass : 'min-h-screen bg-background text-foreground'}`}
       onClick={onClick}
     >

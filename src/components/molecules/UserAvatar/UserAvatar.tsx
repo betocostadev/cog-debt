@@ -74,7 +74,12 @@ export function UserAvatar() {
   }
 
   return (
-    <div className="relative z-50" onBlur={handleBlur} data-handle="menu">
+    <div
+      className="relative z-50"
+      onBlur={handleBlur}
+      data-handle="menu"
+      data-testid="user-avatar-container"
+    >
       <button
         type="button"
         className="transition-opacity hover:opacity-80 cursor-pointer flex items-center gap-2"

@@ -1,4 +1,5 @@
 import type { DummyUser } from '#/types/dummyUsers'
+import { Statuses } from '#/types/users'
 
 export const dummyUsers = [
   {
@@ -90,3 +91,13 @@ export const dummyUsers = [
     },
   },
 ]
+
+export const mockUsersByStatusRes = {
+  total: 2,
+  usersByStatus: [
+    { name: Statuses.ACTIVE, value: 2 },
+    { name: Statuses.INACTIVE, value: 0 },
+    { name: Statuses.VACATION, value: 0 },
+    { name: Statuses.ONLEAVE, value: 0 },
+  ],
+}

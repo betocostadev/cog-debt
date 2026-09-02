@@ -34,7 +34,7 @@ export const useUserQueryFn = async (
   return user
 }
 
-export const useUsersByStatusQueryFN = async (): Promise<
+export const useUsersByStatusQueryFn = async (): Promise<
   UsersByStatusResponse | undefined
 > => {
   const users = usersService.getAllUsersStatus()

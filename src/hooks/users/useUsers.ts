@@ -18,7 +18,7 @@ import {
 import {
   useDummyUsersQueryFn,
   useUserQueryFn,
-  useUsersByStatusQueryFN,
+  useUsersByStatusQueryFn,
   useUsersQueryFn,
 } from './useUsersQueries'
 import {
@@ -370,7 +370,7 @@ export const useGetUsersByStatus = ({
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey,
-    queryFn: () => useUsersByStatusQueryFN(),
+    queryFn: () => useUsersByStatusQueryFn(),
     enabled: autoload,
     refetchInterval: refetchInterval,
     refetchOnReconnect: true,

@@ -53,6 +53,7 @@ export function StarUserCard({ employeeId }: { employeeId: number }) {
           onClick={viewEmployeeOfTheQuarter}
           outerClass="mt-4 p-2 bg-slate-800 rounded-2xl mx-auto sm:mx-auto sm:max-w-lg md:max-w-lg md:mx-auto"
           innerClass="w-full flex flex-col content-center justify-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20 cursor-pointer"
+          testId="star-user-container"
         >
           <div className="flex">
             <LazyIcon
