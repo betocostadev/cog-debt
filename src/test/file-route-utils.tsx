@@ -40,7 +40,7 @@ interface RenderWithFileRoutesOptions extends Omit<RenderOptions, 'wrapper'> {
   }>
 }
 
-export function renderWithFileRoutes(
+export async function renderWithFileRoutes(
   ui?: React.ReactElement,
   {
     initialLocation = '/',
@@ -67,10 +67,18 @@ export function renderWithFileRoutes(
     },
   })
 
-  const renderTarget = ui ?? <RouterProvider router={router} />
+  function Wrapper() {
+    // Note: When using a full routeTree, RouterProvider ignores `children`
+    // and renders the matched route instead.
+    return <RouterProvider router={router} />
+  }
+
+  const result = render(ui ?? <></>, { wrapper: Wrapper, ...renderOptions })
+
+  await router.load()
 
   return {
-    ...render(renderTarget, renderOptions),
+    result,
     router,
   }
 }
