@@ -74,11 +74,15 @@ export function UserStatusChart({ isAnimationActive = true }) {
   return (
     <ErrorBoundary>
       <div
+        data-testid="status-chart-container"
         className="flex flex-col w-full p-2 md:p-4 rounded-xl border border-white/10 bg-surface shadow-lg gap-4"
         style={{ maxWidth: '700px' }}
       >
         <div className="flex flex-col gap-1">
-          <h3 className="text-lg font-semibold text-foreground">
+          <h3
+            data-testid="status-chart-header"
+            className="text-lg font-semibold text-foreground"
+          >
             Employees by Status
           </h3>
           <p className="text-sm text-muted-foreground">
@@ -86,55 +90,63 @@ export function UserStatusChart({ isAnimationActive = true }) {
           </p>
         </div>
         {data && (
-          <PieChart
-            style={{
-              width: '100%',
-              maxWidth: '700px',
-              maxHeight: '100vh',
-              aspectRatio: 1.6,
-            }}
-            responsive
-          >
-            <defs>
-              <pattern
-                id="pattern-checkers"
-                x="0"
-                y="0"
-                width="10"
-                height="10"
-                patternUnits="userSpaceOnUse"
-              >
-                <rect className="checker" x="0" width="5" height="5" y="0" />
-                <rect className="checker" x="10" width="5" height="5" y="10" />
-              </pattern>
-            </defs>
-
-            <Tooltip
-              labelStyle={{ color: '#111827', fontWeight: 'bold' }}
-              contentStyle={{
-                backgroundColor: '#ffffff',
-                borderColor: '#e5e7eb',
-                borderRadius: '0.5rem',
-                color: '#374151',
+          <div data-testid="status-pie-chart" className="w-full">
+            <PieChart
+              style={{
+                width: '100%',
+                maxWidth: '700px',
+                maxHeight: '100vh',
+                aspectRatio: 1.6,
               }}
-              formatter={(value, name) => [
-                value,
-                typeof name === 'string'
-                  ? name.charAt(0).toUpperCase() + name.slice(1)
-                  : name,
-              ]}
-            />
-            <Pie
-              data={data.usersByStatus}
-              isAnimationActive={isAnimationActive}
-              shape={UsersPie}
-              onClick={(e) =>
-                handleStatusClick(e as unknown as TChartTargetPayload)
-              }
+              responsive
             >
-              <LabelList dataKey="name" content={ChartLabel} />
-            </Pie>
-          </PieChart>
+              <defs>
+                <pattern
+                  id="pattern-checkers"
+                  x="0"
+                  y="0"
+                  width="10"
+                  height="10"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <rect className="checker" x="0" width="5" height="5" y="0" />
+                  <rect
+                    className="checker"
+                    x="10"
+                    width="5"
+                    height="5"
+                    y="10"
+                  />
+                </pattern>
+              </defs>
+
+              <Tooltip
+                labelStyle={{ color: '#111827', fontWeight: 'bold' }}
+                contentStyle={{
+                  backgroundColor: '#ffffff',
+                  borderColor: '#e5e7eb',
+                  borderRadius: '0.5rem',
+                  color: '#374151',
+                }}
+                formatter={(value, name) => [
+                  value,
+                  typeof name === 'string'
+                    ? name.charAt(0).toUpperCase() + name.slice(1)
+                    : name,
+                ]}
+              />
+              <Pie
+                data={data.usersByStatus}
+                isAnimationActive={isAnimationActive}
+                shape={UsersPie}
+                onClick={(e) =>
+                  handleStatusClick(e as unknown as TChartTargetPayload)
+                }
+              >
+                <LabelList dataKey="name" content={ChartLabel} />
+              </Pie>
+            </PieChart>
+          </div>
         )}
       </div>
     </ErrorBoundary>

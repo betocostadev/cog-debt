@@ -2,7 +2,7 @@ import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
 import { icons } from '#/utils/icons'
 import { useCanGoBack, useRouter } from '@tanstack/react-router'
 
-export function BackButton() {
+export function BackButton({ testId }: { testId?: string }) {
   const router = useRouter()
   const canGoBack = useCanGoBack()
 
@@ -28,6 +28,7 @@ export function BackButton() {
           iconLeft={icons.ChevronLeft}
           className="bg-slate-700 hover:bg-slate-800 text-sm sm:text-md"
           onClick={goBack}
+          data-testid={testId}
         />
       )}
     </>

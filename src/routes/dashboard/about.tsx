@@ -174,7 +174,7 @@ function RouteComponent() {
         ))}
       </div>
       <div className="flex justify-center pb-4">
-        <ToTopButton />
+        <ToTopButton testId="to-top-btn" />
       </div>
     </ErrorBoundary>
   )

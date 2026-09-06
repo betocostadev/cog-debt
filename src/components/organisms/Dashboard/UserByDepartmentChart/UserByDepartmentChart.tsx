@@ -108,11 +108,15 @@ export function UserByDepartmentChart() {
   return (
     <ErrorBoundary>
       <div
+        data-testid="dept-chart-container"
         className="flex flex-col w-full p-2 md:p-4 rounded-xl border border-white/10 bg-surface shadow-lg gap-4"
         style={{ maxWidth: '700px' }}
       >
         <div className="flex flex-col gap-1">
-          <h3 className="text-lg font-semibold text-foreground">
+          <h3
+            data-testid="dept-chart-header"
+            className="text-lg font-semibold text-foreground"
+          >
             Employees by Department
           </h3>
           <p className="text-sm text-muted-foreground">
@@ -120,7 +124,7 @@ export function UserByDepartmentChart() {
           </p>
         </div>
         {chartData.length > 0 && (
-          <>
+          <div data-testid="dept-bar-chart" className="w-full">
             <BarChart
               layout="vertical" // 1. Switches the chart orientation to horizontal bars
               style={{
@@ -183,7 +187,7 @@ export function UserByDepartmentChart() {
                 )}
               </p>
             )}
-          </>
+          </div>
         )}
       </div>
     </ErrorBoundary>
