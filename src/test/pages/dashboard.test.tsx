@@ -128,15 +128,16 @@ describe('Dashboard route', () => {
     expect(pageTitle.textContent).toBe('Dashboard')
   })
 
-  it('renders Dashboard Side Menu and User Avatar', async () => {
+  it('renders Side Menu and User Avatar', async () => {
     await act(async () => {
       await renderWithFileRoutes(undefined, {
         initialLocation: '/dashboard',
       })
     })
 
-    // Get side menu and click
+    // TODO: Get side menu and click
 
+    // TODO: Get user avatar, click and view dropdown menu options
     const userAvatar = await screen.findByTestId('user-avatar-container')
 
     expect(userAvatar).toBeDefined()
@@ -146,7 +147,7 @@ describe('Dashboard route', () => {
     expect(userName.textContent).toBe(mockUser.firstName)
   })
 
-  it('renders Dashboard charts', async () => {
+  it('renders Users and Department charts', async () => {
     await act(async () => {
       await renderWithFileRoutes(undefined, {
         initialLocation: '/dashboard',
@@ -184,7 +185,7 @@ describe('Dashboard route', () => {
     expect(statusChart).toBeDefined()
   })
 
-  it('renders Dashboard Star User card', async () => {
+  it('renders Star User card', async () => {
     await act(async () => {
       await renderWithFileRoutes(undefined, {
         initialLocation: '/dashboard',
