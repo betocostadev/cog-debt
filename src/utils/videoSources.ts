@@ -17,6 +17,14 @@ export const dashboardVideos = [
     source: 'https://www.youtube.com/embed/Tk0hIOAwf6M?si=7mROThsYEpUBJVhV',
     videoTitle: 'AI Cognitive Debt"',
   },
+  {
+    id: 'dash-video-3',
+    title: 'AI is lying to developers - Here is what data actually shows.',
+    subtitle:
+      'TLDR: Software Developers think they are faster with AI, but data shows otherwise. More bugs, more problems, more code to review and yet less value. Worst is that we are actually being around 19% slower, not faster.',
+    source: 'https://www.youtube.com/embed/ukmtqi8IDpw?si=bdsruDN80e4tUKBg',
+    videoTitle: 'AI is Lying to Developers"',
+  },
 ]
 
 export const aboutVideos = [
