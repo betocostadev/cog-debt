@@ -17,7 +17,7 @@ export interface IAuthUser {
   username: string
   email: string
   phone?: string
-  role?: string
+  role?: 'admin' | 'moderator' | 'user' | ({} & string)
   firstName: string
   lastName: string
   gender: 'female' | 'male' | ({} & string)
