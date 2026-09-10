@@ -53,7 +53,7 @@ D --> E[Local Application State]
 
 **User Management**: Full CRUD (Create, Read, Update, Delete) capabilities for the user directory.
 
-**Department Management**: View comprehensive lists of departments and their associated employee hierarchies.
+**Department View**: View comprehensive lists of departments and their associated employee hierarchies.
 
 **Offline-First**: Robust local state management allowing for high-performance data operations without server round-trips.
 
@@ -82,3 +82,11 @@ Mentor: [Flávio da Maia Jr](https://github.com/flaviodamaiajr)
 Initiative: [Aubay Portugal](https://www.aubay.pt/en)
 
 [app-cover.jpeg]: app-cover.jpeg
+
+## Next improvements
+
+- [] User roles system
+- [] Updated actions based on user roles
+- [] Admin Page
+- [] Departments editing
+- [] End-to-end Tests with Playwright
