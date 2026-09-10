@@ -10,7 +10,7 @@ import { transformDummyUsers } from '#/utils/transformUsers'
 import { dummyUsers, mockUsersByStatusRes } from '#/utils/dummyUsers.mock'
 import type { IAuthUser } from '#/types/account'
 import { renderWithFileRoutes } from '../file-route-utils'
-import { screen } from '@testing-library/dom'
+import { fireEvent, screen } from '@testing-library/dom'
 import {
   useUserQueryFn,
   useUsersQueryFn,
@@ -19,6 +19,8 @@ import {
 } from '#/hooks/users/useUsersQueries'
 import type { IUser } from '#/types/users'
 import { act } from '@testing-library/react'
+import { useCompanyDepartmentsQueryFn } from '#/hooks/company/useCompanyQueries'
+import { mockedDepartments } from '#/utils/departments.mock'
 
 vi.mock('#/hooks/account/useAccountQueries', () => ({
   useAuthUserQueryFn: vi.fn(),
@@ -35,19 +37,11 @@ vi.mock('#/hooks/users/useUsersQueries', () => ({
     .mockResolvedValue({ total: 0, usersByStatus: [] }),
 }))
 
-// Mock DevTools at the top level to prevent JSDOM unmount crashes
-vi.mock('@tanstack/react-query-devtools', () => ({
-  ReactQueryDevtools: () => null,
-  ReactQueryDevtoolsPanel: () => null,
-}))
-
-vi.mock('@tanstack/router-devtools', () => ({
-  TanStackRouterDevtools: () => null,
-  TanStackRouterDevtoolsPanel: () => null,
-}))
-
-vi.mock('@tanstack/react-devtools', () => ({
-  TanStackDevtools: () => null,
+vi.mock('#/hooks/company/useCompanyQueries', () => ({
+  useCompanyDepartmentsQueryFn: vi
+    .fn()
+    .mockResolvedValue({ total: 0, departments: [] }),
+  useGetDepartmentByIdQueryFn: vi.fn().mockResolvedValue({}),
 }))
 
 // Mock Recharts ResponsiveContainer at top level so charts render immediately in JSDOM
@@ -108,6 +102,13 @@ describe('Dashboard route', () => {
     vi.mocked(useUserQueryFn).mockResolvedValue(mockedUsers![1])
 
     vi.mocked(useUsersByStatusQueryFn).mockResolvedValue(mockUsersByStatusRes)
+
+    // departments
+
+    vi.mocked(useCompanyDepartmentsQueryFn).mockResolvedValue({
+      total: mockedDepartments.length,
+      departments: mockedDepartments,
+    })
   })
 
   afterEach(() => {
@@ -128,16 +129,55 @@ describe('Dashboard route', () => {
     expect(pageTitle.textContent).toBe('Dashboard')
   })
 
-  it('renders Side Menu and User Avatar', async () => {
+  it('renders Side Menu and opens it', async () => {
     await act(async () => {
       await renderWithFileRoutes(undefined, {
         initialLocation: '/dashboard',
       })
     })
 
-    // TODO: Get side menu and click
+    const sideMenu = await screen.findByTestId('side-menu-container')
+    const sideMenuToggleBtn = await screen.findByTestId('toggle-side-menu-btn')
+    const sideMenuNav = await screen.findByTestId('side-menu-nav')
+    const menuTextSpan = screen.getByText('Menu')
 
-    // TODO: Get user avatar, click and view dropdown menu options
+    expect(sideMenu).toBeDefined()
+    expect(sideMenuToggleBtn).toBeDefined()
+
+    expect(menuTextSpan.classList).toContain('opacity-0')
+    expect(sideMenu.textContent).toBe('Menu')
+
+    expect(sideMenuToggleBtn.tagName).toBe('BUTTON')
+
+    expect(sideMenuNav).toBeDefined()
+    const sideMenuNavChildren = sideMenuNav.children
+    expect(sideMenuNavChildren).toBeTypeOf('object')
+
+    expect(sideMenuNav.firstElementChild?.tagName).toBe('UL')
+
+    expect(screen.queryByText('Home')).toBeNull()
+    expect(screen.queryByText('Colaborators')).toBeNull()
+    expect(screen.queryByText('Departments')).toBeNull()
+    expect(screen.queryByText('About')).toBeNull()
+
+    await act(async () => {
+      fireEvent.click(sideMenuToggleBtn)
+    })
+
+    expect(menuTextSpan.classList).toContain('opacity-100')
+    expect(screen.getByText('Home')).toBeDefined()
+    expect(screen.getByText('Colaborators')).toBeDefined()
+    expect(screen.getByText('Departments')).toBeDefined()
+    expect(screen.getByText('About')).toBeDefined()
+  })
+
+  it('renders User Avatar and opens dropdown', async () => {
+    await act(async () => {
+      await renderWithFileRoutes(undefined, {
+        initialLocation: '/dashboard',
+      })
+    })
+
     const userAvatar = await screen.findByTestId('user-avatar-container')
 
     expect(userAvatar).toBeDefined()
@@ -145,6 +185,21 @@ describe('Dashboard route', () => {
     const userName = await screen.findByText(mockUser.firstName)
     expect(userName).toBeDefined()
     expect(userName.textContent).toBe(mockUser.firstName)
+
+    expect(screen.queryByText('About')).toBeNull()
+    expect(screen.queryByText('Logout')).toBeNull()
+
+    const avatarBtn = await screen.findByTestId('user-avatar-btn')
+
+    expect(avatarBtn).toBeDefined()
+    expect(avatarBtn.tagName).toBe('BUTTON')
+
+    await act(async () => {
+      fireEvent.click(avatarBtn)
+    })
+
+    expect(screen.getByText('About')).toBeDefined()
+    expect(screen.getByText('Logout')).toBeDefined()
   })
 
   it('renders Users and Department charts', async () => {
@@ -154,6 +209,7 @@ describe('Dashboard route', () => {
       })
     })
 
+    // Departments chart
     const departmentChartContainer = await screen.findByTestId(
       'dept-chart-container',
     )
@@ -164,11 +220,11 @@ describe('Dashboard route', () => {
     expect(deptChartHeader).toBeDefined()
     expect(deptChartHeader.textContent).toBe('Employees by Department')
 
-    // TODO: Mock dept queryfn first
-    // const deptBarChart = await screen.findByTestId('dept-bar-chart')
+    const deptBarChart = await screen.findByTestId('dept-bar-chart')
 
-    // expect(deptBarChart).toBeDefined()
+    expect(deptBarChart).toBeDefined()
 
+    // Users status chart
     const statusChartContainer = await screen.findByTestId(
       'status-chart-container',
     )
@@ -196,5 +252,43 @@ describe('Dashboard route', () => {
     expect(starUserContainer).toBeDefined()
   })
 
-  it('renders media and to top button', async () => {})
+  it('renders media and to top button', async () => {
+    await act(async () => {
+      await renderWithFileRoutes(undefined, {
+        initialLocation: '/dashboard',
+      })
+    })
+
+    const mediaSection = await screen.findByTestId('dashboard-media-section')
+    expect(mediaSection).toBeDefined()
+    expect(mediaSection.tagName).toBe('SECTION')
+
+    const mediaHeader = await screen.findByTestId('dashboard-media-header')
+    expect(mediaHeader).toBeDefined()
+    expect(mediaHeader.textContent).toMatch(/the media/i)
+
+    const videosContainer = await screen.findByTestId(
+      'dashboard-videos-container',
+    )
+    expect(videosContainer).toBeDefined()
+
+    const toTopBtn = await screen.findByTestId('to-top-btn')
+    expect(toTopBtn).toBeDefined()
+    expect(toTopBtn.tagName).toBe('BUTTON')
+
+    const scrollToSpy = vi
+      .spyOn(window, 'scrollTo')
+      .mockImplementation(() => {})
+
+    await act(async () => {
+      fireEvent.click(toTopBtn)
+    })
+
+    expect(scrollToSpy).toHaveBeenCalled()
+    expect(scrollToSpy).toHaveBeenCalledWith({
+      top: 10,
+      left: 0,
+      behavior: 'smooth',
+    })
+  })
 })

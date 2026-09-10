@@ -34,12 +34,18 @@ function Dashboard() {
             <StarUserCard employeeId={starEmployeeId} />
           </div>
         </div>
-        <div className="sm:w-full lg:w-4/5 items-center mx-auto pt-6 px-2">
-          <h3 className="text-lg sm:mt-6 mt-4 font-bold">
+        <section
+          data-testid="dashboard-media-section"
+          className="sm:w-full lg:w-4/5 items-center mx-auto pt-6 px-2"
+        >
+          <h3
+            data-testid="dashboard-media-header"
+            className="text-lg sm:mt-6 mt-4 font-bold"
+          >
             Cog Debt on the media
           </h3>
 
-          <div className="mb-10">
+          <div className="mb-10" data-testid="dashboard-videos-container">
             {dashboardVideos.map((vid) => (
               <VideoFrame
                 key={vid.id}
@@ -53,7 +59,7 @@ function Dashboard() {
           <div className="flex justify-center pb-4">
             <ToTopButton testId="to-top-btn" />
           </div>
-        </div>
+        </section>
       </>
     </ErrorBoundary>
   )

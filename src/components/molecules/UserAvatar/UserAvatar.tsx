@@ -81,6 +81,7 @@ export function UserAvatar() {
       data-testid="user-avatar-container"
     >
       <button
+        data-testid="user-avatar-btn"
         type="button"
         className="transition-opacity hover:opacity-80 cursor-pointer flex items-center gap-2"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}

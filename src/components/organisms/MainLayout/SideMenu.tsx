@@ -34,6 +34,7 @@ export function SideMenu() {
   return (
     <ErrorBoundary>
       <aside
+        data-testid="side-menu-container"
         className={`
         sticky top-16 border-r border-default border-slate-600 bg-neutral-primary-soft
         transition-all duration-300 h-lvh z-30
@@ -53,15 +54,16 @@ export function SideMenu() {
             Menu
           </span>
           <button
+            data-testid="toggle-side-menu-btn"
             onClick={() => setCollapsed((value) => !value)}
-            className="rounded-base p-2 hover:bg-neutral-tertiary cursor-pointer"
+            className="rounded-base p-2 pl-1 hover:bg-neutral-tertiary cursor-pointer"
             aria-label="Toggle Menu"
           >
             <LazyIcon icon={icons.Hamburger} size={18} />
           </button>
         </div>
 
-        <nav className="px-3">
+        <nav data-testid="side-menu-nav" className="px-3">
           <ul className="space-y-2">
             {items.map((item) => (
               <NavbarItem
