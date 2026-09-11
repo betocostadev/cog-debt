@@ -22,27 +22,11 @@ import { act } from '@testing-library/react'
 import { useCompanyDepartmentsQueryFn } from '#/hooks/company/useCompanyQueries'
 import { mockedDepartments } from '#/utils/departments.mock'
 
-vi.mock('#/hooks/account/useAccountQueries', () => ({
-  useAuthUserQueryFn: vi.fn(),
-}))
+vi.mock('#/hooks/account/useAccountQueries')
 
-vi.mock('#/hooks/users/useUsersQueries', () => ({
-  useDummyUsersQueryFn: vi
-    .fn()
-    .mockResolvedValue({ total: 0, skip: 0, limit: 10, users: [] }),
-  useUsersQueryFn: vi.fn().mockResolvedValue({ total: 0, users: [] }),
-  useUserQueryFn: vi.fn().mockResolvedValue({}),
-  useUsersByStatusQueryFn: vi
-    .fn()
-    .mockResolvedValue({ total: 0, usersByStatus: [] }),
-}))
+vi.mock('#/hooks/users/useUsersQueries')
 
-vi.mock('#/hooks/company/useCompanyQueries', () => ({
-  useCompanyDepartmentsQueryFn: vi
-    .fn()
-    .mockResolvedValue({ total: 0, departments: [] }),
-  useGetDepartmentByIdQueryFn: vi.fn().mockResolvedValue({}),
-}))
+vi.mock('#/hooks/company/useCompanyQueries')
 
 // Mock Recharts ResponsiveContainer at top level so charts render immediately in JSDOM
 vi.mock('recharts', async (importOriginal) => {
