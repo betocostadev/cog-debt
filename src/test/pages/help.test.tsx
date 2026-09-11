@@ -2,6 +2,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { screen } from '@testing-library/dom'
 import { renderWithFileRoutes } from '../file-route-utils'
+import { act } from '@testing-library/react'
 
 describe('HelpPage', () => {
   beforeEach(() => {
@@ -9,8 +10,10 @@ describe('HelpPage', () => {
   })
 
   it('renders main help layout and texts', async () => {
-    renderWithFileRoutes(undefined, {
-      initialLocation: '/help',
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/help',
+      })
     })
 
     const helpHeader = await screen.findByTestId('help-page-header')
@@ -24,9 +27,12 @@ describe('HelpPage', () => {
   })
 
   it('renders help page links with correct destination', async () => {
-    renderWithFileRoutes(undefined, {
-      initialLocation: '/help',
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/help',
+      })
     })
+
     const linkToDummy = await screen.findByTestId('help-link-to-dummy')
     expect(linkToDummy).toBeDefined()
     expect(linkToDummy.getAttribute('href')).toBe('https://dummyjson.com/users')
@@ -39,8 +45,10 @@ describe('HelpPage', () => {
   })
 
   it('renders loading paragraph when loading', async () => {
-    renderWithFileRoutes(undefined, {
-      initialLocation: '/help',
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/help',
+      })
     })
 
     const loadingP = await screen.findByTestId('help-loading-text')

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { renderWithFileRoutes } from '../file-route-utils'
 
 describe('LoginPage', () => {
@@ -9,8 +9,10 @@ describe('LoginPage', () => {
   })
 
   it('renders the main login layout containers and texts', async () => {
-    renderWithFileRoutes(undefined, {
-      initialLocation: '/',
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/',
+      })
     })
 
     const loginContainer = await screen.findByTestId('login-page-container')
@@ -28,16 +30,20 @@ describe('LoginPage', () => {
   })
 
   it('renders the LoginForm component', async () => {
-    renderWithFileRoutes(undefined, {
-      initialLocation: '/',
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/',
+      })
     })
 
     expect(await screen.findByTestId('login-form')).toBeDefined()
   })
 
   it('renders the Help link with the correct destination', async () => {
-    renderWithFileRoutes(undefined, {
-      initialLocation: '/',
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/',
+      })
     })
 
     const helpLink = await screen.findByTestId('help-link')
