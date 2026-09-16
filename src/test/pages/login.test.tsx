@@ -52,4 +52,19 @@ describe('LoginPage', () => {
     expect(helpLink.textContent).toBe('Help')
     expect(helpLink.getAttribute('href')).toBe('/help')
   })
+
+  it('renders lazy login section', async () => {
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/',
+      })
+    })
+
+    const guestContainer = await screen.findByTestId('login-as-guest-container')
+    expect(guestContainer).toBeDefined()
+
+    const guestBtn = await screen.findByTestId('login-as-guest-btn')
+    expect(guestBtn).toBeDefined()
+    expect(guestBtn.textContent.includes('as guest')).toBeTruthy()
+  })
 })

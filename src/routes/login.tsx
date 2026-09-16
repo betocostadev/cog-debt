@@ -81,6 +81,7 @@ function LoginPage() {
             >
               <p>Ok, too lazy?</p>
               <BaseButton
+                data-testid="login-as-guest-btn"
                 variant="secondary"
                 label="Login as guest"
                 onClick={loginAsGuest}
