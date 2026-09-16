@@ -1,6 +1,10 @@
 import { Card } from '#/components/atoms/Card/Card'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { LoginForm } from '#/components/organisms/Login/LoginForm'
+import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
+import { useLogin } from '#/hooks/account/useAccount'
+import { TokenExpiredError } from '#/types/errors'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/login')({
   head: () => ({
@@ -14,6 +18,24 @@ export const Route = createFileRoute('/login')({
 })
 
 function LoginPage() {
+  const { login, isPending, isError, error } = useLogin()
+  // Test credentials for "Jackson - Evans" - NOT sensitive info.
+
+  const loginAsGuest = async () => {
+    await login({
+      username: 'jacksone',
+      password: 'jacksonepass',
+    })
+    if (isError) {
+      if (error instanceof TokenExpiredError) {
+        toast.error('Session expired, please log in again.')
+      } else {
+        toast.error(error?.message)
+        console.error(error)
+      }
+    }
+  }
+
   return (
     <div
       data-testid="login-page-container"
@@ -52,6 +74,19 @@ function LoginPage() {
             >
               Help
             </Link>
+
+            <div
+              data-testid="login-as-guest-container"
+              className="flex justify-between"
+            >
+              <p>Ok, too lazy?</p>
+              <BaseButton
+                variant="secondary"
+                label="Login as guest"
+                onClick={loginAsGuest}
+                disabled={isPending}
+              />
+            </div>
           </Card>
         </div>
       </main>

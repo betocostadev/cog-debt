@@ -8,6 +8,7 @@ import { UserStatusChartSkeleton } from './UserStatusChartSkeleton'
 import { useNavigate } from '@tanstack/react-router'
 import type { Statuses } from '#/types/users'
 import { toast } from 'sonner'
+import { useFeedDb } from '#/hooks/useFeedDb'
 
 type TChartTargetPayload = {
   payload: {
@@ -43,6 +44,11 @@ export function UserStatusChart({ isAnimationActive = true }) {
   const { data, isLoading, error } = useGetUsersByStatus({
     options: { autoload: true, refetchInterval: TEN_MINUTES },
   })
+
+  // Failsafe for dashboard in case o DB is empty
+  if (!isLoading && !error && data?.total === 0) {
+    useFeedDb()
+  }
 
   if (isLoading) {
     return <UserStatusChartSkeleton />
