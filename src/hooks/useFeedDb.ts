@@ -7,6 +7,8 @@ import { transformDummyUsers } from '#/utils/transformUsers'
 import { seedUserTableData } from '#/db/seedUserData'
 import { seedCompanyTableData } from '#/db/seedCompanyData'
 import { departments } from '#/types/company'
+import { seedSettingsTableData } from '#/db/seedDefaultSettings'
+import { defaultSettings } from '#/utils/defaultSettings'
 
 export const useFeedDb = () => {
   // Not good here as It is live: https://dexie.org/docs/dexie-react-hooks/useLiveQuery()
@@ -17,6 +19,9 @@ export const useFeedDb = () => {
 
   const fetchDbUsers = async () => {
     await db.open()
+
+    await seedSettingsTableData(defaultSettings)
+
     const dbUsers = await db.users.toArray()
     if (dbUsers.length < 1) setHasUsers(true)
   }
