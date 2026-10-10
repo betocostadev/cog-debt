@@ -16,6 +16,11 @@ class AccountService extends ApiClient {
 
       store.jwt = userData.accessToken
 
+      const userInfo = await this.getAuthUser()
+      if (userInfo.role) {
+        userData.role = userInfo.role
+      }
+
       return userData
     } catch (error) {
       throw new ServerError(

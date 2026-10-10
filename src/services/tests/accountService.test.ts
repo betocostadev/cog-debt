@@ -27,11 +27,14 @@ describe('Account Service', () => {
         id: 1,
         username: 'testuser',
         accessToken: 'mock-jwt-token',
+        role: 'admin',
       }
 
       vi.spyOn(accountService as any, 'post').mockResolvedValueOnce(
         mockResponse,
       )
+
+      vi.spyOn(accountService as any, 'get').mockResolvedValueOnce(mockResponse)
 
       const result = await accountService.login(mockCreds)
 

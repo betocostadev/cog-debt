@@ -1,12 +1,9 @@
-import { BaseButton } from '#/components/atoms/Buttons/BaseButton'
 import { PageTitle } from '#/components/atoms/PageTitle/PageTitle'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
-import {
-  useChangeTheme,
-  useGetSettings,
-  useSetStarCollaborator,
-} from '#/hooks/settings/useSettings'
-import { createFileRoute } from '@tanstack/react-router'
+import { AppSettings } from '#/components/organisms/Admin/AppSettings'
+import { CompanyManagement } from '#/components/organisms/Admin/CompanyManagement'
+import { useGetSettings } from '#/hooks/settings/useSettings'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/admin/')({
@@ -18,6 +15,19 @@ export const Route = createFileRoute('/admin/')({
       { title: 'Dashboard' },
     ],
   }),
+  beforeLoad: ({ context, location }) => {
+    if (!context.auth.isAdmin) {
+      throw redirect({
+        to: '/dashboard',
+        search: {
+          redirect: location.href,
+        },
+        viewTransition: true,
+      })
+    } else {
+      redirect({ to: location.href })
+    }
+  },
 })
 
 function Admin() {
@@ -26,35 +36,6 @@ function Admin() {
     isLoading: isLoadingSettings,
     error: settingsError,
   } = useGetSettings({ autoload: true })
-
-  console.log('Admin - App settings: ')
-  console.log(settings)
-
-  const { changeTheme, isPending, isError, error } = useChangeTheme()
-  const {
-    setStarCollaborator,
-    isPending: isPendingCollab,
-    isError: isErrorCollab,
-    error: errorCollab,
-  } = useSetStarCollaborator()
-
-  const setTheme = async () => {
-    changeTheme('System')
-
-    if (isError) {
-      console.error(error)
-      toast.error(error?.message)
-    }
-  }
-
-  const resetStarCollaborator = () => {
-    setStarCollaborator(null)
-
-    if (isErrorCollab) {
-      console.error(errorCollab?.message)
-      toast.error(errorCollab?.message)
-    }
-  }
 
   if (isLoadingSettings) {
     return (
@@ -77,36 +58,6 @@ function Admin() {
     )
   }
 
-  if (isError || isErrorCollab) {
-    if (isError) {
-      console.error(error)
-      toast.error(
-        error || errorCollab
-          ? error
-            ? error.message
-            : errorCollab?.message
-          : '',
-      )
-    }
-
-    return (
-      <ErrorBoundary>
-        <div className="flex flex-col self-center my-2 px-2 overflow-auto">
-          {error && (
-            <p className="text-red-400 font-light text-lg py-2">
-              Error loading changing settings
-            </p>
-          )}
-          {error && error.message ? (
-            <pre>Error: {error.message}</pre>
-          ) : settingsError && settingsError.message ? (
-            <pre>Error: {settingsError.message}</pre>
-          ) : null}
-        </div>
-      </ErrorBoundary>
-    )
-  }
-
   if (settingsError) {
     console.error(settingsError)
     toast.message(settingsError.message)
@@ -126,30 +77,9 @@ function Admin() {
     <ErrorBoundary>
       <>
         <PageTitle title="Admin" data-testid="admin-error-title" />
-        <section
-          data-testid="admin-settings-error-section"
-          className="sm:w-full lg:w-4/5 items-center mx-auto pt-2 px-2"
-        >
-          <h3
-            data-testid="admin-settings-error-heading"
-            className="text-lg sm:mt-6 mt-4 font-bold"
-          >
-            Application settings
-          </h3>
-
-          <div className="pt-2">
-            <BaseButton
-              label="Change theme"
-              onClick={setTheme}
-              disabled={isPending}
-            />
-            <BaseButton
-              label="Reset star collaborator"
-              onClick={resetStarCollaborator}
-              disabled={isPendingCollab}
-            />
-          </div>
-        </section>
+        {settings && <AppSettings settings={settings} />}
+        <div className="mt-4 border-b-2 mx-4 border-secondary" />
+        <CompanyManagement />
       </>
     </ErrorBoundary>
   )

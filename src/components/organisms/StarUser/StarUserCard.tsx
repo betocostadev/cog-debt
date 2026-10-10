@@ -12,7 +12,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { getUserStatusIcon } from '#/utils/userHelper'
 import { useGetSettings } from '#/hooks/settings/useSettings'
 
-export function StarUserCard() {
+export function StarUserCard({ showTitle = true }) {
   const navigate = useNavigate()
 
   const {
@@ -72,16 +72,18 @@ export function StarUserCard() {
         innerClass={`w-full flex flex-col content-center justify-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20 ${employeeId ? 'cursor-pointer' : ''}`}
         testId="star-user-container"
       >
-        <div className="flex">
-          <LazyIcon
-            icon={icons.SquareStar}
-            size={24}
-            iconColor="palegoldenrod"
-          />
-          <p className="sm:text-md mb-4 md:text-lg pl-2">
-            Meet one of our Star Colaborators
-          </p>
-        </div>
+        {showTitle && (
+          <div className="flex">
+            <LazyIcon
+              icon={icons.SquareStar}
+              size={24}
+              iconColor="palegoldenrod"
+            />
+            <p className="sm:text-md mb-4 md:text-lg pl-2">
+              Meet one of our Star Colaborators
+            </p>
+          </div>
+        )}
         {settings && !data && (
           <div>
             <p>

@@ -44,7 +44,14 @@ function RouteComponent() {
               <div className="flex flex-col gap-2 pl-0 sm:pl-2 pb-2 sm:pb-0 self-center">
                 <h3 className="text-lg font-bold">
                   {authUser.firstName} {authUser.lastName}
-                  <Badge className="ml-2 items-center">{authUser.role}</Badge>
+                  <Badge
+                    variant={
+                      authUser.role === 'admin' ? 'primary' : 'secondary'
+                    }
+                    className="ml-3 items-center"
+                  >
+                    {authUser.role.toUpperCase()}
+                  </Badge>
                 </h3>
                 <p>{authUser.email}</p>
                 <p>{authUser.phone}</p>

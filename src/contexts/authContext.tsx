@@ -18,6 +18,7 @@ import { useNavigate } from '@tanstack/react-router'
 
 export type AuthContextValue = {
   authUser: IAuthUser | null
+  isAdmin: boolean
   setAuthUser: Dispatch<SetStateAction<IAuthUser | null>>
 }
 
@@ -42,6 +43,11 @@ export function getAuthContextValue(
     get authUser() {
       return authState.authUser
     },
+
+    get isAdmin() {
+      return authState.authUser?.role === 'admin' ? true : false
+    },
+
     setAuthUser: (next) => {
       setSharedAuthUser(next)
       auth?.setAuthUser?.(next)
@@ -92,12 +98,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loadUser()
   }, [queryClient, setAuthUser])
 
+  const isAdmin = useMemo(() => authUser?.role === 'admin', [authUser])
+
   const value = useMemo<AuthContextValue>(
     () => ({
       authUser,
+      isAdmin,
       setAuthUser,
     }),
-    [authUser, setAuthUser],
+    [authUser, isAdmin, setAuthUser],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
