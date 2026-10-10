@@ -22,6 +22,13 @@ export function UserAvatar() {
     setIsDropdownOpen(false)
   }
 
+  const goToAdmin = () => {
+    console.log('Auth user: ')
+    console.log(authUser)
+    navigate({ to: '/admin', viewTransition: true })
+    setIsDropdownOpen(false)
+  }
+
   const goToAbout = () => {
     navigate({ to: '/dashboard/about', viewTransition: true })
     setIsDropdownOpen(false)
@@ -34,6 +41,7 @@ export function UserAvatar() {
   const image = authUser?.image
   const userName = authUser?.firstName
 
+  // TODO: After isAdminHook - Fix showing admin link to all users
   const dropdownOptions: DropdownOption[] = [
     {
       id: 'profile',
@@ -54,6 +62,16 @@ export function UserAvatar() {
         </div>
       ),
       action: goToAbout,
+    },
+    {
+      id: 'admin',
+      label: (
+        <div className="flex gap-3 items-center">
+          <LazyIcon icon={icons.ShieldUser} size={18} iconColor="red" />
+          <span>Admin Panel</span>
+        </div>
+      ),
+      action: goToAdmin,
     },
     {
       id: 'logout',

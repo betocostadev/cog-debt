@@ -1,4 +1,4 @@
-type Ttheme = 'system' | 'light' | 'dark'
+export type Ttheme = 'system' | 'light' | 'dark'
 
 export interface IAppSettings {
   key: string

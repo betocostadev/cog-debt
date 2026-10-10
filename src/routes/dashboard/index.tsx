@@ -20,8 +20,6 @@ export const Route = createFileRoute('/dashboard/')({
 })
 
 function Dashboard() {
-  const starEmployeeId = Math.floor(Math.random() * 50 + 1)
-
   return (
     <ErrorBoundary>
       <>
@@ -31,7 +29,7 @@ function Dashboard() {
 
           <div className="sm:w-full lg:w-2/4">
             <UserStatusChart />
-            <StarUserCard employeeId={starEmployeeId} />
+            <StarUserCard />
           </div>
         </div>
         <section
