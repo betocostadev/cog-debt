@@ -84,6 +84,7 @@ function UserPage() {
                   {/* TODO: Remove check after roles migration */}
                   <h3 className="text-lg font-bold">
                     {data.firstName} {data.lastName}
+                    {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                     {data.role && (
                       <Badge
                         variant={
