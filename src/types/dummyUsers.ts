@@ -1,4 +1,7 @@
 // Exclusive for reading Users comming from Dummy JSON
+
+import type { TUserRoles } from './users'
+
 // After feeding to Dexie, use Users and not this in the implementation
 export interface DummyCoordinates {
   lat: number
@@ -69,7 +72,7 @@ export interface DummyUser {
   ssn: string
   userAgent: string
   crypto: DummyCrypto
-  role: 'admin' | 'moderator' | 'user'
+  role: TUserRoles
 }
 
 export type DummyUserListItem = Omit<

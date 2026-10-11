@@ -16,6 +16,7 @@ import type { ICompanyDepartment } from '#/types/company'
 import { JobTitleSelector } from '../Company/JobTitleSelector'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
 import { toast } from 'sonner'
+import { RoleSelector } from './RoleSelector'
 
 interface IUserFormProps {
   isEditing: boolean
@@ -67,6 +68,7 @@ export function UserForm({
     defaultValues: {
       image: '',
       status: Statuses.ACTIVE,
+      role: 'user',
       department: '',
       jobTitle: '',
       admissionDate: new Date().toISOString().split('T')[0],
@@ -104,6 +106,7 @@ export function UserForm({
             .toISOString()
             .split('T')[0],
           salary: userData.salary,
+          role: userData.role,
         })
         setHasInitialized(true)
       } else if (!isEditing && !currentDepartmentTitle) {
@@ -210,6 +213,24 @@ export function UserForm({
                 {errors.status.message}
               </span>
             )}
+            <div className="pt-2">
+              <Controller
+                name="role"
+                control={control}
+                render={({ field }) => (
+                  <RoleSelector
+                    isLoading={isLoading || isSubmitting}
+                    selectedRole={field.value}
+                    onRoleChange={field.onChange}
+                  />
+                )}
+              />
+              {errors.role && (
+                <span className="text-red-500 text-sm">
+                  {errors.role.message}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 

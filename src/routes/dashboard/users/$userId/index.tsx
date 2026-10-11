@@ -81,8 +81,19 @@ function UserPage() {
                   size="xl"
                 />
                 <div className="flex flex-col gap-2 pl-2 self-center break-all">
+                  {/* TODO: Remove check after roles migration */}
                   <h3 className="text-lg font-bold">
                     {data.firstName} {data.lastName}
+                    {data.role && (
+                      <Badge
+                        variant={
+                          data.role === 'admin' ? 'primary' : 'secondary'
+                        }
+                        className="ml-3 items-center"
+                      >
+                        {data.role.toUpperCase()}
+                      </Badge>
+                    )}
                   </h3>
                   <p>{data.email}</p>
                   <p>{data.phone}</p>

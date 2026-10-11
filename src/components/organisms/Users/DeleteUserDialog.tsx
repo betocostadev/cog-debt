@@ -10,7 +10,7 @@ import {
 } from '#/components/atoms/Dialog/Dialog'
 import type { Dispatch, SetStateAction } from 'react'
 
-interface DeleUserDialogProps {
+interface DeleteUserDialogProps {
   showDeleteDialog: boolean
   setShowDeleteDialog: Dispatch<SetStateAction<boolean>>
   confirmDelete: () => void
@@ -22,7 +22,7 @@ export function DeleteUserDialog({
   setShowDeleteDialog,
   confirmDelete,
   username,
-}: DeleUserDialogProps) {
+}: DeleteUserDialogProps) {
   return (
     <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
       <DialogContent className="sm:max-w-sm bg-slate-500">
