@@ -18,6 +18,8 @@ export enum Statuses {
   VACATION = 'Vacation',
 }
 
+export type TUserRoles = 'admin' | 'moderator' | 'user'
+
 export interface IUser {
   id?: number
   username: string
@@ -31,6 +33,7 @@ export interface IUser {
   salary: number
   status: Statuses
   image: string
+  role: TUserRoles
 }
 
 export type UserTableRow = {
@@ -68,6 +71,7 @@ export const userSchema = z.object({
   jobTitle: z.string().min(5, 'Job title is required'),
   admissionDate: z.coerce.date({ message: 'Admission date is required' }),
   salary: z.coerce.number().min(1, 'Salary is required'),
+  role: z.enum(['admin', 'moderator', 'user']),
 })
 
 export type TUserDataInput = z.infer<typeof userSchema>

@@ -126,6 +126,7 @@ export const transformDummyUsers = (
       salary: getSalary(user.company.department, user.company.title),
       status: getUserStatus() as Statuses,
       image: user.image,
+      role: user.role,
     }
   })
 

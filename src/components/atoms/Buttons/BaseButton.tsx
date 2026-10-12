@@ -9,6 +9,7 @@ type BaseButtonProps = ComponentPropsWithoutRef<'button'> & {
   iconLeft?: IconName
   iconRight?: IconName
   iconSize?: number
+  iconColor?: string
   loading?: boolean
 }
 
@@ -19,6 +20,7 @@ export function BaseButton({
   iconSize,
   iconLeft,
   iconRight,
+  iconColor,
   loading = false,
   ...props
 }: BaseButtonProps) {
@@ -42,11 +44,21 @@ export function BaseButton({
       ) : (
         <div className="flex content-center items-center">
           {iconLeft && (
-            <LazyIcon icon={iconLeft} size={iconSize} iconClassName="mr-2" />
+            <LazyIcon
+              iconColor={iconColor}
+              icon={iconLeft}
+              size={iconSize}
+              iconClassName="mr-2"
+            />
           )}
           {label}
           {iconRight && (
-            <LazyIcon icon={iconRight} size={iconSize} iconClassName="ml-2" />
+            <LazyIcon
+              iconColor={iconColor}
+              icon={iconRight}
+              size={iconSize}
+              iconClassName="ml-2"
+            />
           )}
         </div>
       )}

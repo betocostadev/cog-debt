@@ -1,7 +1,7 @@
 import { PageTitle } from '#/components/atoms/PageTitle/PageTitle'
 import { ToTopButton } from '#/components/molecules/Buttons/ToTopButton'
 import { ErrorBoundary } from '#/components/molecules/ErrorBoundary'
-import { StarUserCard } from '#/components/organisms/Dashboard/StarUser/StarUserCard'
+import { StarUserCard } from '#/components/organisms/StarUser/StarUserCard'
 import { UserByDepartmentChart } from '#/components/organisms/Dashboard/UserByDepartmentChart/UserByDepartmentChart'
 import { UserStatusChart } from '#/components/organisms/Dashboard/UserStatusChart/UserStatusChart'
 import { VideoFrame } from '#/components/organisms/VideoFrame'
@@ -20,8 +20,6 @@ export const Route = createFileRoute('/dashboard/')({
 })
 
 function Dashboard() {
-  const starEmployeeId = Math.floor(Math.random() * 50 + 1)
-
   return (
     <ErrorBoundary>
       <>
@@ -31,7 +29,7 @@ function Dashboard() {
 
           <div className="sm:w-full lg:w-2/4">
             <UserStatusChart />
-            <StarUserCard employeeId={starEmployeeId} />
+            <StarUserCard />
           </div>
         </div>
         <section

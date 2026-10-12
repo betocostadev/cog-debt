@@ -7,6 +7,7 @@ import { DeleteUserDialog } from './DeleteUserDialog'
 import { useDeleteUser } from '#/hooks/users/useUsers'
 import { toast } from 'sonner'
 import { useIsMobile } from '#/hooks/useIsMobile'
+import { useAuth } from '#/contexts/authContext'
 
 interface IUserViewEditHeaderProps {
   isLoading: boolean
@@ -25,6 +26,8 @@ export function UserViewEditHeader({
   const location = useLocation()
   const isEditPage = location.pathname.includes('/edit')
   const isMobile = useIsMobile()
+
+  const { isAdmin } = useAuth()
 
   const { deleteUser, isPending, isError, error } = useDeleteUser()
 
@@ -67,13 +70,15 @@ export function UserViewEditHeader({
               onClick={goToEditPage}
             />
           )}
-          <BaseButton
-            label={isMobile ? 'Del.' : 'Delete'}
-            className="mx-2 mb-2 sm:mb-0 bg-red-400 hover:bg-red-500"
-            iconLeft={icons.Trash2}
-            disabled={isLoading || !hasData || isPending}
-            onClick={handleDeleteDropdown}
-          />
+          {isAdmin && (
+            <BaseButton
+              label={isMobile ? 'Del.' : 'Delete'}
+              className="mx-2 mb-2 sm:mb-0 bg-red-400 hover:bg-red-500"
+              iconLeft={icons.Trash2}
+              disabled={isLoading || !hasData || isPending}
+              onClick={handleDeleteDropdown}
+            />
+          )}
         </div>
       </div>
       {isDeleteDialogOpen && (

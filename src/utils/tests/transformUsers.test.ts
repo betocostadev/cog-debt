@@ -35,9 +35,6 @@ describe('Transform Users', () => {
     expect(emily).not.toHaveProperty('bank')
     expect(ava).not.toHaveProperty('bank')
 
-    expect(emily).not.toHaveProperty('role')
-    expect(ava).not.toHaveProperty('role')
-
     expect(emily).not.toHaveProperty('weight')
     expect(ava).not.toHaveProperty('weight')
   })

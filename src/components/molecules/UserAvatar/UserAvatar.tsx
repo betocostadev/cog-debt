@@ -8,17 +8,24 @@ import { useState } from 'react'
 import type { DropdownOption } from '../DropdownMenu'
 import { DropdownMenu } from '../DropdownMenu'
 import { useNavigate } from '@tanstack/react-router'
+import { useAuth } from '#/contexts/authContext'
 
 export function UserAvatar() {
   const { authUser, isLoading } = useGetAuthUser({
     autoload: true,
   })
+  const { isAdmin } = useAuth()
   const { logout } = useLogout()
   const navigate = useNavigate()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const goToProfile = () => {
     navigate({ to: '/dashboard/profile', viewTransition: true })
+    setIsDropdownOpen(false)
+  }
+
+  const goToAdmin = () => {
+    navigate({ to: '/admin', viewTransition: true })
     setIsDropdownOpen(false)
   }
 
@@ -66,6 +73,21 @@ export function UserAvatar() {
       action: logout,
     },
   ]
+
+  const adminLink = {
+    id: 'admin',
+    label: (
+      <div className="flex gap-3 items-center">
+        <LazyIcon icon={icons.ShieldUser} size={18} iconColor="red" />
+        <span>Admin Panel</span>
+      </div>
+    ),
+    action: goToAdmin,
+  }
+
+  if (isAdmin) {
+    dropdownOptions.unshift(adminLink)
+  }
 
   const handleBlur: React.FocusEventHandler<HTMLDivElement> = (e) => {
     if (!e.currentTarget.contains(e.relatedTarget)) {

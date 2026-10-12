@@ -38,6 +38,8 @@ export const icons = {
   SquareStar: 'square-star',
   Bug: 'bug',
   SquareArrowOutUpRight: 'square-arrow-out-up-right',
+  ShieldUser: 'shield-user',
+  Star: 'star',
 } as const
 
 export type IconName = (typeof icons)[keyof typeof icons]

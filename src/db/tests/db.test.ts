@@ -73,7 +73,7 @@ describe('Dexie Database', () => {
     it('should upgrade data correctly through version steps', async () => {
       db.close()
 
-      expect(db.verno).toBe(3)
+      expect(db.verno).toBe(4)
     })
   })
 })
