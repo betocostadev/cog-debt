@@ -51,7 +51,7 @@ export function AppSettings({ settings }: { settings: IAppSettings }) {
         className="sm:w-full lg:w-4/5 items-center mx-auto pt-2 px-2"
       >
         <h3
-          data-testid="admin-settings-error-heading"
+          data-testid="admin-settings-heading"
           className="text-xl sm:mt-6 mt-4 font-bold"
         >
           Application settings

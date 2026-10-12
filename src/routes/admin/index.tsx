@@ -76,7 +76,7 @@ function Admin() {
   return (
     <ErrorBoundary>
       <>
-        <PageTitle title="Admin" data-testid="admin-error-title" />
+        <PageTitle title="Admin" data-testid="admin-page-title" />
         {settings && <AppSettings settings={settings} />}
         <div className="mt-4 border-b-2 mx-4 border-secondary" />
         <CompanyManagement />
