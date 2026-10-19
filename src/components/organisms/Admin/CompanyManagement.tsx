@@ -28,6 +28,7 @@ export function CompanyManagement() {
         <div data-testid="manage-users">
           <h4 className="text-lg my-2">Users</h4>
           <BaseButton
+            data-testid="manage-users-btn"
             label="Manage"
             iconLeft={icons.UsersRound}
             onClick={goToUsers}
@@ -36,6 +37,7 @@ export function CompanyManagement() {
         <div data-testid="manage-departments">
           <h4 className="text-lg my-2">Departments</h4>
           <BaseButton
+            data-testid="manage-departments-btn"
             label="Manage"
             iconLeft={icons.Grid2x2Check}
             onClick={goToDepartments}

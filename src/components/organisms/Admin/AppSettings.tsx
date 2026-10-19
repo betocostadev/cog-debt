@@ -92,6 +92,7 @@ export function AppSettings({ settings }: { settings: IAppSettings }) {
               <StarUserCard showTitle={false} />
             </div>
             <BaseButton
+              data-testid="reset-collab-btn"
               label="Reset collaborator"
               className="mt-4 bg-red-400 hover:bg-red-500"
               iconLeft={icons.Trash2}
