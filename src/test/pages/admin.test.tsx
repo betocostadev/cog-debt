@@ -1,16 +1,22 @@
 import { act } from '@testing-library/react'
-import { screen } from '@testing-library/dom'
+import { fireEvent, screen } from '@testing-library/dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderWithFileRoutes } from '../file-route-utils'
 import { transformDummyUsers } from '#/utils/transformUsers'
 import { dummyUsers } from '#/utils/dummyUsers.mock'
-import { useSettingsQueryFn } from '#/hooks/settings/useSettingsQueries'
 import { getAuthContextValue } from '#/contexts/authContext'
 import type { IAuthUser } from '#/types/account'
 import store from '#/utils/store'
 import { defaultSettings } from '#/utils/defaultSettings'
+import { useSettingsQueryFn } from '#/hooks/settings/useSettingsQueries'
+import * as settingsHooks from '#/hooks/settings/useSettings'
+import { useUsersQueryFn } from '#/hooks/users/useUsersQueries'
+import { useCompanyDepartmentsQueryFn } from '#/hooks/company/useCompanyQueries'
+import { mockedDepartments } from '#/utils/departments.mock'
 
 vi.mock('#/hooks/settings/useSettingsQueries')
+vi.mock('#/hooks/users/useUsersQueries')
+vi.mock('#/hooks/company/useCompanyQueries')
 
 const mockedUsers = transformDummyUsers(dummyUsers)
 const mockUser = {
@@ -29,16 +35,30 @@ const mockAuthContext = {
 
 describe('Admin page', () => {
   beforeEach(() => {
+    Object.defineProperty(window, 'scrollTo', {
+      value: vi.fn(),
+      writable: true,
+    })
+
     vi.clearAllMocks()
 
+    store.jwt = mockUser.accessToken
+
     getAuthContextValue().setAuthUser(mockUser as unknown as IAuthUser)
-
-    store.jwt = null
-
     vi.mocked(useSettingsQueryFn).mockResolvedValue(defaultSettings)
+    vi.mocked(useUsersQueryFn).mockResolvedValue({
+      total: mockedUsers!.length,
+      users: mockedUsers!,
+    })
+    vi.mocked(useCompanyDepartmentsQueryFn).mockResolvedValue({
+      total: mockedDepartments.length,
+      departments: mockedDepartments,
+    })
   })
 
   afterEach(() => {
+    // Object.defineProperty(window, 'scrollTo', null)
+
     getAuthContextValue().setAuthUser(null)
     store.jwt = null
   })
@@ -160,5 +180,77 @@ describe('Admin page', () => {
     )
     expect(manageDepartmentsBtn).toBeDefined()
     expect(manageDepartmentsBtn.textContent).toBe('Manage')
+  })
+
+  it('navigates to the users page when the users management button is clicked', async () => {
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/admin',
+        routerContext: { auth: mockAuthContext },
+      })
+    })
+
+    const manageUsersBtn = await screen.findByTestId('manage-users-btn')
+
+    await act(async () => {
+      fireEvent.click(manageUsersBtn)
+    })
+
+    expect(await screen.findByTestId('Colaborators-title')).toBeDefined()
+  })
+
+  it('navigates to the departments page when the departments management button is clicked', async () => {
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/admin',
+        routerContext: { auth: mockAuthContext },
+      })
+    })
+
+    const manageDepartmentsBtn = await screen.findByTestId(
+      'manage-departments-btn',
+    )
+
+    await act(async () => {
+      fireEvent.click(manageDepartmentsBtn)
+    })
+
+    expect(await screen.findByTestId('Departments-title')).toBeDefined()
+  })
+
+  it('calls changeTheme when the current theme button is clicked', async () => {
+    const mockChangeTheme = vi.fn()
+    const useChangeThemeSpy = vi
+      .spyOn(settingsHooks, 'useChangeTheme')
+      .mockReturnValue({
+        changeTheme: mockChangeTheme,
+        isPending: false,
+        isError: false,
+        error: undefined,
+        reset: vi.fn(),
+      })
+
+    await act(async () => {
+      renderWithFileRoutes(undefined, {
+        initialLocation: '/admin',
+        routerContext: { auth: mockAuthContext },
+      })
+    })
+
+    const themeSection = await screen.findByTestId('theme-section')
+    const themeButtons = await screen.findByTestId('theme-buttons')
+
+    expect(themeSection).toBeDefined()
+    expect(themeButtons).toBeDefined()
+
+    const selectedThemeButton = themeButtons.firstElementChild
+    expect(selectedThemeButton).toBeDefined()
+
+    await act(async () => {
+      fireEvent.click(selectedThemeButton as unknown as HTMLButtonElement)
+    })
+
+    expect(mockChangeTheme).toHaveBeenCalledTimes(1)
+    useChangeThemeSpy.mockRestore()
   })
 })
