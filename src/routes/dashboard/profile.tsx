@@ -28,20 +28,20 @@ function RouteComponent() {
 
   return (
     <>
-      <PageTitle title="Your profile" />
+      <PageTitle title="Your profile" data-testid="profile-page-title" />
       <Card>
         {authUser && (
           <Card
             outerClass="bg-slate-900"
             innerClass="w-full flex flex-col sm:flex-row content-between justify-between items-start sm:items-center rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl shadow-black/20"
           >
-            <div className="flex break-all flex-col sm:flex-row">
+            <div className="flex break-all flex-col sm:flex-row" data-testid="profile-card">
               <UserAvatarImage
                 src={authUser.image}
                 alt={authUser.firstName}
                 size="xl"
               />
-              <div className="flex flex-col gap-2 pl-0 sm:pl-2 pb-2 sm:pb-0 self-center">
+              <div className="flex flex-col gap-2 pl-0 sm:pl-2 pb-2 sm:pb-0 self-center" data-testid="profile-details">
                 <h3 className="text-lg font-bold">
                   {authUser.firstName} {authUser.lastName}
                   <Badge
@@ -57,14 +57,14 @@ function RouteComponent() {
                 <p>{authUser.phone}</p>
               </div>
             </div>
-            <div className="flex flex-col gap-2 pr-2">
+            <div className="flex flex-col gap-2 pr-2" data-testid="profile-meta">
               <p>ID: {authUser.id}</p>
               <p>{authUser.username}</p>
             </div>
           </Card>
         )}
         {authUser?.company && (
-          <div>
+          <div data-testid="profile-company-info">
             <section className="px-2 py-2">
               <h3 className="text-xl py-2">Cognitive debt information</h3>
               <div className="flex justify-between pb-2">
@@ -75,7 +75,7 @@ function RouteComponent() {
               </div>
             </section>
 
-            <section className="px-2">
+            <section className="px-2" data-testid="profile-address">
               <h3 className="text-xl py-2">Address</h3>
               <p className="py-2">{authUser.address.address}</p>
               <p>
@@ -83,7 +83,7 @@ function RouteComponent() {
                 {authUser.address.stateCode}
               </p>
             </section>
-            <div className="flex items-end justify-end mt-4 mr-1 mb-2">
+            <div className="flex items-end justify-end mt-4 mr-1 mb-2" data-testid="profile-logout-action">
               <BaseButton
                 variant="secondary"
                 label="Logout"
