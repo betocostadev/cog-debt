@@ -25,10 +25,13 @@ function RouteComponent() {
     <ErrorBoundary>
       <div className="flex items-center mb-4">
         <Logo size={64} />
-        <PageTitle title='The Cognitive Debt "Company"' />
+        <PageTitle
+          title='The Cognitive Debt "Company"'
+          data-testid="about-page-title"
+        />
       </div>
       <Card outerClass="min-h-xl mb-6 font-light">
-        <p>
+        <p data-testid="about-card-info">
           Cognitive Debt is an <em>Open Source project</em> based on a fictional
           company. It was created as a mentorship project provided by{' '}
           <ExternalLink link="https://www.aubay.pt/en" title="Aubay Portugal" />{' '}
@@ -86,8 +89,7 @@ function RouteComponent() {
           />
         </p>
       </Card>
-      <div className="w-full">
-        <h3 className="text-lg font-bold my-4">How Cognitive Debt Works?</h3>
+      <div className="w-full" data-testid="about-technical-details">
         <p>
           Cognitive Debt uses{' '}
           <ExternalLink
@@ -128,11 +130,17 @@ function RouteComponent() {
           <AppDiagSvg />
         </div>
       </div>
-      <div className="border border-slate-400 mt-6 pl-4">
+      <div
+        className="border border-slate-400 mt-6 pl-4"
+        data-testid="about-tech-stack"
+      >
         <ul>
           <li>
             <details className="text-bold text-white">
-              <summary className="text-lg my-1 cursor-pointer">
+              <summary
+                className="text-lg my-1 cursor-pointer"
+                data-testId="tech-stack-summary"
+              >
                 Tech Stack
               </summary>
               <section className="font-thin">
@@ -162,7 +170,7 @@ function RouteComponent() {
       <h3 className="text-xl text-bold mt-8 italic">
         Problems with too much AI usage covered by many people on the internet
       </h3>
-      <div className="mb-10 text-ellipsis">
+      <div className="mb-10 text-ellipsis" data-testid="about-videos-section">
         {aboutVideos.map((vid) => (
           <VideoFrame
             key={vid.id}
@@ -173,7 +181,10 @@ function RouteComponent() {
           />
         ))}
       </div>
-      <div className="flex justify-center pb-4">
+      <div
+        className="flex justify-center pb-4"
+        data-testid="about-footer-action"
+      >
         <ToTopButton testId="to-top-btn" />
       </div>
     </ErrorBoundary>
