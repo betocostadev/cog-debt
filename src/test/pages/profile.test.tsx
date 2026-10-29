@@ -1,5 +1,5 @@
 import { act } from '@testing-library/react'
-import { screen } from '@testing-library/dom'
+import { fireEvent, screen } from '@testing-library/dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderWithFileRoutes } from '../file-route-utils'
 import { transformDummyUsers } from '#/utils/transformUsers'
@@ -73,5 +73,40 @@ describe('Profile page', () => {
     expect(companyInfo).toBeDefined()
     expect(address).toBeDefined()
     expect(logoutAction).toBeDefined()
+  })
+
+  it('should logout when pressing the button in profile page', async () => {
+    await act(async () => {
+      await renderWithFileRoutes(undefined, {
+        initialLocation: '/dashboard/profile',
+        routerContext: { auth: mockAuthContext },
+      })
+    })
+
+    const pageTitle = await screen.findByTestId('profile-page-title')
+    expect(pageTitle).toBeDefined()
+    expect(pageTitle.textContent).toBe('Your profile')
+
+    const logoutAction = await screen.findByTestId('profile-logout-action')
+    expect(logoutAction).toBeDefined()
+
+    const logoutButton = logoutAction.firstChild
+    expect(logoutButton).toBeDefined()
+    expect(logoutButton?.textContent).toMatch(/logout/i)
+
+    await act(async () => {
+      fireEvent.click(logoutButton as HTMLButtonElement)
+    })
+
+    const loginContainer = await screen.findByTestId('login-page-container')
+    const loginTitle = await screen.findByTestId('login-title')
+
+    expect(loginContainer).toBeDefined()
+    expect(loginTitle).toBeDefined()
+
+    expect(loginContainer.textContent).toMatch(/Welcome to Cog Debt/)
+
+    expect(getAuthContextValue().authUser).toBeNull
+    expect(store.jwt).toBeNull
   })
 })
