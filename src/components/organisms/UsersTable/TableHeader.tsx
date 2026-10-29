@@ -69,10 +69,14 @@ export function UsersTableHeader({
 
   return (
     <ErrorBoundary>
-      <div className="flex mb-2 items-center flex-col sm:flex-row pl-1 pr-2 pt-2">
+      <div
+        className="flex mb-2 items-center flex-col sm:flex-row pl-1 pr-2 pt-2"
+        data-testid="users-table-header"
+      >
         <div className="w-full sm:w-4/6 pr-4">
           <InputText
             id="search-field"
+            data-testid="users-search-input"
             placeholder="Search by name, department, or city"
             value={localSearch}
             error=""

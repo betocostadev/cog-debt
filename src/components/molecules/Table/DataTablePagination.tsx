@@ -13,10 +13,14 @@ export default function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   return (
     <Suspense fallback={<TablePaginationSkeleton />}>
-      <div className="w-full flex items-center justify-center px-2 pt-4 pb-6">
+      <div
+        className="w-full flex items-center justify-center px-2 pt-4 pb-6"
+        data-testid="table-pagination"
+      >
         <div className="w-full flex items-center justify-center space-x-2">
           <BaseButton
             label="First page"
+            data-testid="pagination-first-page"
             loading={false}
             className="hidden lg:flex text-sm"
             onClick={() => table.setPageIndex(0)}
@@ -26,6 +30,7 @@ export default function DataTablePagination<TData>({
 
           <BaseButton
             label="Prev"
+            data-testid="pagination-previous-page"
             loading={false}
             className="text-sm"
             iconLeft={icons.ChevronLeft}
@@ -34,13 +39,17 @@ export default function DataTablePagination<TData>({
           />
           <span className="sr-only">Go to previous page</span>
 
-          <div className="flex w-25 items-center justify-center text-sm font-medium">
+          <div
+            className="flex w-25 items-center justify-center text-sm font-medium"
+            data-testid="pagination-current-page"
+          >
             Page {table.getState().pagination.pageIndex + 1} of{' '}
             {table.getPageCount()}
           </div>
 
           <BaseButton
             label="Next"
+            data-testid="pagination-next-page"
             loading={false}
             className="text-sm"
             iconRight={icons.ChevronRight}
@@ -51,6 +60,7 @@ export default function DataTablePagination<TData>({
 
           <BaseButton
             label="Last page"
+            data-testid="pagination-last-page"
             loading={false}
             className="hidden lg:flex text-sm"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}

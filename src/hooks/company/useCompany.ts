@@ -98,7 +98,7 @@ export const useGetDepartmentById = ({
   options: UseDepartmentOptions
   id: number
 }): UseDepartmentResult => {
-  const { autoload, refetchInterval } = options
+  const { autoload = true, refetchInterval } = options
   const queryKey = useMemo(() => companyQueryKeys.department(id), [id])
 
   const { data, isLoading, error, refetch } = useQuery({

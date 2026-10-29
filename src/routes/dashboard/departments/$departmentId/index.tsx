@@ -49,7 +49,7 @@ function RouteComponent() {
   return (
     <ErrorBoundary>
       <div className="p-2">
-        <BackButton />
+        <BackButton testId="department-back-button" />
         {data && (
           <div className="overflow-auto mx-auto p-2">
             <div className="flex gap-4 mt-2 items-center">
@@ -58,7 +58,9 @@ function RouteComponent() {
                 iconColor={getDeptIcon(data.departmentKey).color}
                 size={30}
               />
-              <h2 className="text-2xl">{data.title}</h2>
+              <h2 className="text-2xl" data-testid="department-title">
+                {data.title}
+              </h2>
             </div>
             <div className="my-4">
               <p className="text-xl text-slate-300">

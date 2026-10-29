@@ -6,7 +6,7 @@ type PageTitleProps = ComponentPropsWithoutRef<'h2'> & {
 export function PageTitle({ title, ...props }: PageTitleProps) {
   return (
     <h2
-      data-testId={`${title}-title`}
+      data-testid={`${title}-title`}
       className="text-xl font-bold mb-2 pl-2"
       {...props}
     >

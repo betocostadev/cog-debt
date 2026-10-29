@@ -66,7 +66,10 @@ function RouteComponent() {
     <ErrorBoundary>
       <PageTitle title="Departments" />
       <div className="p-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full"
+          data-testid="departments-grid"
+        >
           {deptsData?.departments &&
             deptsData.departments.map((dept) => {
               const { icon, color } = getDeptIcon(dept.departmentKey)
@@ -75,6 +78,7 @@ function RouteComponent() {
                   key={dept.id}
                   outerClass="bg-background text-foreground"
                   innerClass="flex gap-6 items-center rounded-2xl border border-white/10 bg-surface p-5 shadow-2xl shadow-black/30 hover:shadow-slate-200 hover:shadow-sm hover:cursor-pointer"
+                  testId={`department-card-${dept.id}`}
                   onClick={() => goToDepartment(dept.id!)}
                 >
                   <LazyIcon icon={icon} iconColor={color} size={40} />

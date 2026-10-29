@@ -154,6 +154,7 @@ export function UsersTable({ initialParams }: { initialParams: TUserSearch }) {
           data={tableData.users}
           isLoading={isLoading || isFetching}
           rowCount={tableData.total}
+          testId="users-table"
           pagination={pagination}
           onPaginationChange={handlePaginationChange}
           sorting={sorting}

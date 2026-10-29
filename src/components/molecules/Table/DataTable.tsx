@@ -25,6 +25,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   isLoading: boolean
   rowCount: number
+  testId?: string
   pagination?: PaginationState
   onPaginationChange?: OnChangeFn<PaginationState>
   sorting?: SortingState
@@ -37,6 +38,7 @@ export function DataTable<TData, TValue>({
   data,
   isLoading,
   rowCount,
+  testId,
   pagination,
   onPaginationChange,
   sorting,
@@ -60,7 +62,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="overflow-hidden rounded-md border">
-      <Table>
+      <Table data-testid={testId}>
         {caption && <TableCaption>{caption}</TableCaption>}
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
